@@ -3,7 +3,7 @@ namespace gamboamartin\template;
 use gamboamartin\errores\errores;
 
 class directivas{
-    private errores $error;
+    protected errores $error;
     public function __construct(){
         $this->error = new errores();
     }

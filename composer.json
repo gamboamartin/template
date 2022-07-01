@@ -12,9 +12,10 @@
 
     "autoload": {
         "psr-4": {
-          "html\\": "src/",
+          "gamboamartin\\template\\": "src/",
           "config\\": "config/",
-          "base\\": "base/"
+          "base\\": "base/",
+          "tests\\": "tests/"
         }
     },
     "require": {

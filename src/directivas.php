@@ -1,5 +1,5 @@
 <?php
-namespace html;
+namespace gamboamartin\template;
 use gamboamartin\errores\errores;
 
 class directivas{

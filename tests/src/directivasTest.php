@@ -1,11 +1,11 @@
 <?php
-namespace tests\controllers;
+namespace tests\src;
 
 use gamboamartin\errores\errores;
+use gamboamartin\template\directivas;
 use gamboamartin\test\liberator;
 use gamboamartin\test\test;
-
-use html\directivas;
+use JetBrains\PhpStorm\NoReturn;
 use JsonException;
 
 

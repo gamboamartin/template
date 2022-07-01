@@ -9,6 +9,22 @@ class directivas{
     }
 
     /**
+     * @param int $cols Numero de columnas css
+     * @version 0.4.0
+     * @return bool|array
+     */
+    protected function valida_cols(int $cols): bool|array
+    {
+        if($cols<=0){
+            return $this->error->error(mensaje: 'Error cols debe ser mayor a 0', data: $cols);
+        }
+        if($cols>=13){
+            return $this->error->error(mensaje: 'Error cols debe ser menor o igual a  12', data: $cols);
+        }
+        return true;
+    }
+
+    /**
      * Verifica los datos de entrada de un label
      * @version 0.1.0
      * @param string $name Nombre del input

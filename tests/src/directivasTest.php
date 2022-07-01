@@ -22,6 +22,46 @@ class directivasTest extends test {
     /**
      * @throws JsonException
      */
+    #[NoReturn] public function test_valida_cols(): void
+    {
+        errores::$error = false;
+        $html = new directivas();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $cols = -1;
+
+
+        $resultado = $html->valida_cols($cols);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error cols debe ser mayor a 0', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $cols = 13;
+
+
+        $resultado = $html->valida_cols($cols);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error cols debe ser menor o igual a  12', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $cols = 1;
+
+
+        $resultado = $html->valida_cols($cols);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertTrue($resultado);
+        errores::$error = false;
+    }
+
+    /**
+     * @throws JsonException
+     */
     #[NoReturn] public function test_valida_data_label(): void
     {
         errores::$error = false;

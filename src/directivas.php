@@ -61,6 +61,7 @@ class directivas{
 
     /**
      * Genera un boton de tipo link para transaccionar status
+     * @version 0.15.0
      * @param int $cols Columnas en formato css de 1 a 12
      * @param int $registro_id Registro id a mandar transaccion
      * @param string $seccion Seccion a ejecutar
@@ -149,7 +150,7 @@ class directivas{
      * @param string $place_holder Dato a mostrar dentro del input de manera inicial
      * @return bool|array
      */
-    private function valida_data_label(string $name, string $place_holder): bool|array
+    protected function valida_data_label(string $name, string $place_holder): bool|array
     {
         $name = trim($name);
         if($name === ''){

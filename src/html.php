@@ -40,6 +40,8 @@ class html{
         return "<a |role| href='$link' |class|>$etiqueta</a>";
     }
 
+
+
     /**
      * Integra un div group control-group col-sm-n_cols
      * @param int $cols Numero de columnas css
@@ -47,7 +49,7 @@ class html{
      * @return string|array
      * @version 0.14.0
      */
-    private function div_group(int $cols, string $html): string|array
+    public function div_group(int $cols, string $html): string|array
     {
         $valida = (new directivas())->valida_cols(cols: $cols);
         if(errores::$error){

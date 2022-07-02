@@ -48,6 +48,29 @@ class directivasTest extends test {
     /**
      * @throws JsonException
      */
+    #[NoReturn] public function test_button_href_status(): void
+    {
+        errores::$error = false;
+        $html = new directivas();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $cols = '2';
+        $registro_id = '-1';
+        $seccion = 'a';
+        $status = 'c';
+
+
+        $resultado = $html->button_href_status($cols, $registro_id, $seccion, $status);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><div |class|><a |role| href='index.php?seccion=a&accion=status&registro_id=-1&session_id=1' |class|>c</a></div></div>", $resultado);
+        print_r($resultado);exit;
+    }
+
+    /**
+     * @throws JsonException
+     */
     #[NoReturn] public function test_label_input(): void
     {
         errores::$error = false;

@@ -10,6 +10,57 @@ class directivas{
     }
 
     /**
+     * Genera un boton tipo link
+     * @version 0.13.0
+     * @param string $accion Accion a ejecutar
+     * @param string $etiqueta Etiqueta de boton
+     * @param string $name Nombre para ser aplicado a for
+     * @param string $place_holder Etiqueta a mostrar
+     * @param int $registro_id Registro a mandar transaccion
+     * @param string $seccion Seccion a ejecutar
+     * @param string $style Estilo del boton info,danger,warning etc
+     * @return array|string
+     */
+    private function button_href(string $accion, string $etiqueta, string $name, string $place_holder, int $registro_id,
+                                 string $seccion, string $style): array|string
+    {
+
+        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
+        }
+
+        $valida = (new html())->valida_input(accion: $accion,etiqueta:  $etiqueta, seccion: $seccion,style:  $style);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
+
+        $label = $this->label_input(name: $name,place_holder: $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar label', data: $label);
+        }
+
+        $place_holder = trim($place_holder);
+        if($place_holder === ''){
+            return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder);
+        }
+        $html= (new html())->button_href(accion: $accion,etiqueta:  $etiqueta, registro_id: $registro_id,
+            seccion:  $seccion, style: $style);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar html', data: $html);
+        }
+
+        $div = (new html())->div_label(html: $html,label:  $label);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        }
+
+        return $div;
+
+    }
+
+    /**
      *
      * Genera el label de in input para ser mostrado en el front
      * @version 0.8.0

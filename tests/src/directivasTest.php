@@ -22,6 +22,32 @@ class directivasTest extends test {
     /**
      * @throws JsonException
      */
+    #[NoReturn] public function test_button_href(): void
+    {
+        errores::$error = false;
+        $html = new directivas();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $accion = 'd';
+        $etiqueta = 'f';
+        $name = 'a';
+        $place_holder = 'b';
+        $registro_id = '-1';
+        $seccion = 'c';
+        $style = 'e';
+
+
+        $resultado = $html->button_href($accion, $etiqueta, $name, $place_holder, $registro_id, $seccion, $style);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><a |role| href='index.php?seccion=c&accion=d&registro_id=-1&session_id=1' |class|>f</a></div>", $resultado);
+        errores::$error = false;
+    }
+
+    /**
+     * @throws JsonException
+     */
     #[NoReturn] public function test_label_input(): void
     {
         errores::$error = false;

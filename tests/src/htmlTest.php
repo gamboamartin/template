@@ -17,6 +17,25 @@ class htmlTest extends test {
 
     }
 
+    public function test_label(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$inicializacion = new liberator($inicializacion);
+
+        $id_css = 'a';
+        $place_holder = 'c';
+        $resultado = $html->label($id_css, $place_holder);
+
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("", $resultado);
+
+
+        errores::$error = false;
+    }
+
 
     public function test_valida_input(): void
     {

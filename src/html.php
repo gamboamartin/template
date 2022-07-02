@@ -9,6 +9,27 @@ class html{
     }
 
     /**
+     * Genera un label html
+     * @version 0.7.0
+     * @param string $id_css id de css
+     * @param string $place_holder Etiqueta a mostrar
+     * @return string|array string Salida html de label
+     */
+    public function label(string $id_css, string $place_holder): string|array
+    {
+        $id_css = trim($id_css);
+        if($id_css === ''){
+            return $this->error->error(mensaje: 'Error el $id_css esta vacio', data: $id_css);
+        }
+        $place_holder = trim($place_holder);
+        if($place_holder === ''){
+            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
+        }
+
+       return "";
+    }
+
+    /**
      * Valida los datos de un input sean correctos
      * @version 0.36.5
      * @param string $accion Accion a verificar

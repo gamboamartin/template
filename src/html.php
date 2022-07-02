@@ -41,6 +41,18 @@ class html{
     }
 
     /**
+     * Genera un contenedor con label
+     * @version 0.12.0
+     * @param string $html Contenido del div
+     * @param string $label Contenido de etiqueta
+     * @return string
+     */
+    public function div_label(string $html, string $label): string
+    {
+        return $label."<div |class|>$html</div>";
+    }
+
+    /**
      * Genera un label html
      * @version 0.7.0
      * @param string $id_css id de css

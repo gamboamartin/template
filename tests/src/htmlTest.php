@@ -5,7 +5,6 @@ use gamboamartin\errores\errores;
 use gamboamartin\template\html;
 use gamboamartin\test\test;
 use JetBrains\PhpStorm\NoReturn;
-use JsonException;
 use stdClass;
 
 
@@ -41,6 +40,26 @@ class htmlTest extends test {
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<a |role| href='index.php?seccion=a&accion=b&registro_id=-1&session_id=1' |class|>d</a>", $resultado);
         errores::$error = false;
+    }
+
+    /**
+     */
+    #[NoReturn] public function test_div_label(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $html_ = 'b';
+        $label = 'd';
+
+
+        $resultado = $html->div_label($html_, $label);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("d<div |class|>b</div>", $resultado);
+
     }
 
     public function test_label(): void

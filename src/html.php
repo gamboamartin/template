@@ -41,6 +41,22 @@ class html{
     }
 
     /**
+     * Integra un div group control-group col-sm-n_cols
+     * @param int $cols Numero de columnas css
+     * @param string $html Html a integrar en contendedor
+     * @return string|array
+     * @version 0.14.0
+     */
+    private function div_group(int $cols, string $html): string|array
+    {
+        $valida = (new directivas())->valida_cols(cols: $cols);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
+        }
+        return "<div |class|>$html</div>";
+    }
+
+    /**
      * Genera un contenedor con label
      * @version 0.12.0
      * @param string $html Contenido del div

@@ -3,6 +3,7 @@ namespace tests\src;
 
 use gamboamartin\errores\errores;
 use gamboamartin\template\html;
+use gamboamartin\test\liberator;
 use gamboamartin\test\test;
 use JetBrains\PhpStorm\NoReturn;
 use stdClass;
@@ -39,6 +40,27 @@ class htmlTest extends test {
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<a |role| href='index.php?seccion=a&accion=b&registro_id=-1&session_id=1' |class|>d</a>", $resultado);
+        errores::$error = false;
+    }
+
+    /**
+     * @throws JsonException
+     */
+    #[NoReturn] public function test_div_group(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+        $cols = 1;
+        $html_txt = '';
+
+
+        $resultado = $html->div_group($cols, $html_txt);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|></div>", $resultado);
+
         errores::$error = false;
     }
 

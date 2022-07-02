@@ -89,7 +89,7 @@ class directivas{
      * @version 0.4.0
      * @return bool|array
      */
-    private function valida_cols(int $cols): bool|array
+    public function valida_cols(int $cols): bool|array
     {
         if($cols<=0){
             return $this->error->error(mensaje: 'Error cols debe ser mayor a 0', data: $cols);

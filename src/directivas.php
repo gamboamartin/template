@@ -7,7 +7,7 @@ class directivas{
     private html $html;
     public function __construct(html $html){
         $this->error = new errores();
-        $this->html = new html();
+        $this->html = $html;
     }
 
     /**

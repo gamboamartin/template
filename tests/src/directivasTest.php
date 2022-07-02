@@ -43,6 +43,31 @@ class directivasTest extends test {
     /**
      * @throws JsonException
      */
+    #[NoReturn] public function test_text(): void
+    {
+        errores::$error = false;
+        $html = new directivas();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $id_css = 'c';
+        $name = 'a';
+        $place_holder = 'c';
+        $required = false;
+        $value = '';
+
+
+        $resultado = $html->text($disabled, $id_css, $name, $place_holder, $required, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<input type='text' name='a' value='' |class|   id='c' placeholder='c' />",$resultado);
+        errores::$error = false;
+    }
+
+    /**
+     * @throws JsonException
+     */
     #[NoReturn] public function test_valida_cols(): void
     {
         errores::$error = false;

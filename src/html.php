@@ -29,6 +29,8 @@ class html{
        return "";
     }
 
+
+
     /**
      * Valida los datos de un input sean correctos
      * @version 0.36.5

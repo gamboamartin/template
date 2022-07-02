@@ -9,11 +9,33 @@ class directivas{
     }
 
     /**
+     *
+     * Genera el label de in input para ser mostrado en el front
+     * @version
+     * @param string $name Nombre del input
+     * @param string $place_holder Etiqueta a mostrar
+     * @return array|string
+     */
+    protected function label_input(string $name, string $place_holder): array|string
+    {
+        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
+        }
+
+        $label = (new html())->label(id_css: $name, place_holder: $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar label', data: $label);
+        }
+        return $label;
+    }
+
+    /**
      * @param int $cols Numero de columnas css
      * @version 0.4.0
      * @return bool|array
      */
-    protected function valida_cols(int $cols): bool|array
+    private function valida_cols(int $cols): bool|array
     {
         if($cols<=0){
             return $this->error->error(mensaje: 'Error cols debe ser mayor a 0', data: $cols);
@@ -31,7 +53,7 @@ class directivas{
      * @param string $place_holder Dato a mostrar dentro del input de manera inicial
      * @return bool|array
      */
-    protected function valida_data_label(string $name, string $place_holder): bool|array
+    private function valida_data_label(string $name, string $place_holder): bool|array
     {
         $name = trim($name);
         if($name === ''){

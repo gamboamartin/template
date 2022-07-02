@@ -22,6 +22,27 @@ class directivasTest extends test {
     /**
      * @throws JsonException
      */
+    #[NoReturn] public function test_label_input(): void
+    {
+        errores::$error = false;
+        $html = new directivas();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $name = 'a';
+        $place_holder = 'c';
+
+
+        $resultado = $html->label_input($name, $place_holder);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals('', $resultado);
+        errores::$error = false;
+    }
+
+    /**
+     * @throws JsonException
+     */
     #[NoReturn] public function test_valida_cols(): void
     {
         errores::$error = false;

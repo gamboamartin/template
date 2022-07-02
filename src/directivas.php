@@ -22,7 +22,7 @@ class directivas{
      * @param string $style Estilo del boton info,danger,warning etc
      * @return array|string
      */
-    private function button_href(string $accion, string $etiqueta, string $name, string $place_holder, int $registro_id,
+    protected function button_href(string $accion, string $etiqueta, string $name, string $place_holder, int $registro_id,
                                  string $seccion, string $style): array|string
     {
 

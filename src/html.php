@@ -1,12 +1,43 @@
 <?php
 namespace gamboamartin\template;
 use base\frontend\params_inputs;
+use config\generales;
 use gamboamartin\errores\errores;
 
 class html{
     protected errores $error;
     public function __construct(){
         $this->error = new errores();
+    }
+
+    /**
+     *
+     * Funcion que genera un boton de tipo link con href
+     * @version 0.11.0
+     * @param string $accion Accion a ejecutar
+     * @param string $etiqueta Etiqueta de boton
+     * @param int $registro_id Registro a mandar transaccion
+     * @param string $seccion Seccion a ejecutar
+     * @param string $style Estilo del boton info,danger,warning etc
+     * @return string|array
+     */
+    public function button_href(string $accion, string $etiqueta, int $registro_id, string $seccion,
+                                string $style): string|array
+    {
+
+        $valida = $this->valida_input(accion: $accion,etiqueta:  $etiqueta, seccion: $seccion,style:  $style);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
+
+        $session_id = (new generales())->session_id;
+
+        if($session_id === ''){
+            return $this->error->error(mensaje: 'Error la $session_id esta vacia', data: $session_id);
+        }
+
+        $link = "index.php?seccion=$seccion&accion=$accion&registro_id=$registro_id&session_id=$session_id";
+        return "<a |role| href='$link' |class|>$etiqueta</a>";
     }
 
     /**

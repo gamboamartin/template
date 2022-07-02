@@ -4,6 +4,7 @@ namespace tests\src;
 use gamboamartin\errores\errores;
 use gamboamartin\template\html;
 use gamboamartin\test\test;
+use JetBrains\PhpStorm\NoReturn;
 use JsonException;
 use stdClass;
 
@@ -16,6 +17,30 @@ class htmlTest extends test {
         parent::__construct($name, $data, $dataName);
         $this->errores = new errores();
 
+    }
+
+    /**
+     */
+    #[NoReturn] public function test_button_href(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $accion = 'b';
+        $etiqueta = 'd';
+        $registro_id = '-1';
+        $seccion = 'a';
+        $style = 'c';
+
+
+
+        $resultado = $html->button_href($accion, $etiqueta, $registro_id, $seccion, $style);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<a |role| href='index.php?seccion=a&accion=b&registro_id=-1&session_id=1' |class|>d</a>", $resultado);
+        errores::$error = false;
     }
 
     public function test_label(): void
@@ -38,7 +63,6 @@ class htmlTest extends test {
     }
 
     /**
-     * @throws JsonException
      */
     #[NoReturn] public function test_text(): void
     {

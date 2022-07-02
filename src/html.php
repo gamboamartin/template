@@ -1,5 +1,6 @@
 <?php
 namespace gamboamartin\template;
+use base\frontend\params_inputs;
 use gamboamartin\errores\errores;
 
 class html{
@@ -27,6 +28,49 @@ class html{
         }
 
        return "";
+    }
+
+    /**
+     * Genera um input text basado en los parametros enviados
+     * @param bool $disabled Si disabled retorna text disabled
+     * @param string $id_css Identificador css
+     * @param string $name Name input html
+     * @param string $place_holder Muestra elemento en input
+     * @param bool $required indica si es requerido o no
+     * @param mixed $value Valor en caso de que exista
+     * @return string|array Html en forma de input text
+     * @version 0.9.0
+     */
+    public function text(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+                         mixed $value): string|array
+    {
+
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error name es necesario', data: $name);
+        }
+        $id_css = trim($id_css);
+        if($id_css === ''){
+            return $this->error->error(mensaje: 'Error $id_css es necesario', data: $id_css);
+        }
+        $place_holder = trim($place_holder);
+        if($place_holder === ''){
+            return $this->error->error(mensaje: 'Error $place_holder es necesario', data: $place_holder);
+        }
+
+        $disabled_html = (new params_inputs())->disabled_html(disabled:$disabled);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar $disabled_html', data: $disabled_html);
+        }
+
+        $required_html = (new params_inputs())->required_html(required: $required);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar $required_html', data: $required_html);
+        }
+
+        $html = "<input type='text' name='$name' value='$value' |class| $disabled_html $required_html ";
+        $html.= "id='$id_css' placeholder='$place_holder' />";
+        return $html;
     }
 
 

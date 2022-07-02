@@ -3,6 +3,7 @@ namespace tests\src;
 
 use gamboamartin\errores\errores;
 use gamboamartin\template\directivas;
+use gamboamartin\template\html;
 use gamboamartin\test\liberator;
 use gamboamartin\test\test;
 use JetBrains\PhpStorm\NoReturn;
@@ -25,7 +26,8 @@ class directivasTest extends test {
     #[NoReturn] public function test_button_href(): void
     {
         errores::$error = false;
-        $html = new directivas();
+        $html_ = new html();
+        $html = new directivas($html_);
         $html = new liberator($html);
         $_GET['session_id'] = 1;
 
@@ -51,7 +53,8 @@ class directivasTest extends test {
     #[NoReturn] public function test_button_href_status(): void
     {
         errores::$error = false;
-        $html = new directivas();
+        $html_ = new html();
+        $html = new directivas($html_);
         //$html = new liberator($html);
         $_GET['session_id'] = 1;
 
@@ -65,7 +68,7 @@ class directivasTest extends test {
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<div |class|><div |class|><a |role| href='index.php?seccion=a&accion=status&registro_id=-1&session_id=1' |class|>c</a></div></div>", $resultado);
-        print_r($resultado);exit;
+        errores::$error = false;
     }
 
     /**
@@ -74,7 +77,8 @@ class directivasTest extends test {
     #[NoReturn] public function test_label_input(): void
     {
         errores::$error = false;
-        $html = new directivas();
+        $html_ = new html();
+        $html = new directivas($html_);
         $html = new liberator($html);
         $_GET['session_id'] = 1;
 
@@ -97,7 +101,8 @@ class directivasTest extends test {
     #[NoReturn] public function test_valida_cols(): void
     {
         errores::$error = false;
-        $html = new directivas();
+        $html_ = new html();
+        $html = new directivas($html_);
         $html = new liberator($html);
         $_GET['session_id'] = 1;
 
@@ -137,7 +142,8 @@ class directivasTest extends test {
     #[NoReturn] public function test_valida_data_label(): void
     {
         errores::$error = false;
-        $html = new directivas();
+        $html_ = new html();
+        $html = new directivas($html_);
         $html = new liberator($html);
         $_GET['session_id'] = 1;
         $name = '';

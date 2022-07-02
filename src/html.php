@@ -51,7 +51,7 @@ class html{
      */
     public function div_group(int $cols, string $html): string|array
     {
-        $valida = (new directivas())->valida_cols(cols: $cols);
+        $valida = (new directivas(html: $this))->valida_cols(cols: $cols);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
         }

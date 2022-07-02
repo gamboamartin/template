@@ -4,8 +4,10 @@ use gamboamartin\errores\errores;
 
 class directivas{
     protected errores $error;
-    public function __construct(){
+    private html $html;
+    public function __construct(html $html){
         $this->error = new errores();
+        $this->html = new html();
     }
 
     /**
@@ -29,7 +31,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
-        $valida = (new html())->valida_input(accion: $accion,etiqueta:  $etiqueta, seccion: $seccion,style:  $style);
+        $valida = $this->html->valida_input(accion: $accion,etiqueta:  $etiqueta, seccion: $seccion,style:  $style);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
@@ -43,14 +45,14 @@ class directivas{
         if($place_holder === ''){
             return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder);
         }
-        $html= (new html())->button_href(accion: $accion,etiqueta:  $etiqueta, registro_id: $registro_id,
+        $html= $this->html->button_href(accion: $accion,etiqueta:  $etiqueta, registro_id: $registro_id,
             seccion:  $seccion, style: $style);
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar html', data: $html);
         }
 
-        $div = (new html())->div_label(html: $html,label:  $label);
+        $div = $this->html->div_label(html: $html,label:  $label);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar div', data: $div);
         }
@@ -95,7 +97,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al generar label', data: $html);
         }
 
-        $div = (new html())->div_group(cols: $cols,html:  $html);
+        $div = $this->html->div_group(cols: $cols,html:  $html);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar div', data: $div);
         }
@@ -118,7 +120,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
-        $label = (new html())->label(id_css: $name, place_holder: $place_holder);
+        $label = $this->html->label(id_css: $name, place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label', data: $label);
         }

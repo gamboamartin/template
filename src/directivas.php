@@ -4,7 +4,7 @@ use gamboamartin\errores\errores;
 
 class directivas{
     protected errores $error;
-    protected html $html;
+    public html $html;
     public function __construct(html $html){
         $this->error = new errores();
         $this->html = $html;

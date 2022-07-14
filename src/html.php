@@ -74,7 +74,7 @@ class html{
     /**
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css
-     * @param string $name
+     * @param string $name Nombre del input
      * @param string $place_holder
      * @param bool $required
      * @param mixed $value
@@ -120,7 +120,7 @@ class html{
      * Genera y valida los parametros de in input tipo text
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css
-     * @param string $name
+     * @param string $name Nombre del input
      * @param string $place_holder
      * @param bool $required
      * @return array|stdClass

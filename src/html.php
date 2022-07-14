@@ -71,6 +71,15 @@ class html{
         return $label."<div |class|>$html</div>";
     }
 
+    /**
+     * @param bool $disabled Si disabled retorna text disabled
+     * @param string $id_css
+     * @param string $name
+     * @param string $place_holder
+     * @param bool $required
+     * @param mixed $value
+     * @return array|string
+     */
     public function fecha(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value): array|string
     {
@@ -108,7 +117,8 @@ class html{
     }
 
     /**
-     * @param bool $disabled
+     * Genera y valida los parametros de in input tipo text
+     * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css
      * @param string $name
      * @param string $place_holder

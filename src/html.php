@@ -75,7 +75,7 @@ class html{
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css
      * @param string $name Nombre del input
-     * @param string $place_holder
+     * @param string $place_holder Contenido a mostrar previo a la captura del input
      * @param bool $required
      * @param mixed $value
      * @return array|string
@@ -121,11 +121,12 @@ class html{
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css
      * @param string $name Nombre del input
-     * @param string $place_holder
+     * @param string $place_holder Contenido a mostrar previo a la captura del input
      * @param bool $required
      * @return array|stdClass
      */
-    private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder, bool $required): array|stdClass
+    private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder,
+                                bool $required): array|stdClass
     {
         $name = trim($name);
         if($name === ''){

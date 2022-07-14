@@ -3,6 +3,7 @@ namespace gamboamartin\template;
 use base\frontend\params_inputs;
 use config\generales;
 use gamboamartin\errores\errores;
+use stdClass;
 
 class html{
     protected errores $error;
@@ -70,6 +71,21 @@ class html{
         return $label."<div |class|>$html</div>";
     }
 
+    public function fecha(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+                          mixed $value): array|string
+    {
+        $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
+            required:  $required);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $html = "<input type='date' name='$params->name' value='$value' |class| $params->disabled $params->required ";
+        $html.= "id='$params->id_css' placeholder='$params->place_holder' />";
+        return $html;
+    }
+
     /**
      * Genera un label html
      * @version 0.7.0
@@ -92,20 +108,15 @@ class html{
     }
 
     /**
-     * Genera um input text basado en los parametros enviados
-     * @param bool $disabled Si disabled retorna text disabled
-     * @param string $id_css Identificador css
-     * @param string $name Name input html
-     * @param string $place_holder Muestra elemento en input
-     * @param bool $required indica si es requerido o no
-     * @param mixed $value Valor en caso de que exista
-     * @return string|array Html en forma de input text
-     * @version 0.9.0
+     * @param bool $disabled
+     * @param string $id_css
+     * @param string $name
+     * @param string $place_holder
+     * @param bool $required
+     * @return array|stdClass
      */
-    public function text(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
-                         mixed $value): string|array
+    private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder, bool $required): array|stdClass
     {
-
         $name = trim($name);
         if($name === ''){
             return $this->error->error(mensaje: 'Error name es necesario', data: $name);
@@ -129,8 +140,40 @@ class html{
             return $this->error->error(mensaje: 'Error al generar $required_html', data: $required_html);
         }
 
-        $html = "<input type='text' name='$name' value='$value' |class| $disabled_html $required_html ";
-        $html.= "id='$id_css' placeholder='$place_holder' />";
+        $params = new stdClass();
+        $params->name = $name;
+        $params->id_css = $id_css;
+        $params->place_holder = $place_holder;
+        $params->disabled = $disabled_html;
+        $params->required = $required_html;
+
+        return $params;
+    }
+
+    /**
+     * Genera um input text basado en los parametros enviados
+     * @param bool $disabled Si disabled retorna text disabled
+     * @param string $id_css Identificador css
+     * @param string $name Name input html
+     * @param string $place_holder Muestra elemento en input
+     * @param bool $required indica si es requerido o no
+     * @param mixed $value Valor en caso de que exista
+     * @return string|array Html en forma de input text
+     * @version 0.9.0
+     */
+    public function text(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+                         mixed $value): string|array
+    {
+
+        $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
+            required:  $required);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $html = "<input type='text' name='$params->name' value='$value' |class| $params->disabled $params->required ";
+        $html.= "id='$id_css' placeholder='$params->place_holder' />";
         return $html;
     }
 

@@ -106,6 +106,14 @@ class directivas{
         return $div;
     }
 
+    /**
+     * Funcion de inicializacion de datos para inputs
+     * @param string $name Nombre del input
+     * @param string $place_holder Dato a mostrar previo a la captura
+     * @param stdClass $row_upd Registro
+     * @param bool $value_vacio Si vacio inicializa row name como vacio
+     * @return array|stdClass
+     */
     protected function init_text(string $name, string $place_holder, stdClass $row_upd, bool $value_vacio): array|stdClass
     {
         $label = $this->label_input(name: $name,place_holder: $place_holder);

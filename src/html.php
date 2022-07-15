@@ -71,6 +71,21 @@ class html{
         return $label."<div |class|>$html</div>";
     }
 
+    public function email(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+                          mixed $value): array|string
+    {
+        $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
+            required:  $required);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $html = "<input type='email' name='$params->name' value='$value' |class| $params->disabled $params->required ";
+        $html.= "id='$params->id_css' placeholder='$params->place_holder' />";
+        return $html;
+    }
+
     /**
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css

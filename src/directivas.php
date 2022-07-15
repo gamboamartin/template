@@ -1,6 +1,7 @@
 <?php
 namespace gamboamartin\template;
 use gamboamartin\errores\errores;
+use stdClass;
 
 class directivas{
     protected errores $error;
@@ -103,6 +104,24 @@ class directivas{
         }
 
         return $div;
+    }
+
+    protected function init_text(string $name, string $place_holder, stdClass $row_upd, bool $value_vacio): array|stdClass
+    {
+        $label = $this->label_input(name: $name,place_holder: $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar label', data: $label);
+        }
+
+        if($value_vacio || !(isset($row_upd->$name))){
+            $row_upd->$name = '';
+        }
+
+        $data = new stdClass();
+        $data->row_upd = $row_upd;
+        $data->label = $label;
+
+        return $data;
     }
 
     /**

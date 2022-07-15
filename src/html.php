@@ -72,12 +72,12 @@ class html{
     }
 
     /** Genera un input de tipo email
-     * @param bool $disabled
-     * @param string $id_css
-     * @param string $name
-     * @param string $place_holder
+     * @param bool $disabled Si disabled retorna text disabled
+     * @param string $id_css Identificador de tipo css
+     * @param string $name Nombre del input
+     * @param string $place_holder Contenido a mostrar previo a la captura del input
      * @param bool $required Si required aplica required en html
-     * @param mixed $value
+     * @param mixed $value Valor de input
      * @return array|string
      */
     public function email(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,

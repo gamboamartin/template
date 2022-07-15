@@ -6,6 +6,7 @@ use gamboamartin\template\html;
 use gamboamartin\test\liberator;
 use gamboamartin\test\test;
 use JetBrains\PhpStorm\NoReturn;
+use JsonException;
 use stdClass;
 
 
@@ -101,6 +102,28 @@ class htmlTest extends test {
 
 
         errores::$error = false;
+    }
+
+    /**
+     * @throws JsonException
+     */
+    #[NoReturn] public function test_params_txt(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+        $disabled = false;
+        $id_css = 'b';
+        $name = 'a';
+        $place_holder = 'c';
+        $required = false;
+
+
+        $resultado = $html->params_txt($disabled, $id_css, $name, $place_holder, $required);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+
     }
 
     /**

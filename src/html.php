@@ -133,6 +133,7 @@ class html{
 
     /**
      * Genera y valida los parametros de in input tipo text
+     * @version 0.28.0
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css
      * @param string $name Nombre del input

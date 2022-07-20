@@ -13,6 +13,21 @@ class html{
     }
 
     /**
+     * Genera un alert html boostrap con un mensaje incluido
+
+     * @param string $mensaje Mensaje a mostrar
+     * @return string|array Resultado en un html
+     */
+    public function alert_success(string $mensaje): string|array
+    {
+        $mensaje = trim($mensaje);
+        if($mensaje === ''){
+            return $this->error->error(mensaje: 'Error mensaje esta vacio', data: $mensaje);
+        }
+        return "<div class='alert alert-success' role='alert' ><strong>Muy bien!</strong> $mensaje.</div>";
+    }
+
+    /**
      *
      * Funcion que genera un boton de tipo link con href
      * @version 0.11.0

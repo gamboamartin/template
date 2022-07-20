@@ -166,6 +166,29 @@ class directivas{
 
     }
 
+    /**
+     * Genera un text de tipo descripcion
+     * @param stdClass $row_upd Objeto con datos del row
+     * @param bool $value_vacio si value vacia no integra valor en el input
+     * @return array|string
+     */
+    public function input_descripcion(stdClass $row_upd, bool $value_vacio): array|string
+    {
+        $html =$this->input_text_required(disable: false,name: 'descripcion', place_holder: 'Descripcion',
+            row_upd: $row_upd, value_vacio: $value_vacio);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar input', data: $html);
+        }
+
+        $div = $this->html->div_group(cols: 12,html:  $html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        }
+
+        return $div;
+
+    }
+
 
     /**
      * Funcion de inicializacion de datos para inputs

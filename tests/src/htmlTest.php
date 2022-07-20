@@ -146,6 +146,27 @@ class htmlTest extends test {
 
     }
 
+    #[NoReturn] public function test_fecha(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $id_css = 'a';
+        $name = 'a';
+        $place_holder = 'a';
+        $required = false;
+        $value = '';
+
+        $resultado = $html->fecha($disabled, $id_css, $name, $place_holder, $required, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<input type='date' name='a' value='' |class|   id='a' placeholder='a' />",$resultado);
+
+        errores::$error = false;
+    }
+
     /**
      */
     #[NoReturn] public function test_text(): void

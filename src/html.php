@@ -73,6 +73,7 @@ class html{
     }
 
     /** Genera un input de tipo email
+     * @version 0.31.1
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css
      * @param string $name Nombre del input
@@ -102,6 +103,8 @@ class html{
     }
 
     /**
+     * Obtiene el html de una fecha
+     * @version 0.31.1
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css
      * @param string $name Nombre del input
@@ -113,6 +116,10 @@ class html{
     public function fecha(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value): array|string
     {
+        $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
         $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
             required:  $required);
 
@@ -159,18 +166,12 @@ class html{
     private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder,
                                 bool $required): array|stdClass
     {
-        $name = trim($name);
-        if($name === ''){
-            return $this->error->error(mensaje: 'Error name es necesario', data: $name);
+
+        $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
-        $id_css = trim($id_css);
-        if($id_css === ''){
-            return $this->error->error(mensaje: 'Error $id_css es necesario', data: $id_css);
-        }
-        $place_holder = trim($place_holder);
-        if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error $place_holder es necesario', data: $place_holder);
-        }
+
 
         $disabled_html = (new params_inputs())->disabled_html(disabled:$disabled);
         if(errores::$error){
@@ -249,5 +250,23 @@ class html{
             return $this->error->error(mensaje: 'Error la $etiqueta esta vacia', data: $etiqueta);
         }
         return true;
+    }
+
+    private function valida_params_txt(string $id_css, string $name, string $place_holder): bool|array
+    {
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error name es necesario', data: $name);
+        }
+        $id_css = trim($id_css);
+        if($id_css === ''){
+            return $this->error->error(mensaje: 'Error $id_css es necesario', data: $id_css);
+        }
+        $place_holder = trim($place_holder);
+        if($place_holder === ''){
+            return $this->error->error(mensaje: 'Error $place_holder es necesario', data: $place_holder);
+        }
+        return true;
+
     }
 }

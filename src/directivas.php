@@ -107,6 +107,28 @@ class directivas{
     }
 
     /**
+     * Genera un input de tipo alias
+     * @param stdClass $row_upd Registro obtenido para actualizar
+     * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
+     * @return array|string
+     */
+    public function input_alias(stdClass $row_upd, bool $value_vacio): array|string
+    {
+        $html =$this->input_text_required(disable: false,name: 'alias',
+            place_holder: 'Alias', row_upd: $row_upd, value_vacio: $value_vacio);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar input', data: $html);
+        }
+
+        $div = $this->html->div_group(cols: 6,html:  $html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        }
+
+        return $div;
+    }
+
+    /**
      * Genera un input de tipo codigo
      * @version 0.35.1
      * @param int $cols Numero de columnas boostrap

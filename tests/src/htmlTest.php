@@ -126,6 +126,26 @@ class htmlTest extends test {
 
     }
 
+    #[NoReturn] public function test_email(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $id_css = 'c';
+        $name = 'a';
+        $place_holder = 'c';
+        $required = false;
+        $value = '';
+
+        $resultado = $html->email($disabled, $id_css, $name, $place_holder, $required, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals('<input type="email" name="a" value="" |class|   id="c" placeholder="c" pattern="[a-z0-9!#$%&\'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$" />',$resultado);
+
+    }
+
     /**
      */
     #[NoReturn] public function test_text(): void

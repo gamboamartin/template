@@ -3,6 +3,7 @@ namespace gamboamartin\template;
 use base\frontend\params_inputs;
 use config\generales;
 use gamboamartin\errores\errores;
+use gamboamartin\validacion\validacion;
 use stdClass;
 
 class html{
@@ -83,15 +84,20 @@ class html{
     public function email(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value): array|string
     {
+        $val = new validacion();
+
         $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
             required:  $required);
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
         }
+        if (!isset($val->patterns['correo_html5'])) {
+            return $this->error->error(mensaje: 'No existe el regex para email', data: $params);
+        }
 
-        $html = "<input type='email' name='$params->name' value='$value' |class| $params->disabled $params->required ";
-        $html.= "id='$params->id_css' placeholder='$params->place_holder' />";
+        $html = "<input type=\"email\" name=\"$params->name\" value=\"$value\" |class| $params->disabled $params->required ";
+        $html.= "id=\"$params->id_css\" placeholder=\"$params->place_holder\" pattern=\"{$val->patterns['correo_html5']}\" />";
         return $html;
     }
 

@@ -57,6 +57,50 @@ class html{
         return "<a |role| href='$link' |class|>$etiqueta</a>";
     }
 
+    /**
+     * Genera un div con un label dentro del div
+     * @param int $cols Numero de columnas css
+     * @param string $contenido Contenido a integrar dentro del div
+     * @return string
+     */
+    private function div_control_group_cols(int $cols, string $contenido): string
+    {
+        $div_contenedor_ini = "<div class='control-group col-sm-$cols'>";
+        $div_contenedor_fin = "</div>";
+
+        return $div_contenedor_ini.$contenido.$div_contenedor_fin;
+    }
+
+    /**
+     * @param int $cols Numero de columnas css
+     * @param string $contenido
+     * @param string $label
+     * @param string $name
+     * @return string
+     */
+    private function div_control_group_cols_label(int $cols, string $contenido, string $label, string $name): string
+    {
+        $label_html = $this->label(id_css:$name,place_holder: $label);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar label', data: $label_html);
+        }
+
+        $html = $this->div_control_group_cols(cols: $cols,contenido: $label_html.$contenido);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar contenedor', data: $html);
+        }
+
+        return $html;
+    }
+
+    private function div_controls(string $contenido): string
+    {
+        $div_controls_ini = "<div class='controls'>";
+        $div_controls_fin = "</div>";
+
+        return $div_controls_ini.$contenido.$div_controls_fin;
+    }
+
 
 
     /**
@@ -85,6 +129,13 @@ class html{
     public function div_label(string $html, string $label): string
     {
         return $label."<div |class|>$html</div>";
+    }
+
+    private function div_select(string $name, string $options_html): string
+    {
+        $select_in = "<select class='form-control selectpicker color-secondary $name' id='$name' name='$name' >";
+        $select_fin = '</select>';
+        return $select_in.$options_html.$select_fin;
     }
 
     /** Genera un input de tipo email
@@ -117,6 +168,8 @@ class html{
         return $html;
     }
 
+
+
     /**
      * Obtiene el html de una fecha
      * @version 0.31.1
@@ -148,6 +201,27 @@ class html{
     }
 
     /**
+     * @param string $descripcion_select
+     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * @param string $options_html
+     * @param mixed $value
+     * @return array|string
+     */
+    private function integra_options_html(string $descripcion_select, mixed $id_selected, string $options_html,
+                                          mixed $value): array|string
+    {
+        $option_html = $this->option_html(descripcion_select: $descripcion_select,id_selected: $id_selected,
+            value: $value);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar option', data: $option_html);
+        }
+
+        $options_html.=$option_html;
+
+        return $options_html;
+    }
+
+    /**
      * Genera un label html
      * @version 0.7.0
      * @param string $id_css id de css
@@ -167,6 +241,89 @@ class html{
 
        return "";
     }
+
+    /**
+     * Genera un option para un select
+     * @param string $descripcion descripcion del option
+     * @param bool $selected Si selected se anexa selected a option
+     * @param mixed $value Value del option
+     * @return string|array
+     */
+    PUBLIC function option(string $descripcion, bool $selected, int|string $value): string|array
+    {
+        $value = trim($value);
+        if($value === ''){
+            return $this->error->error(mensaje: 'Error value no puede venir vacio', data: $value);
+        }
+        $descripcion = trim($descripcion);
+        if($descripcion === ''){
+            return $this->error->error(mensaje: 'Error $descripcion no puede venir vacio', data: $descripcion);
+        }
+        $selected_html = '';
+        if($selected){
+            $selected_html = 'selected';
+        }
+        return "<option value='$value' $selected_html>$descripcion</option>";
+    }
+
+    /**
+     * @param string $descripcion_select
+     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * @param mixed $value
+     * @return array|string
+     */
+    private function option_html(string $descripcion_select, mixed $id_selected, mixed $value): array|string
+    {
+        $value = (int)$value;
+        $selected = $this->selected(value: $value,id_selected: $id_selected);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al verificar selected', data: $selected);
+        }
+
+        $option_html = $this->option(descripcion: $descripcion_select,selected:  $selected, value: $value);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar option', data: $option_html);
+        }
+        return $option_html;
+    }
+
+    /**
+     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * @param array $values
+     * @return array|string
+     */
+    private function options(mixed $id_selected, array $values): array|string
+    {
+        $options_html = $this->option(descripcion: 'Selecciona una opcion',selected:  false, value: -1);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar option', data: $options_html);
+        }
+        $options_html = $this->options_html_data(id_selected: $id_selected,options_html: $options_html,values: $values);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
+        }
+        return $options_html;
+    }
+    /**
+     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * @param string $options_html
+     * @param array $values
+     * @return array|string
+     */
+    private function options_html_data(mixed $id_selected, string $options_html, array $values): array|string
+    {
+        $options_html_ = $options_html;
+        foreach ($values as $value=>$descripcion_select){
+
+            $options_html_ = $this->integra_options_html(descripcion_select: $descripcion_select,
+                id_selected: $id_selected,options_html: $options_html_,value: $value);
+            if(errores::$error){
+                return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
+            }
+        }
+        return $options_html_;
+    }
+
 
     /**
      * Genera y valida los parametros de in input tipo text
@@ -207,6 +364,72 @@ class html{
 
         return $params;
     }
+
+    /**
+     * @param int $cols Numero de columnas css
+     ** @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * @param string $label
+     * @param string $name
+     * @param array $values
+     * @return array|string
+     */
+    public function select(int $cols, int $id_selected, string $label,string $name, array $values): array|string
+    {
+
+        $options_html = $this->options(id_selected: $id_selected,values: $values);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
+        }
+
+        $select = $this->select_html(cols: $cols, label: $label,name: $name,options_html: $options_html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
+        }
+
+        return $select;
+
+    }
+
+    /**
+     * @param int $cols Numero de columnas css
+     * @param string $label
+     * @param string $name
+     * @param string $options_html
+     * @return array|string
+     */
+    private function select_html(int $cols, string $label, string $name, string $options_html): array|string
+    {
+        $select = $this->div_select(name: $name,options_html: $options_html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
+        }
+
+        $select = $this->div_controls(contenido: $select);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
+        }
+
+        $select = $this->div_control_group_cols_label(cols: $cols,contenido: $select,label: $label,name: $name);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
+        }
+        return $select;
+    }
+    /**
+     * Verifica si el elemento debe ser selected o no
+     * @param mixed $value valor del item del select
+     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * @return bool
+     */
+    private function selected(mixed $value, mixed $id_selected): bool
+    {
+        $selected = false;
+        if((string)$value === (string)$id_selected){
+            $selected = true;
+        }
+        return $selected;
+    }
+
 
     /**
      * Genera um input text basado en los parametros enviados

@@ -8,6 +8,7 @@ use gamboamartin\test\liberator;
 use gamboamartin\test\test;
 use JetBrains\PhpStorm\NoReturn;
 use JsonException;
+use stdClass;
 
 
 class directivasTest extends test {
@@ -68,6 +69,28 @@ class directivasTest extends test {
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<div |class|><div |class|><a |role| href='index.php?seccion=a&accion=status&registro_id=-1&session_id=1' |class|>c</a></div></div>", $resultado);
+        errores::$error = false;
+    }
+
+    /**
+     */
+    #[NoReturn] public function test_input_codigo(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $row_upd = new stdClass();
+        $cols = '1';
+        $value_vacio = true;
+
+        $resultado = $html->input_codigo($cols, $row_upd, $value_vacio);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><div |class|><input type='text' name='codigo' value='' |class|  required id='codigo' placeholder='Codigo' /></div></div>", $resultado);
         errores::$error = false;
     }
 

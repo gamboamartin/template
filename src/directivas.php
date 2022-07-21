@@ -182,6 +182,7 @@ class directivas{
 
     /**
      * Genera un input de tipo alias
+     * @version 0.49.1
      * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
@@ -400,6 +401,7 @@ class directivas{
 
     /**
      * Genera un input tipo required
+     * @version 0.48.1
      * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $disable si disabled retorna el input como disabled
      * @param string $name Usado para identificador css name input y place holder

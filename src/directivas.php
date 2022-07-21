@@ -12,6 +12,24 @@ class directivas{
     }
 
     /**
+     * Genera un mensaje de tipo warning
+     * @param string $mensaje_warning
+     * @return array|string
+
+     */
+    public function mensaje_warning( string $mensaje_warning): array|string
+    {
+        $alert_warning = '';
+        if($mensaje_warning!==''){
+            $alert_warning = $this->html->alert_warning(mensaje: $mensaje_warning);
+            if(errores::$error){
+                return $this->error->error(mensaje: 'Error al generar alerta', data: $alert_warning);
+            }
+        }
+        return $alert_warning;
+    }
+
+    /**
      * Genera un boton tipo link
      * @version 0.13.0
      * @param string $accion Accion a ejecutar

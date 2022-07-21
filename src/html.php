@@ -28,6 +28,22 @@ class html{
     }
 
     /**
+     * Genera un alert de tipo warning
+     * @param string $mensaje Mensaje a mostrar en el warning
+     * @return string|array
+     */
+    public function alert_warning(string $mensaje): string|array
+    {
+        $mensaje = trim($mensaje);
+        if($mensaje === ''){
+            return $this->error->error(mensaje: 'Error mensaje esta vacio', data: $mensaje);
+        }
+        return "<div class='alert alert-warning' role='alert' ><strong>Advertencia!</strong> $mensaje.</div>";
+    }
+
+
+
+    /**
      *
      * Funcion que genera un boton de tipo link con href
      * @version 0.11.0

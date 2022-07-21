@@ -162,24 +162,14 @@ class directivas{
                                    bool $value_vacio ): array|string
     {
 
-        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
-        }
 
-        $label = $this->label_input(name: $name,place_holder: $place_holder);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al generar label', data: $label);
-        }
-
-        if($value_vacio || !(isset($row_upd->$name))){
-            $row_upd->$name = '';
-        }
+        $data_init = $this->init_text(name: $name, place_holder: $place_holder,row_upd:  $row_upd,
+            value_vacio: $value_vacio);
 
         $html= $this->html->fecha(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
-            required: true, value: $row_upd->$name);
+            required: true, value: $data_init->row_upd->$name);
 
-        $div = $this->html->div_label(html:  $html,label:$label);
+        $div = $this->html->div_label(html:  $html,label:$data_init->label);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar div', data: $div);
         }
@@ -187,6 +177,8 @@ class directivas{
         return $div;
 
     }
+
+
 
     /**
      * Genera un input de tipo alias
@@ -341,6 +333,7 @@ class directivas{
 
     /**
      * Funcion de inicializacion de datos para inputs
+     * @version 0.48.1
      * @param string $name Nombre del input
      * @param string $place_holder Dato a mostrar previo a la captura
      * @param stdClass $row_upd Registro
@@ -349,6 +342,11 @@ class directivas{
      */
     protected function init_text(string $name, string $place_holder, stdClass $row_upd, bool $value_vacio): array|stdClass
     {
+        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
+        }
+
         $label = $this->label_input(name: $name,place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label', data: $label);
@@ -502,6 +500,7 @@ class directivas{
      */
     protected function valida_data_label(string $name, string $place_holder): bool|array
     {
+
         $name = trim($name);
         if($name === ''){
             return $this->error->error(mensaje: 'Error $name debe tener info', data: $name);

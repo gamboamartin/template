@@ -80,7 +80,7 @@ class html{
      * @return string|array
      * @version 0.50.1
      */
-    private function div_control_group_cols(int $cols, string $contenido): string|array
+    protected function div_control_group_cols(int $cols, string $contenido): string|array
     {
         $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
         if(errores::$error){
@@ -97,7 +97,7 @@ class html{
     /**
      * @param int $cols Numero de columnas css
      * @param string $contenido Contenido a integrar dentro del div
-     * @param string $label
+     * @param string $label Etiqueta a mostrar
      * @param string $name
      * @return string
      */
@@ -391,7 +391,7 @@ class html{
     /**
      * @param int $cols Numero de columnas css
      ** @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @param string $label
+     * @param string $label Etiqueta a mostrar
      * @param string $name
      * @param array $values
      * @return array|string
@@ -415,7 +415,7 @@ class html{
 
     /**
      * @param int $cols Numero de columnas css
-     * @param string $label
+     * @param string $label Etiqueta a mostrar
      * @param string $name
      * @param string $options_html
      * @return array|string

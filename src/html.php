@@ -80,7 +80,7 @@ class html{
      * @return string|array
      * @version 0.50.1
      */
-    PUBLIC function div_control_group_cols(int $cols, string $contenido): string|array
+    private function div_control_group_cols(int $cols, string $contenido): string|array
     {
         $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
         if(errores::$error){
@@ -96,7 +96,7 @@ class html{
 
     /**
      * @param int $cols Numero de columnas css
-     * @param string $contenido
+     * @param string $contenido Contenido a integrar dentro del div
      * @param string $label
      * @param string $name
      * @return string

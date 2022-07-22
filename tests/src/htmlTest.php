@@ -51,7 +51,7 @@ class htmlTest extends test {
     {
         errores::$error = false;
         $html = new html();
-        //$html = new liberator($html);
+        $html = new liberator($html);
         $_GET['session_id'] = 1;
 
         $contenido = 'x';

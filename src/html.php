@@ -77,10 +77,17 @@ class html{
      * Genera un div con un label dentro del div
      * @param int $cols Numero de columnas css
      * @param string $contenido Contenido a integrar dentro del div
-     * @return string
+     * @return string|array
+     * @version 0.50.1
      */
-    private function div_control_group_cols(int $cols, string $contenido): string
+    PUBLIC function div_control_group_cols(int $cols, string $contenido): string|array
     {
+        $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
+        }
+        $contenido = trim($contenido);
+
         $div_contenedor_ini = "<div class='control-group col-sm-$cols'>";
         $div_contenedor_fin = "</div>";
 

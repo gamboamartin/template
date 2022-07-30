@@ -154,14 +154,14 @@ class html{
         return $label."<div |class|>$html</div>";
     }
 
-    PUBLIC function div_select(string $name, string $options_html, string $required = ""): array|string
+    private function div_select(string $name, string $options_html, bool $required = false): array|string
     {
-        $required = trim($required);
-        if(!empty($required) && strcmp($required, "required") !== 0){
-            return $this->error->error(mensaje: 'La asignacion de required es incorrecta', data: $required);
+        $required_html = (new params_inputs())->required_html(required: $required);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'La asignacion de required es incorrecta', data: $required_html);
         }
 
-        $select_in = "<select class='form-control selectpicker color-secondary $name' id='$name' name='$name' $required>";
+        $select_in = "<select class='form-control selectpicker color-secondary $name' id='$name' name='$name' $required_html>";
         $select_fin = '</select>';
         return $select_in.$options_html.$select_fin;
     }
@@ -395,13 +395,14 @@ class html{
 
     /**
      * @param int $cols Numero de columnas css
-     ** @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param string $label Etiqueta a mostrar
      * @param string $name
      * @param array $values
+     * @param bool $required
      * @return array|string
      */
-    public function select(int $cols, int $id_selected, string $label,string $name, array $values, string $required = ""): array|string
+    public function select(int $cols, int $id_selected, string $label,string $name, array $values, bool $required = false): array|string
     {
 
         $options_html = $this->options(id_selected: $id_selected,values: $values);
@@ -423,9 +424,10 @@ class html{
      * @param string $label Etiqueta a mostrar
      * @param string $name
      * @param string $options_html
+     * @param bool $required
      * @return array|string
      */
-    private function select_html(int $cols, string $label, string $name, string $options_html, string $required = ""): array|string
+    private function select_html(int $cols, string $label, string $name, string $options_html, bool $required = false): array|string
     {
         $select = $this->div_select(name: $name,options_html: $options_html, required:  $required);
         if(errores::$error){

@@ -138,12 +138,12 @@ class htmlTest extends test {
 
         $name = 'b';
         $options_html = 'd';
-        $required = "requireds";
+        $required = true;
 
         $resultado = $html->div_select($name, $options_html, $required);
-        $this->assertIsArray($resultado);
-        $this->assertTrue(errores::$error);
-        $this->assertStringContainsStringIgnoringCase('La asignacion de required es incorrecta', $resultado['mensaje']);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+
 
         errores::$error = false;
     }

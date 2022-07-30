@@ -106,6 +106,48 @@ class htmlTest extends test {
 
     }
 
+    /**
+     */
+    #[NoReturn] public function test_div_select(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $name = 'b';
+        $options_html = 'd';
+
+        $resultado = $html->div_select($name, $options_html);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<select class='form-control selectpicker color-secondary b' id='b' name='b' >d</select>",$resultado);
+
+        errores::$error = false;
+
+        $name = 'b';
+        $options_html = 'd';
+        $required = "required";
+
+        $resultado = $html->div_select($name, $options_html, $required);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<select class='form-control selectpicker color-secondary b' id='b' name='b' required>d</select>",$resultado);
+
+        errores::$error = false;
+
+        $name = 'b';
+        $options_html = 'd';
+        $required = "requireds";
+
+        $resultado = $html->div_select($name, $options_html, $required);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('La asignacion de required es incorrecta', $resultado['mensaje']);
+
+        errores::$error = false;
+    }
+
     public function test_label(): void
     {
         errores::$error = false;

@@ -154,9 +154,14 @@ class html{
         return $label."<div |class|>$html</div>";
     }
 
-    private function div_select(string $name, string $options_html): string
+    PUBLIC function div_select(string $name, string $options_html, string $required = ""): array|string
     {
-        $select_in = "<select class='form-control selectpicker color-secondary $name' id='$name' name='$name' >";
+        $required = trim($required);
+        if(!empty($required) && strcmp($required, "required") !== 0){
+            return $this->error->error(mensaje: 'La asignacion de required es incorrecta', data: $required);
+        }
+
+        $select_in = "<select class='form-control selectpicker color-secondary $name' id='$name' name='$name' $required>";
         $select_fin = '</select>';
         return $select_in.$options_html.$select_fin;
     }
@@ -272,7 +277,7 @@ class html{
      * @param mixed $value Value del option
      * @return string|array
      */
-    PUBLIC function option(string $descripcion, bool $selected, int|string $value): string|array
+    private function option(string $descripcion, bool $selected, int|string $value): string|array
     {
         $value = trim($value);
         if($value === ''){
@@ -396,7 +401,7 @@ class html{
      * @param array $values
      * @return array|string
      */
-    public function select(int $cols, int $id_selected, string $label,string $name, array $values): array|string
+    public function select(int $cols, int $id_selected, string $label,string $name, array $values, string $required = ""): array|string
     {
 
         $options_html = $this->options(id_selected: $id_selected,values: $values);
@@ -404,7 +409,7 @@ class html{
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }
 
-        $select = $this->select_html(cols: $cols, label: $label,name: $name,options_html: $options_html);
+        $select = $this->select_html(cols: $cols, label: $label,name: $name,options_html: $options_html, required: $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
         }
@@ -420,9 +425,9 @@ class html{
      * @param string $options_html
      * @return array|string
      */
-    private function select_html(int $cols, string $label, string $name, string $options_html): array|string
+    private function select_html(int $cols, string $label, string $name, string $options_html, string $required = ""): array|string
     {
-        $select = $this->div_select(name: $name,options_html: $options_html);
+        $select = $this->div_select(name: $name,options_html: $options_html, required:  $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
         }

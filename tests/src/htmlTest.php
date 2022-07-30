@@ -231,6 +231,38 @@ class htmlTest extends test {
     }
 
     /**
+     * @throws JsonException
+     */
+    #[NoReturn] public function test_selected(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $value = '5';
+        $id_selected = 5;
+
+
+        $resultado = $html->selected($value, $id_selected);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertTrue($resultado);
+
+        errores::$error = false;
+
+        $value = '6';
+        $id_selected = 5;
+
+
+        $resultado = $html->selected($value, $id_selected);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertNotTrue($resultado);
+        errores::$error = false;
+    }
+
+    /**
      */
     #[NoReturn] public function test_text(): void
     {

@@ -444,7 +444,7 @@ class html{
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @return bool
      */
-    private function selected(mixed $value, mixed $id_selected): bool
+    protected function selected(mixed $value, mixed $id_selected): bool
     {
         $selected = false;
         if((string)$value === (string)$id_selected){

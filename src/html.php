@@ -154,7 +154,13 @@ class html{
         return $label."<div |class|>$html</div>";
     }
 
-    private function div_select(string $name, string $options_html, bool $required = false): array|string
+    /**
+     * @param string $name Name input
+     * @param string $options_html Options en html
+     * @param bool $required si required integra requiren en select
+     * @return array|string
+     */
+    protected function div_select(string $name, string $options_html, bool $required = false): array|string
     {
         $required_html = (new params_inputs())->required_html(required: $required);
         if(errores::$error){
@@ -397,7 +403,7 @@ class html{
      * @param int $cols Numero de columnas css
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param string $label Etiqueta a mostrar
-     * @param string $name
+     * @param string $name Name input
      * @param array $values
      * @param bool $required
      * @return array|string
@@ -422,7 +428,7 @@ class html{
     /**
      * @param int $cols Numero de columnas css
      * @param string $label Etiqueta a mostrar
-     * @param string $name
+     * @param string $name Name input
      * @param string $options_html
      * @param bool $required
      * @return array|string

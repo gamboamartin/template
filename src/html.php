@@ -297,6 +297,9 @@ class html{
         if($selected){
             $selected_html = 'selected';
         }
+        if($value == -1){
+            $value = '';
+        }
         return "<option value='$value' $selected_html>$descripcion</option>";
     }
 

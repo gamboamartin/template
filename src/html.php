@@ -374,17 +374,16 @@ class html{
      * @param array $values
      * @param array $extra_params_key Conjunto de keys para asignar el valor e integrar un extra param basado en el
      * valor puesto
-     * @param stdClass $row
      * @return array|string
      */
     private function options_html_data(mixed $id_selected, string $options_html, array $values,
-                                       array $extra_params_key = array(), stdClass $row = new stdClass()): array|string
+                                       array $extra_params_key = array()): array|string
     {
         $options_html_ = $options_html;
         foreach ($values as $value=>$descripcion_select){
             $extra_params = array();
             foreach ($extra_params_key as $key_extra_param){
-                $extra_params[$key_extra_param] = $row->$key_extra_param;
+                $extra_params[$key_extra_param] = $value['row']->$key_extra_param;
             }
 
             $options_html_ = $this->integra_options_html(descripcion_select: $descripcion_select,

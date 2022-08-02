@@ -281,9 +281,10 @@ class html{
      * @param string $descripcion descripcion del option
      * @param bool $selected Si selected se anexa selected a option
      * @param mixed $value Value del option
+     * @param array $extra_params Arreglo con datos para integrar un extra param
      * @return string|array
      */
-    private function option(string $descripcion, bool $selected, int|string $value): string|array
+    private function option(string $descripcion, bool $selected, int|string $value, array $extra_params = array()): string|array
     {
         $value = trim($value);
         if($value === ''){
@@ -297,7 +298,14 @@ class html{
         if($selected){
             $selected_html = 'selected';
         }
-        return "<option value='$value' $selected_html>$descripcion</option>";
+
+        $extra_params_html = '';
+
+        foreach ($extra_params as $data=>$val){
+            $extra_params_html.= "data-$data = '$val'";
+        }
+
+        return "<option value='$value' $selected_html $extra_params_html>$descripcion</option>";
     }
 
     /**

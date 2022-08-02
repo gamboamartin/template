@@ -41,8 +41,6 @@ class html{
         return "<div class='alert alert-warning' role='alert' ><strong>Advertencia!</strong> $mensaje.</div>";
     }
 
-
-
     /**
      *
      * Funcion que genera un boton de tipo link con href
@@ -202,6 +200,19 @@ class html{
         return $html;
     }
 
+    private function extra_params(array $extra_params): array|string
+    {
+        $extra_params_html = '';
+        foreach ($extra_params as $data=>$val){
+            if(is_numeric($data)){
+                return $this->error->error(mensaje: 'Error $data bede ser un texto valido', data: $extra_params);
+            }
+
+            $extra_params_html.= "data-$data = '$val'";
+        }
+        return $extra_params_html;
+    }
+
 
 
     /**
@@ -299,12 +310,14 @@ class html{
             $selected_html = 'selected';
         }
 
-        $extra_params_html = '';
-
-        foreach ($extra_params as $data=>$val){
-            $extra_params_html.= "data-$data = '$val'";
+        $extra_params_html = $this->extra_params(extra_params: $extra_params);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar extra params', data: $extra_params_html);
         }
 
+        if((int)$value === -1){
+            $value = '';
+        }
         return "<option value='$value' $selected_html $extra_params_html>$descripcion</option>";
     }
 

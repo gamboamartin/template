@@ -498,6 +498,10 @@ class html{
      * @param mixed $value valor del item del select
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @return bool
+     * @version 0.59.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-02 14:17
+     * @author mgamboa
      */
     protected function selected(mixed $value, mixed $id_selected): bool
     {

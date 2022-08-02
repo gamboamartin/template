@@ -383,14 +383,14 @@ class html{
                                        array $extra_params_key = array()): array|string
     {
         $options_html_ = $options_html;
-        foreach ($values as $value=>$descripcion_select){
+        foreach ($values as $row_id=>$row){
             $extra_params = array();
             foreach ($extra_params_key as $key_extra_param){
-                $extra_params[$key_extra_param] = $value['row']->$key_extra_param;
+                $extra_params[$key_extra_param] = $row[$key_extra_param];
             }
 
-            $options_html_ = $this->integra_options_html(descripcion_select: $descripcion_select,
-                id_selected: $id_selected,options_html: $options_html_,value: $value, extra_params: $extra_params);
+            $options_html_ = $this->integra_options_html(descripcion_select: $row['descripcion_select'],
+                id_selected: $id_selected,options_html: $options_html_,value: $row_id, extra_params: $extra_params);
             if(errores::$error){
                 return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
             }

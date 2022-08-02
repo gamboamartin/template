@@ -200,6 +200,11 @@ class html{
         return $html;
     }
 
+    /**
+     * Genera extra params para integrar con html
+     * @param array $extra_params Conjunto de extra params key = data value = valor
+     * @return array|string
+     */
     private function extra_params(array $extra_params): array|string
     {
         $extra_params_html = '';

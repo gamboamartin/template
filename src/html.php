@@ -350,18 +350,16 @@ class html{
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param array $values
      * @param array $extra_params_key
-     * @param stdClass $row
      * @return array|string
      */
-    private function options(mixed $id_selected, array $values, array $extra_params_key = array(),
-                             stdClass $row = new stdClass()): array|string
+    private function options(mixed $id_selected, array $values, array $extra_params_key = array()): array|string
     {
         $options_html = $this->option(descripcion: 'Selecciona una opcion',selected:  false, value: -1);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar option', data: $options_html);
         }
         $options_html = $this->options_html_data(id_selected: $id_selected,options_html: $options_html,values: $values,
-            extra_params_key: $extra_params_key, row: $row);
+            extra_params_key: $extra_params_key);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }
@@ -444,16 +442,13 @@ class html{
      * @param array $values
      * @param array $extra_params_key
      * @param bool $required
-     * @param stdClass $row
      * @return array|string
      */
     public function select(int $cols, int $id_selected, string $label,string $name, array $values,
-                           array $extra_params_key = array(), bool $required = false,
-                           stdClass $row = new stdClass()): array|string
+                           array $extra_params_key = array(), bool $required = false): array|string
     {
 
-        $options_html = $this->options(id_selected: $id_selected,values: $values, extra_params_key: $extra_params_key,
-            row: $row);
+        $options_html = $this->options(id_selected: $id_selected,values: $values, extra_params_key: $extra_params_key);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }

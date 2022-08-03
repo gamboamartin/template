@@ -93,14 +93,33 @@ class html{
     }
 
     /**
+     * Genera un div con una etiqueta
      * @param int $cols Numero de columnas css
      * @param string $contenido Contenido a integrar dentro del div
      * @param string $label Etiqueta a mostrar
      * @param string $name Name a utilizar como label
-     * @return string
+     * @return string|array
+     * @version 0.69.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 15:21
+     * @author mgamboa
      */
-    private function div_control_group_cols_label(int $cols, string $contenido, string $label, string $name): string
+    private function div_control_group_cols_label(int $cols, string $contenido, string $label, string $name): string|array
     {
+
+        $label = trim($label);
+        if($label === ''){
+            return $this->error->error(mensaje: 'Error el $label esta vacio', data: $label);
+        }
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
+        }
+        $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
+        }
+
         $label_html = $this->label(id_css:$name,place_holder: $label);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label', data: $label_html);
@@ -503,7 +522,7 @@ class html{
     }
 
     /**
-     * Gnera un input de tipo select
+     * Genera un input de tipo select
      * @param int $cols Numero de columnas css
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param string $label Etiqueta a mostrar
@@ -532,6 +551,7 @@ class html{
     }
 
     /**
+     * Genera un select en forma de html completo
      * @param int $cols Numero de columnas css
      * @param string $label Etiqueta a mostrar
      * @param string $name Name input

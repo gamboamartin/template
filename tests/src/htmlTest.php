@@ -81,6 +81,24 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_div_control_group_cols_label(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $contenido = "";
+        $cols = 1;
+        $label = 'a';
+        $name = 'b';
+        $resultado = $html->div_control_group_cols_label($cols, $contenido, $label, $name);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='control-group col-sm-1'></div>", $resultado);
+        errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

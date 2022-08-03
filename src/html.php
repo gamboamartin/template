@@ -96,7 +96,7 @@ class html{
      * @param int $cols Numero de columnas css
      * @param string $contenido Contenido a integrar dentro del div
      * @param string $label Etiqueta a mostrar
-     * @param string $name
+     * @param string $name Name a utilizar como label
      * @return string
      */
     private function div_control_group_cols_label(int $cols, string $contenido, string $label, string $name): string
@@ -114,6 +114,11 @@ class html{
         return $html;
     }
 
+    /**
+     * Integra el contenido de divs de tipo input
+     * @param string $contenido Contenido a integrar en el div
+     * @return string
+     */
     private function div_controls(string $contenido): string
     {
         $div_controls_ini = "<div class='controls'>";
@@ -158,6 +163,10 @@ class html{
      * @param string $options_html Options en html
      * @param bool $required si required integra requiren en select
      * @return array|string
+     * @version 0.67.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 15:07
+     * @author mgamboa
      */
     protected function div_select(string $name, string $options_html, bool $required = false): array|string
     {
@@ -522,7 +531,7 @@ class html{
      * @param int $cols Numero de columnas css
      * @param string $label Etiqueta a mostrar
      * @param string $name Name input
-     * @param string $options_html
+     * @param string $options_html Options precargados para select
      * @param bool $required
      * @return array|string
      */

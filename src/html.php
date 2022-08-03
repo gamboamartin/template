@@ -153,6 +153,7 @@ class html{
     }
 
     /**
+     * Genera un div de tipo select
      * @param string $name Name input
      * @param string $options_html Options en html
      * @param bool $required si required integra requiren en select

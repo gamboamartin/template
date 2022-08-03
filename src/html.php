@@ -408,17 +408,32 @@ class html{
      * @param array $extra_params_key Conjunto de keys para asignar el valor e integrar un extra param basado en el
      * valor puesto
      * @return array|string
+     * @version 0.66.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 14:30
+     * @
      */
     private function options_html_data(mixed $id_selected, string $options_html, array $values,
                                        array $extra_params_key = array()): array|string
     {
+        /**
+         * REFACTORIZAR
+         */
         $options_html_ = $options_html;
         foreach ($values as $row_id=>$row){
+            if(!is_array($row)){
+                return $this->error->error(mensaje: 'Error el row debe ser un array', data: $row);
+            }
+            $keys = array('descripcion_select');
+            $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
+            if(errores::$error){
+                return $this->error->error(mensaje: 'Error al validar row', data: $valida);
+            }
+
             $extra_params = array();
             foreach ($extra_params_key as $key_extra_param){
                 $extra_params[$key_extra_param] = $row[$key_extra_param];
             }
-
             $options_html_ = $this->integra_options_html(descripcion_select: $row['descripcion_select'],
                 id_selected: $id_selected,options_html: $options_html_,value: $row_id, extra_params: $extra_params);
             if(errores::$error){
@@ -470,6 +485,7 @@ class html{
     }
 
     /**
+     * Gnera un input de tipo select
      * @param int $cols Numero de columnas css
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param string $label Etiqueta a mostrar

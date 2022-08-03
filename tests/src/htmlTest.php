@@ -368,6 +368,24 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_options_html_data(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $id_selected = 1;
+        $options_html = "";
+        $values = array();
+        $values[0]['descripcion_select'] = 'x';
+        $resultado = $html->options_html_data($id_selected, $options_html, $values);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='0'  >x</option>",$resultado);
+        errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

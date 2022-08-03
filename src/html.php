@@ -255,10 +255,11 @@ class html{
     }
 
     /**
+     * Integra los options en forma de html
      * @param string $descripcion_select Descripcion del option
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @param string $options_html
-     * @param mixed $value
+     * @param string $options_html Options previamente generados en html
+     * @param mixed $value Valor a asignar en option
      * @param array $extra_params Conjunto de datos para extra params
      * @return array|string
      */
@@ -377,7 +378,7 @@ class html{
     /**
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param array $values Valores para options
-     * @param array $extra_params_key
+     * @param array $extra_params_key keys de extra params para integrar valor
      * @return array|string
      */
     private function options(mixed $id_selected, array $values, array $extra_params_key = array()): array|string
@@ -397,7 +398,7 @@ class html{
     /**
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param string $options_html Options previos en html
-     * @param array $values
+     * @param array $values Valores para asignacion y generacion de options
      * @param array $extra_params_key Conjunto de keys para asignar el valor e integrar un extra param basado en el
      * valor puesto
      * @return array|string
@@ -468,7 +469,7 @@ class html{
      * @param string $label Etiqueta a mostrar
      * @param string $name Name input
      * @param array $values Valores para options
-     * @param array $extra_params_key
+     * @param array $extra_params_key keys de extra params para integrar valor
      * @param bool $required
      * @return array|string
      */

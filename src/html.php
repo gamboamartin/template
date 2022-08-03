@@ -118,6 +118,10 @@ class html{
      * Integra el contenido de divs de tipo input
      * @param string $contenido Contenido a integrar en el div
      * @return string
+     * @version 0.68.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 15:13
+     * @author mgamboa
      */
     private function div_controls(string $contenido): string
     {
@@ -532,7 +536,7 @@ class html{
      * @param string $label Etiqueta a mostrar
      * @param string $name Name input
      * @param string $options_html Options precargados para select
-     * @param bool $required
+     * @param bool $required Si required se integra required como atributo del input
      * @return array|string
      */
     private function select_html(int $cols, string $label, string $name, string $options_html, bool $required = false): array|string

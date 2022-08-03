@@ -44,6 +44,22 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_div_controls(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $contenido = "";
+
+        $resultado = $html->div_controls($contenido);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='controls'></div>", $resultado);
+        errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

@@ -385,6 +385,10 @@ class html{
      * @param array $values Valores para options
      * @param array $extra_params_key keys de extra params para integrar valor
      * @return array|string
+     * @version 0.65.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 14:55
+     * @author mgamboa
      */
     private function options(mixed $id_selected, array $values, array $extra_params_key = array()): array|string
     {

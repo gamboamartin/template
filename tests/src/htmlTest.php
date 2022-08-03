@@ -368,6 +368,24 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_options(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $id_selected = 1;
+
+        $values = array();
+        $values[1]['descripcion_select'] = 'x';
+        $resultado = $html->options($id_selected, $values);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value=''  >Selecciona una opcion</option><option value='1' selected >x</option>",$resultado);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_options_html_data(): void
     {
         errores::$error = false;

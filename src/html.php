@@ -304,6 +304,10 @@ class html{
      * @param mixed $value Value del option
      * @param array $extra_params Arreglo con datos para integrar un extra param
      * @return string|array
+     * @version 0.62.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 10:59
+     * @author mgamboa
      */
     private function option(string $descripcion, bool $selected, int|string $value, array $extra_params = array()): string|array
     {
@@ -332,9 +336,10 @@ class html{
     }
 
     /**
-     * @param string $descripcion_select
+     * Genera un option en forma de html
+     * @param string $descripcion_select Descripcion a mostrar en option
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @param mixed $value
+     * @param mixed $value Valor de asignacion a option
      * @param array $extra_params Conjunto de datos para integrar un extra param en un option
      * @return array|string
      */

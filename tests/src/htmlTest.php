@@ -209,6 +209,34 @@ class htmlTest extends test {
 
     }
 
+    #[NoReturn] public function test_extra_params(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+
+        $extra_params = array();
+        $extra_params['a'] = '-1';
+        $resultado = $html->extra_params($extra_params);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals(" data-a = '-1'",$resultado);
+
+        errores::$error = false;
+
+        $extra_params = array();
+        $extra_params['a'] = '-1';
+        $extra_params['b'] = '2';
+        $resultado = $html->extra_params($extra_params);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals(" data-a = '-1' data-b = '2'",$resultado);
+        errores::$error = false;
+
+    }
+
     #[NoReturn] public function test_fecha(): void
     {
         errores::$error = false;
@@ -292,9 +320,10 @@ class htmlTest extends test {
         $extra_params['a'] = '';
         $extra_params['b'] = '';
         $resultado = $html->option($descripcion, $selected, $value, $extra_params);
+
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<option value=''  data-a = ''data-b = ''>campo</option>", $resultado);
+        $this->assertEquals("<option value=''   data-a = '' data-b = ''>campo</option>", $resultado);
 
 
 

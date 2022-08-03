@@ -204,6 +204,10 @@ class html{
      * Genera extra params para integrar con html
      * @param array $extra_params Conjunto de extra params key = data value = valor
      * @return array|string
+     * @version 0.61.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 09:59
+     * @author mgamboa
      */
     private function extra_params(array $extra_params): array|string
     {
@@ -213,7 +217,7 @@ class html{
                 return $this->error->error(mensaje: 'Error $data bede ser un texto valido', data: $extra_params);
             }
 
-            $extra_params_html.= "data-$data = '$val'";
+            $extra_params_html.= " data-$data = '$val'";
         }
         return $extra_params_html;
     }

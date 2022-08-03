@@ -438,6 +438,25 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_select(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $id_selected = -1;
+        $cols = 12;
+        $label = 'a';
+        $name = 'z';
+        $values = array();
+        $resultado = $html->select($cols, $id_selected, $label, $name, $values);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='control-group col-sm-12'><div class='controls'><select class='form-control selectpicker color-secondary z' id='z' name='z' ><option value=''  >Selecciona una opcion</option></select></div></div>",$resultado);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_select_html(): void
     {
         errores::$error = false;

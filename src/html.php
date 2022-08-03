@@ -525,17 +525,29 @@ class html{
      * @param array $extra_params_key keys de extra params para integrar valor
      * @param bool $required if required integra required a select
      * @return array|string
+     * @version 0.71.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 15:42
+     * @author mgamboa
      */
     public function select(int $cols, int $id_selected, string $label,string $name, array $values,
                            array $extra_params_key = array(), bool $required = false): array|string
     {
+
+        $label = trim($label);
+        $name = trim($name);
+        $valida = $this->valida_input_select(cols: $cols, label: $label, name: $name);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar input', data: $valida);
+        }
 
         $options_html = $this->options(id_selected: $id_selected,values: $values, extra_params_key: $extra_params_key);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }
 
-        $select = $this->select_html(cols: $cols, label: $label,name: $name,options_html: $options_html, required: $required);
+        $select = $this->select_html(cols: $cols, label: $label,name: $name,options_html: $options_html,
+            required: $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
         }

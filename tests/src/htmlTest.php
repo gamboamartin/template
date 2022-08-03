@@ -258,6 +258,25 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_integra_options_html(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $descripcion_select = "a";
+        $id_selected = 1;
+        $value = "1";
+        $options_html = "";
+
+        $resultado = $html->integra_options_html($descripcion_select, $id_selected, $options_html, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='1' selected >a</option>",$resultado);
+        errores::$error = false;
+    }
+
 
     #[NoReturn] public function test_option(): void
     {

@@ -262,6 +262,10 @@ class html{
      * @param mixed $value Valor a asignar en option
      * @param array $extra_params Conjunto de datos para extra params
      * @return array|string
+     * @version 0.65.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 12:25
+     * @author mgamboa
      */
     private function integra_options_html(string $descripcion_select, mixed $id_selected, string $options_html,
                                           mixed $value, array $extra_params = array()): array|string
@@ -376,6 +380,7 @@ class html{
     }
 
     /**
+     * Integra todos los options de un html select
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param array $values Valores para options
      * @param array $extra_params_key keys de extra params para integrar valor
@@ -396,6 +401,7 @@ class html{
     }
 
     /**
+     * Integra el html de un conjunto de options
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param string $options_html Options previos en html
      * @param array $values Valores para asignacion y generacion de options
@@ -470,7 +476,7 @@ class html{
      * @param string $name Name input
      * @param array $values Valores para options
      * @param array $extra_params_key keys de extra params para integrar valor
-     * @param bool $required
+     * @param bool $required if required integra required a select
      * @return array|string
      */
     public function select(int $cols, int $id_selected, string $label,string $name, array $values,

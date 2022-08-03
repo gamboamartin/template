@@ -255,7 +255,7 @@ class html{
     }
 
     /**
-     * @param string $descripcion_select
+     * @param string $descripcion_select Descripcion del option
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param string $options_html
      * @param mixed $value
@@ -342,10 +342,24 @@ class html{
      * @param mixed $value Valor de asignacion a option
      * @param array $extra_params Conjunto de datos para integrar un extra param en un option
      * @return array|string
+     * @version 0.63.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 12:03
+     * @author mgamboa
      */
     private function option_html(string $descripcion_select, mixed $id_selected, mixed $value,
                                  array $extra_params = array()): array|string
     {
+        $descripcion_select = trim($descripcion_select);
+        if($descripcion_select === ''){
+            return $this->error->error(mensaje: 'Error $descripcion_select no puede venir vacio',
+                data: $descripcion_select);
+        }
+        $value = trim($value);
+        if($value === ''){
+            $value = -1;
+        }
+
         $value = (int)$value;
         $selected = $this->selected(value: $value,id_selected: $id_selected);
         if(errores::$error){
@@ -362,7 +376,7 @@ class html{
 
     /**
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @param array $values
+     * @param array $values Valores para options
      * @param array $extra_params_key
      * @return array|string
      */
@@ -382,7 +396,7 @@ class html{
 
     /**
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @param string $options_html
+     * @param string $options_html Options previos en html
      * @param array $values
      * @param array $extra_params_key Conjunto de keys para asignar el valor e integrar un extra param basado en el
      * valor puesto
@@ -453,7 +467,7 @@ class html{
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param string $label Etiqueta a mostrar
      * @param string $name Name input
-     * @param array $values
+     * @param array $values Valores para options
      * @param array $extra_params_key
      * @param bool $required
      * @return array|string

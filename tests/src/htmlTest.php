@@ -438,6 +438,24 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_select_html(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $options_html = "";
+        $cols = 12;
+        $label = 'a';
+        $name = 'b';
+        $resultado = $html->select_html($cols, $label, $name, $options_html);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='control-group col-sm-12'><div class='controls'><select class='form-control selectpicker color-secondary b' id='b' name='b' ></select></div></div>",$resultado);
+        errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

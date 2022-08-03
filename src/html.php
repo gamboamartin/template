@@ -108,16 +108,10 @@ class html{
     {
 
         $label = trim($label);
-        if($label === ''){
-            return $this->error->error(mensaje: 'Error el $label esta vacio', data: $label);
-        }
         $name = trim($name);
-        if($name === ''){
-            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
-        }
-        $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
+        $valida = $this->valida_input_select(cols: $cols, label: $label, name: $name);
         if(errores::$error){
-            return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
+            return $this->error->error(mensaje: 'Error al validar input', data: $valida);
         }
 
         $label_html = $this->label(id_css:$name,place_holder: $label);
@@ -558,9 +552,22 @@ class html{
      * @param string $options_html Options precargados para select
      * @param bool $required Si required se integra required como atributo del input
      * @return array|string
+     * @version 0.70.4
+     * @verfuncion 0.1.0
+     * @fecha 2022-08-03 15:30
+     * @author mgamboa
      */
-    private function select_html(int $cols, string $label, string $name, string $options_html, bool $required = false): array|string
+    private function select_html(int $cols, string $label, string $name, string $options_html,
+                                 bool $required = false): array|string
     {
+
+        $label = trim($label);
+        $name = trim($name);
+        $valida = $this->valida_input_select(cols: $cols, label: $label, name: $name);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar input', data: $valida);
+        }
+
         $select = $this->div_select(name: $name,options_html: $options_html, required:  $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
@@ -652,6 +659,23 @@ class html{
         $etiqueta = trim($etiqueta);
         if($etiqueta === ''){
             return $this->error->error(mensaje: 'Error la $etiqueta esta vacia', data: $etiqueta);
+        }
+        return true;
+    }
+
+    private function valida_input_select(int $cols, string $label, string $name): bool|array
+    {
+        $label = trim($label);
+        if($label === ''){
+            return $this->error->error(mensaje: 'Error el $label esta vacio', data: $label);
+        }
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
+        }
+        $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
         }
         return true;
     }

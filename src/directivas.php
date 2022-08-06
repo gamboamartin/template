@@ -386,6 +386,9 @@ class directivas{
             $row_upd = new stdClass();
             $row_upd->$name = '';
         }
+        if(!isset($row_upd->$name)){
+            $row_upd->$name = '';
+        }
 
         $html= $this->html->text(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
             required: $required, value: $row_upd->$name);

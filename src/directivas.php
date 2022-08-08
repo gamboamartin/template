@@ -126,11 +126,11 @@ class directivas{
 
     /**
      * Genera un input de tipo email como required
-     * @param bool $disabled Si disabled retorna text disabled
-     * @param string $name
-     * @param string $place_holder
-     * @param stdClass $row_upd
-     * @param bool $value_vacio
+     * @param bool $disable Si disabled el input queda inhabilitado
+     * @param string $name Name del input
+     * @param string $place_holder Muestra el contenido en el input
+     * @param stdClass $row_upd Registro en proceso
+     * @param bool $value_vacio Si valor vacio el value lo deja vacio
      * @return array|string
      */
     public function email_required(bool $disable, string $name, string $place_holder, stdClass $row_upd,

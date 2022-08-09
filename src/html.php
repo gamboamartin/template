@@ -178,21 +178,30 @@ class html{
      * Genera un div de tipo select
      * @param string $name Name input
      * @param string $options_html Options en html
-     * @param bool $required si required integra requiren en select
+     * @param bool $disabled Si disabled el input quedara disabled
+     * @param bool $required si required integra requieren en select
      * @return array|string
      * @version 0.67.4
      * @verfuncion 0.1.0
+     * @verfuncion 0.2.0
      * @fecha 2022-08-03 15:07
      * @author mgamboa
      */
-    protected function div_select(string $name, string $options_html, bool $required = false): array|string
+    protected function div_select(string $name, string $options_html, bool $disabled = false,
+                                  bool $required = false): array|string
     {
         $required_html = (new params_inputs())->required_html(required: $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'La asignacion de required es incorrecta', data: $required_html);
         }
 
-        $select_in = "<select class='form-control selectpicker color-secondary $name' id='$name' name='$name' $required_html>";
+        $disabled_html = (new params_inputs())->disabled_html(disabled: $disabled);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'La asignacion de disabled es incorrecta', data: $disabled_html);
+        }
+
+
+        $select_in = "<select class='form-control selectpicker color-secondary $name' id='$name' name='$name' $required_html $disabled_html>";
         $select_fin = '</select>';
         return $select_in.$options_html.$select_fin;
     }
@@ -522,16 +531,19 @@ class html{
      * @param string $label Etiqueta a mostrar
      * @param string $name Name input
      * @param array $values Valores para options
+     * @param bool $disabled Si disabled el input quedara disabled
      * @param array $extra_params_key keys de extra params para integrar valor
      * @param bool $required if required integra required a select
      * @return array|string
      * @version 0.71.4
      * @verfuncion 0.1.0
+     * @verfuncion 0.2.0
      * @fecha 2022-08-03 15:42
      * @author mgamboa
      */
     public function select(int $cols, int $id_selected, string $label,string $name, array $values,
-                           array $extra_params_key = array(), bool $required = false): array|string
+                           bool $disabled = false, array $extra_params_key = array(),
+                           bool $required = false): array|string
     {
 
         $label = trim($label);
@@ -547,7 +559,7 @@ class html{
         }
 
         $select = $this->select_html(cols: $cols, label: $label,name: $name,options_html: $options_html,
-            required: $required);
+            disabled: $disabled, required: $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
         }
@@ -562,14 +574,16 @@ class html{
      * @param string $label Etiqueta a mostrar
      * @param string $name Name input
      * @param string $options_html Options precargados para select
+     * @param bool $disabled Si disabled el input quedara inactivo
      * @param bool $required Si required se integra required como atributo del input
      * @return array|string
      * @version 0.70.4
      * @verfuncion 0.1.0
+     * @verfuncion 0.2.0
      * @fecha 2022-08-03 15:30
      * @author mgamboa
      */
-    private function select_html(int $cols, string $label, string $name, string $options_html,
+    private function select_html(int $cols, string $label, string $name, string $options_html, bool $disabled = false,
                                  bool $required = false): array|string
     {
 
@@ -580,7 +594,7 @@ class html{
             return $this->error->error(mensaje: 'Error al validar input', data: $valida);
         }
 
-        $select = $this->div_select(name: $name,options_html: $options_html, required:  $required);
+        $select = $this->div_select(name: $name,options_html: $options_html, disabled:$disabled, required:  $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
         }

@@ -155,7 +155,7 @@ class htmlTest extends test {
         $resultado = $html->div_select($name, $options_html);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<select class='form-control selectpicker color-secondary b' id='b' name='b' >d</select>",$resultado);
+        $this->assertEquals("<select class='form-control selectpicker color-secondary b' id='b' name='b'  >d</select>",$resultado);
 
         errores::$error = false;
 
@@ -166,7 +166,7 @@ class htmlTest extends test {
         $resultado = $html->div_select($name, $options_html, $required);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<select class='form-control selectpicker color-secondary b' id='b' name='b' required>d</select>",$resultado);
+        $this->assertEquals("<select class='form-control selectpicker color-secondary b' id='b' name='b'  disabled>d</select>",$resultado);
 
         errores::$error = false;
 
@@ -453,7 +453,7 @@ class htmlTest extends test {
         $resultado = $html->select($cols, $id_selected, $label, $name, $values);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div class='control-group col-sm-12'><div class='controls'><select class='form-control selectpicker color-secondary z' id='z' name='z' ><option value=''  >Selecciona una opcion</option></select></div></div>",$resultado);
+        $this->assertEquals("<div class='control-group col-sm-12'><div class='controls'><select class='form-control selectpicker color-secondary z' id='z' name='z'  ><option value=''  >Selecciona una opcion</option></select></div></div>",$resultado);
         errores::$error = false;
     }
 
@@ -471,7 +471,7 @@ class htmlTest extends test {
         $resultado = $html->select_html($cols, $label, $name, $options_html);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div class='control-group col-sm-12'><div class='controls'><select class='form-control selectpicker color-secondary b' id='b' name='b' ></select></div></div>",$resultado);
+        $this->assertEquals("<div class='control-group col-sm-12'><div class='controls'><select class='form-control selectpicker color-secondary b' id='b' name='b'  ></select></div></div>",$resultado);
         errores::$error = false;
     }
 

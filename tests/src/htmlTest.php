@@ -20,6 +20,24 @@ class htmlTest extends test {
 
     }
 
+    /**
+     */
+    #[NoReturn] public function test_alert_success(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $mensaje = 'a';
+
+        $resultado = $html->alert_success($mensaje);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='alert alert-success' role='alert' ><strong>Muy bien!</strong> a.</div>", $resultado);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_alert_warning(): void
     {
         errores::$error = false;

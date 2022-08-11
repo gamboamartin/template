@@ -44,16 +44,17 @@ class html{
     /**
      *
      * Funcion que genera un boton de tipo link con href
-     * @version 0.11.0
      * @param string $accion Accion a ejecutar
      * @param string $etiqueta Etiqueta de boton
      * @param int $registro_id Registro a mandar transaccion
      * @param string $seccion Seccion a ejecutar
      * @param string $style Estilo del boton info,danger,warning etc
+     * @param array $params Parametros para incrustar post GET
      * @return string|array
+     * @version 0.11.0
      */
     public function button_href(string $accion, string $etiqueta, int $registro_id, string $seccion,
-                                string $style): string|array
+                                string $style, array $params = array()): string|array
     {
 
         $valida = $this->valida_input(accion: $accion,etiqueta:  $etiqueta, seccion: $seccion,style:  $style);
@@ -67,7 +68,13 @@ class html{
             return $this->error->error(mensaje: 'Error la $session_id esta vacia', data: $session_id);
         }
 
+        $params_get = '';
+        foreach ($params as $key=>$value){
+            $params_get .= "&$key=$value";
+        }
+
         $link = "index.php?seccion=$seccion&accion=$accion&registro_id=$registro_id&session_id=$session_id";
+        $link .= $params_get;
         return "<a |role| href='$link' |class|>$etiqueta</a>";
     }
 

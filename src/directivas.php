@@ -160,6 +160,7 @@ class directivas{
     }
 
     /**
+     * Genera input de tipo fecha como required
      * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $disable si disabled retorna el input como disabled
      * @param string $name Usado para identificador css name input y place holder

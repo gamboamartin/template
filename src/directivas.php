@@ -18,10 +18,27 @@ class directivas{
      * @param string $value Valor de siguiente accion
      * @param string $style Stilo info success etc
      * @param string $type Typo submit o button
-     * @return string
+     * @return string|array
+     * @version 0.83.4
      */
-    public function btn_action_next(string $label,string $value, string $style = 'info', string $type='submit'): string
+    private function btn_action_next(string $label,string $value, string $style = 'info', string $type='submit'): string|array
     {
+        $label = trim($label);
+        if($label === ''){
+            return $this->error->error(mensaje: 'Error label esta vacio', data: $label);
+        }
+        $value = trim($value);
+        if($value === ''){
+            return $this->error->error(mensaje: 'Error $value esta vacio', data: $value);
+        }
+        $style = trim($style);
+        if($style === ''){
+            return $this->error->error(mensaje: 'Error $style esta vacio', data: $style);
+        }
+        $type = trim($type);
+        if($type === ''){
+            return $this->error->error(mensaje: 'Error $type esta vacio', data: $type);
+        }
         $btn = "<button type='$type' class='btn btn-$style btn-guarda col-md-12' ";
         $btn .= "name='btn_action_next' value='$value'>$label</button>";
         return $btn;

@@ -22,6 +22,27 @@ class directivasTest extends test {
     }
 
     /**
+     */
+    #[NoReturn] public function test_btn_action_next(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $label = '1';
+        $value = 'c';
+
+
+        $resultado = $html->btn_action_next($label, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<button type='submit' class='btn btn-info btn-guarda col-md-12' name='btn_action_next' value='c'>1</button>", $resultado);
+        errores::$error = false;
+    }
+
+    /**
      * @throws JsonException
      */
     #[NoReturn] public function test_button_href(): void

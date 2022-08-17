@@ -27,6 +27,17 @@ class directivas{
         return $btn;
     }
 
+    public function btn_action_next_div(string $label,string $value, int $cols = 6, string $style = 'info',
+                                        string $type='submit'): array|string
+    {
+        $btn = $this->btn_action_next(label: $label,value:  $value, style: $style, type: $type);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar btn datos ', data: $btn);
+        }
+
+        return "<div class='col-md-$cols'>$btn</div>";
+    }
+
     /**
      * Genera un boton tipo link
      * @version 0.13.0

@@ -11,22 +11,20 @@ class directivas{
         $this->html = $html;
     }
 
-    /**
-     * Genera un mensaje de tipo warning
-     * @param string $mensaje_warning
-     * @return array|string
 
+    /**
+     * Genera un boton next action
+     * @param string $label
+     * @param string $value
+     * @param string $style
+     * @param string $type
+     * @return string
      */
-    public function mensaje_warning( string $mensaje_warning): array|string
+    public function btn_action_next(string $label,string $value, string $style = 'info', string $type='submit'): string
     {
-        $alert_warning = '';
-        if($mensaje_warning!==''){
-            $alert_warning = $this->html->alert_warning(mensaje: $mensaje_warning);
-            if(errores::$error){
-                return $this->error->error(mensaje: 'Error al generar alerta', data: $alert_warning);
-            }
-        }
-        return $alert_warning;
+        $btn = "<button type='$type' class='btn btn-$style btn-guarda col-md-12' ";
+        $btn .= "name='btn_action_next' value='$value'>$label</button>";
+        return $btn;
     }
 
     /**
@@ -486,6 +484,24 @@ class directivas{
 
         }
         return $alert_exito;
+    }
+
+    /**
+     * Genera un mensaje de tipo warning
+     * @param string $mensaje_warning
+     * @return array|string
+
+     */
+    public function mensaje_warning( string $mensaje_warning): array|string
+    {
+        $alert_warning = '';
+        if($mensaje_warning!==''){
+            $alert_warning = $this->html->alert_warning(mensaje: $mensaje_warning);
+            if(errores::$error){
+                return $this->error->error(mensaje: 'Error al generar alerta', data: $alert_warning);
+            }
+        }
+        return $alert_warning;
     }
 
 

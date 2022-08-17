@@ -23,30 +23,39 @@ class directivas{
      */
     private function btn_action_next(string $label,string $value, string $style = 'info', string $type='submit'): string|array
     {
-        $label = trim($label);
-        if($label === ''){
-            return $this->error->error(mensaje: 'Error label esta vacio', data: $label);
+        $valida = $this->valida_btn_next(label: $label,style:  $style,type:  $type,value:  $value);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
-        $value = trim($value);
-        if($value === ''){
-            return $this->error->error(mensaje: 'Error $value esta vacio', data: $value);
-        }
-        $style = trim($style);
-        if($style === ''){
-            return $this->error->error(mensaje: 'Error $style esta vacio', data: $style);
-        }
-        $type = trim($type);
-        if($type === ''){
-            return $this->error->error(mensaje: 'Error $type esta vacio', data: $type);
-        }
+
         $btn = "<button type='$type' class='btn btn-$style btn-guarda col-md-12' ";
         $btn .= "name='btn_action_next' value='$value'>$label</button>";
         return $btn;
     }
 
+    /**
+     * Genera un boton con un div para ser usado en views
+     * @param string $label Etiqueta
+     * @param string $value siguiente accion
+     * @param int $cols n cols css
+     * @param string $style estilo del boton
+     * @param string $type tipo de btn submit button
+     * @return array|string
+     * @version 0.84.4
+     */
     public function btn_action_next_div(string $label,string $value, int $cols = 6, string $style = 'info',
                                         string $type='submit'): array|string
     {
+        $valida = $this->valida_btn_next(label: $label,style:  $style,type:  $type,value:  $value);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
+
+        $valida = $this->valida_cols(cols: $cols);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar columnas', data: $valida);
+        }
+
         $btn = $this->btn_action_next(label: $label,value:  $value, style: $style, type: $type);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar btn datos ', data: $btn);
@@ -530,6 +539,28 @@ class directivas{
             }
         }
         return $alert_warning;
+    }
+
+    private function valida_btn_next(string $label, string $style, string $type, string $value): bool|array
+    {
+        $label = trim($label);
+        if($label === ''){
+            return $this->error->error(mensaje: 'Error label esta vacio', data: $label);
+        }
+        $value = trim($value);
+        if($value === ''){
+            return $this->error->error(mensaje: 'Error $value esta vacio', data: $value);
+        }
+        $style = trim($style);
+        if($style === ''){
+            return $this->error->error(mensaje: 'Error $style esta vacio', data: $style);
+        }
+        $type = trim($type);
+        if($type === ''){
+            return $this->error->error(mensaje: 'Error $type esta vacio', data: $type);
+        }
+
+        return true;
     }
 
 

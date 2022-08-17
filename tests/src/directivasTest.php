@@ -43,6 +43,27 @@ class directivasTest extends test {
     }
 
     /**
+     */
+    #[NoReturn] public function test_btn_action_next_div(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $label = 'a';
+        $value = 'v';
+
+
+        $resultado = $html->btn_action_next_div($label, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='col-md-6'><button type='submit' class='btn btn-info btn-guarda col-md-12' name='btn_action_next' value='v'>a</button></div>", $resultado);
+        errores::$error = false;
+    }
+
+    /**
      * @throws JsonException
      */
     #[NoReturn] public function test_button_href(): void

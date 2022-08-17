@@ -14,10 +14,10 @@ class directivas{
 
     /**
      * Genera un boton next action
-     * @param string $label
-     * @param string $value
-     * @param string $style
-     * @param string $type
+     * @param string $label Etiqueta de boton
+     * @param string $value Valor de siguiente accion
+     * @param string $style Stilo info success etc
+     * @param string $type Typo submit o button
      * @return string
      */
     public function btn_action_next(string $label,string $value, string $style = 'info', string $type='submit'): string

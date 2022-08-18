@@ -712,6 +712,12 @@ class html{
         return true;
     }
 
+    /**
+     * Valida que los datos de un option sean validos
+     * @param string $descripcion Descripcion del option
+     * @param int|string $value Valor del option
+     * @return bool|array
+     */
     protected function valida_option(string $descripcion,int|string $value ): bool|array
     {
         $value = trim($value);

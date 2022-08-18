@@ -28,6 +28,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
 
+
         $btn = "<button type='$type' class='btn btn-$style btn-guarda col-md-12' ";
         $btn .= "name='btn_action_next' value='$value'>$label</button>";
         return $btn;

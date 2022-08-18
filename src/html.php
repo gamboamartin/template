@@ -360,14 +360,12 @@ class html{
      */
     private function option(string $descripcion, bool $selected, int|string $value, array $extra_params = array()): string|array
     {
-        $value = trim($value);
-        if($value === ''){
-            return $this->error->error(mensaje: 'Error value no puede venir vacio', data: $value);
+
+        $valida = $this->valida_option(descripcion: $descripcion, value: $value);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar option', data: $valida);
         }
-        $descripcion = trim($descripcion);
-        if($descripcion === ''){
-            return $this->error->error(mensaje: 'Error $descripcion no puede venir vacio', data: $descripcion);
-        }
+
         $selected_html = '';
         if($selected){
             $selected_html = 'selected';
@@ -710,6 +708,19 @@ class html{
         $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
+        }
+        return true;
+    }
+
+    protected function valida_option(string $descripcion,int|string $value ): bool|array
+    {
+        $value = trim($value);
+        if($value === ''){
+            return $this->error->error(mensaje: 'Error value no puede venir vacio', data: $value);
+        }
+        $descripcion = trim($descripcion);
+        if($descripcion === ''){
+            return $this->error->error(mensaje: 'Error $descripcion no puede venir vacio', data: $descripcion);
         }
         return true;
     }

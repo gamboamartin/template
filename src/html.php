@@ -730,7 +730,7 @@ class html{
      * @return bool|array
      * @version 0.89.4
      */
-    PUBLIC function valida_option(string $descripcion,int|string $value ): bool|array
+    protected function valida_option(string $descripcion,int|string $value ): bool|array
     {
         $value = trim($value);
         if($value === ''){
@@ -743,7 +743,15 @@ class html{
         return true;
     }
 
-    private function valida_params_txt(string $id_css, string $name, string $place_holder): bool|array
+    /**
+     * Valida los parametros de un input text
+     * @param string $id_css Identifcador css
+     * @param string $name Nombre del input
+     * @param string $place_holder Label a mostrar en input
+     * @return bool|array
+     * @version 0.90.4
+     */
+    PUBLIC function valida_params_txt(string $id_css, string $name, string $place_holder): bool|array
     {
         $name = trim($name);
         if($name === ''){

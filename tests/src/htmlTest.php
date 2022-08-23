@@ -712,6 +712,23 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_valida_params_txt(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+
+        $id_css = 'b';
+        $name = 'a';
+        $place_holder = 'c';
+        $resultado = $html->valida_params_txt($id_css, $name, $place_holder);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertTrue($resultado);
+        errores::$error = false;
+
+    }
+
 
 
 }

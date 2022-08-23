@@ -633,6 +633,70 @@ class htmlTest extends test {
 
     }
 
+    /**
+     */
+    #[NoReturn] public function test_valida_input_select(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $cols = -1;
+        $label = '';
+        $name = '';
+
+        $resultado = $html->valida_input_select($cols, $label, $name);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error el $label esta vacio', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $cols = -1;
+        $label = 'a';
+        $name = '';
+
+        $resultado = $html->valida_input_select($cols, $label, $name);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error el $name esta vacio', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $cols = -1;
+        $label = 'a';
+        $name = 'b';
+
+        $resultado = $html->valida_input_select($cols, $label, $name);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error al validar cols', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $cols = 13;
+        $label = 'a';
+        $name = 'b';
+
+        $resultado = $html->valida_input_select($cols, $label, $name);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error al validar cols', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $cols = 12;
+        $label = 'a';
+        $name = 'b';
+
+        $resultado = $html->valida_input_select($cols, $label, $name);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertTrue($resultado);
+        errores::$error = false;
+    }
+
 
 
 }

@@ -695,6 +695,14 @@ class html{
         return true;
     }
 
+    /**
+     * Valida que los datos de un selects sean los correctos
+     * @param int $cols Columnas css
+     * @param string $label Etiqueta a mostrar
+     * @param string $name Nombre del input
+     * @return bool|array
+     * @version 0.88.4
+     */
     protected function valida_input_select(int $cols, string $label, string $name): bool|array
     {
         $label = trim($label);

@@ -697,6 +697,21 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_valida_option(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+
+        $descripcion = 'b';
+        $value = 'a';
+        $resultado = $html->valida_option($descripcion, $value);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertTrue($resultado);
+        errores::$error = false;
+    }
+
 
 
 }

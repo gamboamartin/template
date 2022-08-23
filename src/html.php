@@ -32,6 +32,7 @@ class html{
      * Genera un alert de tipo warning
      * @param string $mensaje Mensaje a mostrar en el warning
      * @return string|array
+     * @version 0.89.4
      */
     public function alert_warning(string $mensaje): string|array
     {
@@ -152,8 +153,6 @@ class html{
         return $div_controls_ini.$contenido.$div_controls_fin;
     }
 
-
-
     /**
      * Integra un div group control-group col-sm-n_cols
      * @param int $cols Numero de columnas css
@@ -227,7 +226,11 @@ class html{
     public function email(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value): array|string
     {
-        $val = new validacion();
+
+        $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
 
         $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
             required:  $required);
@@ -235,6 +238,8 @@ class html{
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
         }
+
+        $val = new validacion();
         if (!isset($val->patterns['correo_html5'])) {
             return $this->error->error(mensaje: 'No existe el regex para email', data: $params);
         }
@@ -265,8 +270,6 @@ class html{
         }
         return $extra_params_html;
     }
-
-
 
     /**
      * Obtiene el html de una fecha
@@ -725,8 +728,9 @@ class html{
      * @param string $descripcion Descripcion del option
      * @param int|string $value Valor del option
      * @return bool|array
+     * @version 0.89.4
      */
-    protected function valida_option(string $descripcion,int|string $value ): bool|array
+    PUBLIC function valida_option(string $descripcion,int|string $value ): bool|array
     {
         $value = trim($value);
         if($value === ''){

@@ -695,7 +695,7 @@ class html{
         return true;
     }
 
-    private function valida_input_select(int $cols, string $label, string $name): bool|array
+    protected function valida_input_select(int $cols, string $label, string $name): bool|array
     {
         $label = trim($label);
         if($label === ''){

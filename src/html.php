@@ -751,7 +751,7 @@ class html{
      * @return bool|array
      * @version 0.90.4
      */
-    PUBLIC function valida_params_txt(string $id_css, string $name, string $place_holder): bool|array
+    protected function valida_params_txt(string $id_css, string $name, string $place_holder): bool|array
     {
         $name = trim($name);
         if($name === ''){

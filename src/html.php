@@ -349,6 +349,11 @@ class html{
        return "";
     }
 
+    public function menu_lateral(string $etiqueta): string
+    {
+        return "<span class='texto-menu-lateral'>$etiqueta</span>";
+    }
+
     /**
      * Genera un option para un select
      * @param string $descripcion descripcion del option

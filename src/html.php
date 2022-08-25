@@ -350,8 +350,18 @@ class html{
        return "";
     }
 
-    public function menu_lateral(string $etiqueta): string
+    /**
+     * Genera un texto de menu lateral
+     * @param string $etiqueta Etiqueta del menu
+     * @return string|array
+     * @version 0.96.4
+     */
+    public function menu_lateral(string $etiqueta): string|array
     {
+        $etiqueta = trim($etiqueta);
+        if($etiqueta === ''){
+            return $this->error->error(mensaje: 'Error la etiqueta esta vacia', data: $etiqueta);
+        }
         return "<span class='texto-menu-lateral'>$etiqueta</span>";
     }
     

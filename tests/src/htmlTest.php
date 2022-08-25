@@ -325,6 +325,8 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+
+
     #[NoReturn] public function test_integra_options_html(): void
     {
         errores::$error = false;
@@ -341,6 +343,21 @@ class htmlTest extends test {
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value='1' selected >a</option>",$resultado);
+        errores::$error = false;
+    }
+
+    #[NoReturn] public function test_menu_lateral(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+
+
+        $etiqueta = 'a';
+        $resultado = $html->menu_lateral($etiqueta);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<span class='texto-menu-lateral'>a</span>",$resultado);
         errores::$error = false;
     }
 

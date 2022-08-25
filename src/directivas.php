@@ -339,6 +339,7 @@ class directivas{
      * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
+     * @version 0.94.4
      */
     public function input_descripcion_select(stdClass $row_upd, bool $value_vacio): array|string
     {
@@ -358,7 +359,7 @@ class directivas{
 
     /**
      * @param int $cols Numero de columnas css
-     * @param stdClass $row_upd
+     * @param stdClass $row_upd Registro en operacion
      * @param bool $value_vacio
      * @return array|string
      */
@@ -413,7 +414,7 @@ class directivas{
 
     /**
      * Genera un input text en html
-     * @param bool $disable
+     * @param bool $disable si disabled el elemento queda deshabilitado
      * @param string $name
      * @param string $place_holder
      * @param bool $required
@@ -509,7 +510,7 @@ class directivas{
 
     /**
      * Genera un mensaje de exito
-     * @param string $mensaje_exito
+     * @param string $mensaje_exito mensaje a mostrar
      * @return array|string
      */
     public function mensaje_exito(string $mensaje_exito): array|string
@@ -527,7 +528,7 @@ class directivas{
 
     /**
      * Genera un mensaje de tipo warning
-     * @param string $mensaje_warning
+     * @param string $mensaje_warning mensaje a mostrar
      * @return array|string
 
      */

@@ -1,5 +1,6 @@
 <?php
 namespace gamboamartin\template;
+use config\views;
 use gamboamartin\errores\errores;
 use stdClass;
 
@@ -540,6 +541,17 @@ class directivas{
             }
         }
         return $alert_warning;
+    }
+
+    /**
+     * Genera un numero para menu lateral
+     * @param string $number Numero svg
+     * @return string
+     */
+    public function number_menu_lateral(string $number): string
+    {
+        $img =  (new views())->url_assets."img/numeros/$number.svg";
+        return "<img src='$img' class='numero'>";
     }
 
     /**

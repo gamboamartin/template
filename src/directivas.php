@@ -542,7 +542,16 @@ class directivas{
         return $alert_warning;
     }
 
-    private function valida_btn_next(string $label, string $style, string $type, string $value): bool|array
+    /**
+     * Valida los elementos de un boton
+     * @param string $label Etiqueta
+     * @param string $style Stilo
+     * @param string $type Tipo submit o button
+     * @param string $value Valor
+     * @return bool|array
+     * @version 0.92.4
+     */
+    public function valida_btn_next(string $label, string $style, string $type, string $value): bool|array
     {
         $label = trim($label);
         if($label === ''){

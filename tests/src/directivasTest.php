@@ -247,6 +247,81 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    /**
+     */
+    #[NoReturn] public function test_valida_btn_next(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $label = '';
+        $value = '';
+        $style = '';
+        $type = '';
+
+
+        $resultado = $html->valida_btn_next($label, $style, $type, $value);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error label esta vacio', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $label = 'a';
+        $value = '';
+        $style = '';
+        $type = '';
+
+
+        $resultado = $html->valida_btn_next($label, $style, $type, $value);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error $value esta vacio', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $label = 'a';
+        $value = 'a';
+        $style = '';
+        $type = '';
+
+
+        $resultado = $html->valida_btn_next($label, $style, $type, $value);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error $style esta vacio', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $label = 'a';
+        $value = 'a';
+        $style = 's';
+        $type = '';
+
+
+        $resultado = $html->valida_btn_next($label, $style, $type, $value);
+        $this->assertIsArray($resultado);
+        $this->assertTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase('Error $type esta vacio', $resultado['mensaje']);
+
+        errores::$error = false;
+
+        $label = 'a';
+        $value = 'a';
+        $style = 's';
+        $type = 's';
+
+
+        $resultado = $html->valida_btn_next($label, $style, $type, $value);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertTrue($resultado);
+        errores::$error = false;
+    }
+
 
 
     /**

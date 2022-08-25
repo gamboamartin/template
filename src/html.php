@@ -350,13 +350,28 @@ class html{
        return "";
     }
 
+    public function link_menu_lateral(string $etiqueta, string $number): array|string
+    {
+        $number_html = $this->number_menu_lateral(number: $number);
+        if(errores::$error){
+            return $this->error->error(mensaje:  'Error al obtener numero ', data: $number_html);
+        }
+        $txt_link = $this->menu_lateral(etiqueta: $etiqueta);
+        if(errores::$error){
+            return $this->error->error(mensaje:  'Error al generar link', data: $txt_link);
+        }
+
+        return $number_html.$txt_link;
+
+    }
+
     /**
      * Genera un texto de menu lateral
      * @param string $etiqueta Etiqueta del menu
      * @return string|array
      * @version 0.96.4
      */
-    public function menu_lateral(string $etiqueta): string|array
+    private function menu_lateral(string $etiqueta): string|array
     {
         $etiqueta = trim($etiqueta);
         if($etiqueta === ''){
@@ -365,7 +380,7 @@ class html{
         return "<span class='texto-menu-lateral'>$etiqueta</span>";
     }
     
-    public function number_menu_lateral(string $number): string
+    private function number_menu_lateral(string $number): string
     {
         $img =  (new views())->url_assets."img/numeros/$number.svg";
         return "<img src='$img' class='numero'>";

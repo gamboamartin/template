@@ -350,7 +350,7 @@ class htmlTest extends test {
     {
         errores::$error = false;
         $html = new html();
-        //$html = new liberator($html);
+        $html = new liberator($html);
 
 
         $etiqueta = 'a';

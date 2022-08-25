@@ -2,6 +2,7 @@
 namespace gamboamartin\template;
 use base\frontend\params_inputs;
 use config\generales;
+use config\views;
 use gamboamartin\errores\errores;
 use gamboamartin\validacion\validacion;
 use stdClass;
@@ -352,6 +353,12 @@ class html{
     public function menu_lateral(string $etiqueta): string
     {
         return "<span class='texto-menu-lateral'>$etiqueta</span>";
+    }
+    
+    public function number_menu_lateral(string $number): string
+    {
+        $img =  (new views())->url_assets."img/numeros/$number.svg";
+        return "<img src='$img' class='numero'>";
     }
 
     /**

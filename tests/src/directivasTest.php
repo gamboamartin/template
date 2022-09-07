@@ -116,6 +116,31 @@ class directivasTest extends test {
 
     /**
      */
+    #[NoReturn] public function test_email_required(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $disable = false;
+        $name = 'a';
+        $row_upd = new stdClass();
+        $value_vacio = false;
+        $place_holder = 'x';
+
+
+        $resultado = $html->email_required($disable, $name, $place_holder, $row_upd, $value_vacio);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><input type='text' name='a' value='' |class|  required id='a' placeholder='x' pattern='[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$' /></div>",$resultado);
+
+    }
+
+    /**
+     */
     #[NoReturn] public function test_init_text(): void
     {
         errores::$error = false;

@@ -245,8 +245,8 @@ class html{
             return $this->error->error(mensaje: 'No existe el regex para email', data: $params);
         }
 
-        $html = "<input type=\"text\" name=\"$params->name\" value=\"$value\" |class| $params->disabled $params->required ";
-        $html.= "id=\"$params->id_css\" placeholder=\"$params->place_holder\" pattern=\"{$val->patterns['correo_html5']}\" />";
+        $html = "<input type='text' name='$params->name' value='$value' |class| $params->disabled $params->required ";
+        $html.= "id='$params->id_css' placeholder='$params->place_holder' pattern='{$val->patterns['correo_html5']}' />";
         return $html;
     }
 

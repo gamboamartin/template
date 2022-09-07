@@ -289,7 +289,7 @@ class directivasTest extends test {
         $resultado = $html->valida_btn_next($label, $style, $type, $value);
         $this->assertIsArray($resultado);
         $this->assertTrue(errores::$error);
-        $this->assertStringContainsStringIgnoringCase('Error label esta vacio', $resultado['mensaje']);
+        $this->assertStringContainsStringIgnoringCase('Error al validar datos', $resultado['mensaje']);
 
         errores::$error = false;
 
@@ -302,7 +302,7 @@ class directivasTest extends test {
         $resultado = $html->valida_btn_next($label, $style, $type, $value);
         $this->assertIsArray($resultado);
         $this->assertTrue(errores::$error);
-        $this->assertStringContainsStringIgnoringCase('Error $value esta vacio', $resultado['mensaje']);
+        $this->assertStringContainsStringIgnoringCase('Error al validar datos', $resultado['mensaje']);
 
         errores::$error = false;
 

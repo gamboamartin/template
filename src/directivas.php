@@ -566,14 +566,12 @@ class directivas{
      */
     public function valida_btn_next(string $label, string $style, string $type, string $value): bool|array
     {
-        $label = trim($label);
-        if($label === ''){
-            return $this->error->error(mensaje: 'Error label esta vacio', data: $label);
+
+        $valida = $this->valida_data_base(label: $label,value:  $value);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
-        $value = trim($value);
-        if($value === ''){
-            return $this->error->error(mensaje: 'Error $value esta vacio', data: $value);
-        }
+
         $style = trim($style);
         if($style === ''){
             return $this->error->error(mensaje: 'Error $style esta vacio', data: $style);
@@ -583,6 +581,19 @@ class directivas{
             return $this->error->error(mensaje: 'Error $type esta vacio', data: $type);
         }
 
+        return true;
+    }
+
+    public function valida_data_base(string $label, string $value): bool|array
+    {
+        $label = trim($label);
+        if($label === ''){
+            return $this->error->error(mensaje: 'Error label esta vacio', data: $label);
+        }
+        $value = trim($value);
+        if($value === ''){
+            return $this->error->error(mensaje: 'Error $value esta vacio', data: $value);
+        }
         return true;
     }
 

@@ -361,6 +361,22 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_number_menu_lateral(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $number = 'a';
+
+        $resultado = $html->number_menu_lateral($number);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<img src='http://localhost/cat_sat/assets/img/numeros/a.svg' class='numero'>", $resultado);
+        errores::$error = false;
+    }
+
 
     #[NoReturn] public function test_option(): void
     {

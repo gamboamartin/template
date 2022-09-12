@@ -431,13 +431,11 @@ class directivas{
             return $this->error->error(mensaje: 'Error al generar label', data: $label);
         }
 
-        if($value_vacio){
-            $row_upd = new stdClass();
-            $row_upd->$name = '';
+        $row_upd = $this->row_upd_name(name: $name, value_vacio: $value_vacio, row_upd: $row_upd);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd);
         }
-        if(!isset($row_upd->$name)){
-            $row_upd->$name = '';
-        }
+
 
         $html= $this->html->text(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
             required: $required, value: $row_upd->$name);
@@ -554,6 +552,31 @@ class directivas{
     {
         $img =  (new views())->url_assets."img/numeros/$number.svg";
         return "<img src='$img' class='numero'>";
+    }
+
+    /**
+     * Inicializa un row_upd
+     * @param string $name Nombre de input
+     * @param bool $value_vacio Si vacio lo genera
+     * @param stdClass $row_upd Datos inicializados
+     * @return stdClass|array
+     * @version 0.100.4
+     */
+    private function row_upd_name(string $name, bool $value_vacio, stdClass $row_upd = new stdClass()): stdClass|array
+    {
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error name esta vacio', data: $name);
+        }
+        if($value_vacio){
+            $row_upd = new stdClass();
+            $row_upd->$name = '';
+        }
+        if(!isset($row_upd->$name)){
+            $row_upd->$name = '';
+        }
+
+        return $row_upd;
     }
 
     /**

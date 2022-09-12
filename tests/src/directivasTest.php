@@ -296,6 +296,28 @@ class directivasTest extends test {
     }
 
     /**
+     * @throws JsonException
+     */
+    #[NoReturn] public function test_row_upd_name(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $name = 'a';
+        $value_vacio = false;
+
+
+        $resultado = $html->row_upd_name($name, $value_vacio);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals('', $resultado->a);
+        errores::$error = false;
+    }
+
+    /**
      */
     #[NoReturn] public function test_valida_btn_next(): void
     {

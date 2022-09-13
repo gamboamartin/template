@@ -361,7 +361,7 @@ class directivas{
     /**
      * @param int $cols Numero de columnas css
      * @param stdClass $row_upd Registro en operacion
-     * @param bool $value_vacio
+     * @param bool $value_vacio si value vacio deja limpio el input
      * @return array|string
      */
     public function input_id(int $cols, stdClass $row_upd, bool $value_vacio): array|string
@@ -416,29 +416,42 @@ class directivas{
     /**
      * Genera un input text en html
      * @param bool $disable si disabled el elemento queda deshabilitado
-     * @param string $name
-     * @param string $place_holder
-     * @param bool $required
-     * @param stdClass $row_upd
-     * @param bool $value_vacio
+     * @param string $name Nombre de input
+     * @param string $place_holder Label a mostrar dentro de input
+     * @param bool $required si required integra attr required
+     * @param stdClass $row_upd Registro en proceso
+     * @param bool $value_vacio Si vacio deja input sin value
      * @return array|string
+     * @version 0.101.4
      */
     public function input_text(bool $disable, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                bool $value_vacio): array|string
     {
+
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
+        }
+        $place_holder = trim($place_holder);
+        if($place_holder === ''){
+            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
+        }
+
+        $row_upd_ =$row_upd;
+
         $label = $this->html->label(id_css: $name, place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label', data: $label);
         }
 
-        $row_upd = $this->row_upd_name(name: $name, value_vacio: $value_vacio, row_upd: $row_upd);
+        $row_upd_ = $this->row_upd_name(name: $name, value_vacio: $value_vacio, row_upd: $row_upd_);
         if(errores::$error){
-            return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd);
+            return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd_);
         }
 
 
         $html= $this->html->text(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
-            required: $required, value: $row_upd->$name);
+            required: $required, value: $row_upd_->$name);
 
         $div = $this->html->div_label(html:  $html,label:$label);
         if(errores::$error){

@@ -371,13 +371,20 @@ class directivas{
     }
 
     /**
+     * Genera un input de tipo id
      * @param int $cols Numero de columnas css
      * @param stdClass $row_upd Registro en operacion
      * @param bool $value_vacio si value vacio deja limpio el input
      * @return array|string
+     * @version 0.103.4
      */
     public function input_id(int $cols, stdClass $row_upd, bool $value_vacio): array|string
     {
+        $valida = (new directivas(html: $this->html))->valida_cols(cols: $cols);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
+        }
+
         $html =$this->input_text(disable: true,name: 'id',place_holder: 'ID',
             required: false, row_upd: $row_upd, value_vacio: $value_vacio);
         if(errores::$error){

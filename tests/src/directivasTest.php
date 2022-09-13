@@ -278,6 +278,28 @@ class directivasTest extends test {
     /**
      * @throws JsonException
      */
+    #[NoReturn] public function test_input_id(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        // $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $cols = 1;
+        $value_vacio = false;
+        $row_upd = new stdClass();
+
+        $resultado = $html->input_id($cols, $row_upd, $value_vacio);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><div |class|><input type='text' name='id' value='' |class| disabled  id='id' placeholder='ID' /></div></div>", $resultado);
+        errores::$error = false;
+    }
+
+    /**
+     * @throws JsonException
+     */
     #[NoReturn] public function test_input_text(): void
     {
         errores::$error = false;

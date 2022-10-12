@@ -209,7 +209,7 @@ class html{
         }
 
 
-        $select_in = "<select class='form-control selectpicker color-secondary $name' id='$name' name='$name' $required_html $disabled_html>";
+        $select_in = "<select class='form-control selectpicker color-secondary  $name' data-live-search='true' id='$name' name='$name' $required_html $disabled_html>";
         $select_fin = '</select>';
         return $select_in.$options_html.$select_fin;
     }

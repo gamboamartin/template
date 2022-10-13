@@ -328,6 +328,7 @@ class directivas{
      * @param stdClass $row_upd Objeto con datos del row
      * @param bool $value_vacio si value vacia no integra valor en el input
      * @return array|string
+     * @version 0.106.4
      */
     public function input_descripcion(stdClass $row_upd, bool $value_vacio): array|string
     {

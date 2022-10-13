@@ -228,6 +228,27 @@ class directivasTest extends test {
     }
 
     /**
+     */
+    #[NoReturn] public function test_input_descripcion(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $row_upd = new stdClass();
+        $value_vacio = false;
+
+
+        $resultado = $html->input_descripcion($row_upd, $value_vacio);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><div |class|><input type='text' name='descripcion' value='' |class|  required id='descripcion' placeholder='Descripcion' /></div></div>", $resultado);
+        errores::$error = false;
+    }
+
+    /**
      * @throws JsonException
      */
     #[NoReturn] public function test_fecha_required(): void

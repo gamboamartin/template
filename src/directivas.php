@@ -408,6 +408,7 @@ class directivas{
      * @param string $place_holder Texto a mostrar en el input
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
+     * @version 1.110.4
      */
     public function input_password(bool $disable, string $name, string $place_holder, stdClass $row_upd,
                                         bool $value_vacio ): array|string

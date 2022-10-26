@@ -504,6 +504,27 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_password(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $id_css = 'c';
+        $required = true;
+        $name = 'a';
+        $place_holder = 'd';
+        $value = '';
+        $resultado = $html->password($disabled, $id_css, $name, $place_holder, $required, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<input type='password' name='a' value='' |class|  required id='c' placeholder='d' />",$resultado);
+
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_select(): void
     {
         errores::$error = false;

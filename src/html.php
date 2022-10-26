@@ -545,9 +545,24 @@ class html{
         return $options_html_;
     }
 
+    /**
+     * Genera in input de tipo password
+     * @param bool $disabled Si disabled retorna text disabled
+     * @param string $id_css Identificador de tipo css
+     * @param string $name Nombre del input
+     * @param string $place_holder Contenido a mostrar previo a la captura del input
+     * @param bool $required Si required aplica required en html
+     * @param mixed $value Valor precargado
+     * @return string|array
+     * @version 0.108.4
+     */
     public function password(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                          mixed $value): string|array
     {
+        $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
 
         $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
             required:  $required);

@@ -723,6 +723,29 @@ class html{
         return $selected;
     }
 
+    public function telefono(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+                             mixed $value): string|array
+    {
+        $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
+
+        $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
+            required:  $required);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $regex = (new validacion())->patterns['telefono_mx_html'];
+
+        $html = "<input type='text' name='$params->name' value='$value' class='form-control' ";
+        $html .= " $params->disabled $params->required ";
+        $html.= "id='$id_css' placeholder='$params->place_holder' pattern='$regex' />";
+        return $html;
+    }
+
 
     /**
      * Genera um input text basado en los parametros enviados

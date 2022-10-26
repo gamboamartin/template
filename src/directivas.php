@@ -163,7 +163,7 @@ class directivas{
 
     /**
      * Genera un input de tipo email como required
-     * @param bool $disable Si disabled el input queda inhabilitado
+     * @param bool $disabled Si disabled el input queda inhabilitado
      * @param string $name Name del input
      * @param string $place_holder Muestra el contenido en el input
      * @param stdClass $row_upd Registro en proceso
@@ -171,7 +171,7 @@ class directivas{
      * @return array|string
      * @version 0.99.4
      */
-    public function email_required(bool $disable, string $name, string $place_holder, stdClass $row_upd,
+    public function email_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio ): array|string
     {
 
@@ -185,7 +185,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
-        $html= $this->html->email(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
+        $html= $this->html->email(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: true, value: $init->row_upd->$name);
 
         $div = $this->html->div_label(html:  $html,label:$init->label);
@@ -200,14 +200,14 @@ class directivas{
     /**
      * Genera input de tipo fecha como required
      * @param stdClass $row_upd Registro obtenido para actualizar
-     * @param bool $disable si disabled retorna el input como disabled
+     * @param bool $disabled si disabled retorna el input como disabled
      * @param string $name Usado para identificador css name input y place holder
      * @param string $place_holder Texto a mostrar en el input
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
      * @version 0.102.4
      */
-    public function fecha_required(bool $disable, string $name, string $place_holder, stdClass $row_upd,
+    public function fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio ): array|string
     {
 
@@ -222,7 +222,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al inicializar row_upd div', data: $data_init);
         }
 
-        $html= $this->html->fecha(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
+        $html= $this->html->fecha(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: true, value: $data_init->row_upd->$name);
 
         if(errores::$error){
@@ -249,7 +249,7 @@ class directivas{
      */
     public function input_alias(stdClass $row_upd, bool $value_vacio): array|string
     {
-        $html =$this->input_text_required(disable: false,name: 'alias',
+        $html =$this->input_text_required(disabled: false,name: 'alias',
             place_holder: 'Alias', row_upd: $row_upd, value_vacio: $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar input', data: $html);
@@ -279,7 +279,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
         }
 
-        $html =$this->input_text_required(disable: false,name: 'codigo',place_holder: 'Codigo',row_upd: $row_upd,
+        $html =$this->input_text_required(disabled: false,name: 'codigo',place_holder: 'Codigo',row_upd: $row_upd,
             value_vacio: $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar input', data: $html);
@@ -309,7 +309,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
         }
 
-        $html =$this->input_text_required(disable: false,name: 'codigo_bis',
+        $html =$this->input_text_required(disabled: false,name: 'codigo_bis',
             place_holder: 'Codigo BIS', row_upd: $row_upd, value_vacio: $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar input', data: $html);
@@ -332,7 +332,7 @@ class directivas{
      */
     public function input_descripcion(stdClass $row_upd, bool $value_vacio): array|string
     {
-        $html =$this->input_text_required(disable: false,name: 'descripcion', place_holder: 'Descripcion',
+        $html =$this->input_text_required(disabled: false,name: 'descripcion', place_holder: 'Descripcion',
             row_upd: $row_upd, value_vacio: $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar input', data: $html);
@@ -357,7 +357,7 @@ class directivas{
      */
     public function input_descripcion_select(stdClass $row_upd, bool $value_vacio): array|string
     {
-        $html =$this->input_text_required(disable: false,name: 'descripcion_select',
+        $html =$this->input_text_required(disabled: false,name: 'descripcion_select',
             place_holder: 'Descripcion Select', row_upd: $row_upd, value_vacio: $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar input', data: $html);
@@ -386,7 +386,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
         }
 
-        $html =$this->input_text(disable: true,name: 'id',place_holder: 'ID',
+        $html =$this->input_text(disabled: true,name: 'id',place_holder: 'ID',
             required: false, row_upd: $row_upd, value_vacio: $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar input', data: $html);
@@ -403,14 +403,14 @@ class directivas{
     /**
      * Genera un input tipo required
      * @param stdClass $row_upd Registro obtenido para actualizar
-     * @param bool $disable si disabled retorna el input como disabled
+     * @param bool $disabled si disabled retorna el input como disabled
      * @param string $name Usado para identificador css name input y place holder
      * @param string $place_holder Texto a mostrar en el input
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
      * @version 1.110.4
      */
-    public function input_password(bool $disable, string $name, string $place_holder, stdClass $row_upd,
+    public function input_password(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                         bool $value_vacio ): array|string
     {
 
@@ -424,7 +424,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
-        $html= $this->html->password(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
+        $html= $this->html->password(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: true, value: $init->row_upd->$name);
 
         $div = $this->html->div_label(html:  $html,label:$init->label);
@@ -436,7 +436,7 @@ class directivas{
 
     }
 
-    public function input_telefono(bool $disable, string $name, string $place_holder, stdClass $row_upd,
+    public function input_telefono(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio ): array|string
     {
 
@@ -450,7 +450,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
-        $html= $this->html->telefono(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
+        $html= $this->html->telefono(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: true, value: $init->row_upd->$name);
 
         $div = $this->html->div_label(html:  $html,label:$init->label);
@@ -497,7 +497,7 @@ class directivas{
 
     /**
      * Genera un input text en html
-     * @param bool $disable si disabled el elemento queda deshabilitado
+     * @param bool $disabled si disabled el elemento queda deshabilitado
      * @param string $name Nombre de input
      * @param string $place_holder Label a mostrar dentro de input
      * @param bool $required si required integra attr required
@@ -506,7 +506,7 @@ class directivas{
      * @return array|string
      * @version 0.101.4
      */
-    public function input_text(bool $disable, string $name, string $place_holder, bool $required, stdClass $row_upd,
+    public function input_text(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                bool $value_vacio): array|string
     {
 
@@ -532,7 +532,7 @@ class directivas{
         }
 
 
-        $html= $this->html->text(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
+        $html= $this->html->text(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: $required, value: $row_upd_->$name);
 
         $div = $this->html->div_label(html:  $html,label:$label);
@@ -548,13 +548,13 @@ class directivas{
      * Genera un input tipo required
      * @version 0.48.1
      * @param stdClass $row_upd Registro obtenido para actualizar
-     * @param bool $disable si disabled retorna el input como disabled
+     * @param bool $disabled si disabled retorna el input como disabled
      * @param string $name Usado para identificador css name input y place holder
      * @param string $place_holder Texto a mostrar en el input
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
      */
-    public function input_text_required(bool $disable, string $name, string $place_holder, stdClass $row_upd,
+    public function input_text_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                         bool $value_vacio ): array|string
     {
 
@@ -568,7 +568,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
-        $html= $this->html->text(disabled:$disable, id_css: $name, name: $name, place_holder: $place_holder,
+        $html= $this->html->text(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: true, value: $init->row_upd->$name);
 
         $div = $this->html->div_label(html:  $html,label:$init->label);

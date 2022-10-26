@@ -520,7 +520,7 @@ class htmlTest extends test {
         $resultado = $html->password($disabled, $id_css, $name, $place_holder, $required, $value);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<input type='password' name='a' value='' |class|  required id='c' placeholder='d' />",$resultado);
+        $this->assertEquals("<input type='password' name='a' value='' class='form-control'   required id='c' placeholder='d' />",$resultado);
 
         errores::$error = false;
     }

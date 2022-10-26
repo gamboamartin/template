@@ -723,6 +723,17 @@ class html{
         return $selected;
     }
 
+    /**
+     * Genera un input de tipo telefono
+     * @param bool $disabled Si disabled retorna text disabled
+     * @param string $id_css Identificador css
+     * @param string $name Name input html
+     * @param string $place_holder Muestra elemento en input
+     * @param bool $required indica si es requerido o no
+     * @param mixed $value Valor en caso de que exista
+     * @return string|array
+     * @version 0.112.4
+     */
     public function telefono(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                              mixed $value): string|array
     {
@@ -736,6 +747,13 @@ class html{
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $valida = (new validacion());
+        $keys = array('telefono_mx_html');
+        $valida = (new validacion())->valida_existencia_keys(keys:$keys,registro:  $valida->patterns);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar patterns', data: $valida);
         }
 
         $regex = (new validacion())->patterns['telefono_mx_html'];

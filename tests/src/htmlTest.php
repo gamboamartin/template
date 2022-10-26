@@ -594,6 +594,26 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_telefono(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $required = false;
+        $id_css = 'g';
+        $place_holder = 'd';
+        $name = 'a';
+        $value = '';
+        $resultado = $html->telefono($disabled, $id_css, $name, $place_holder, $required, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<input type='text' name='a' value='' class='form-control'    id='g' placeholder='d' pattern='[1-9]{1}[0-9]{9}' />",$resultado);
+        errores::$error = false;
+    }
+
 
     /**
      */

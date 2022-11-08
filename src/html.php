@@ -311,7 +311,7 @@ class html{
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
         }
 
-        $html = "<input type='file' name='$params->name' value='$value' |class| $params->disabled $params->required ";
+        $html = "<input type='file' name='$params->name' value='$value' class = 'form-control' $params->disabled $params->required ";
         $html.= "id='$id_css'/>";
         return $html;
     }

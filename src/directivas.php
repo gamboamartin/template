@@ -495,6 +495,41 @@ class directivas{
         return $data;
     }
 
+    public function input_file(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
+                               bool $value_vacio): array|string
+    {
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
+        }
+        $place_holder = trim($place_holder);
+        if($place_holder === ''){
+            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
+        }
+
+        $row_upd_ =$row_upd;
+
+        $label = $this->html->label(id_css: $name, place_holder: $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar label', data: $label);
+        }
+
+        $row_upd_ = $this->row_upd_name(name: $name, value_vacio: $value_vacio, row_upd: $row_upd_);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd_);
+        }
+
+        $html= $this->html->file(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
+            required: $required, value: $row_upd_->$name);
+
+        $div = $this->html->div_label(html:  $html,label:$label);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        }
+
+        return $div;
+    }
+
     /**
      * Genera un input text en html
      * @param bool $disabled si disabled el elemento queda deshabilitado
@@ -543,6 +578,8 @@ class directivas{
         return $div;
 
     }
+
+
 
     /**
      * Genera un input tipo required

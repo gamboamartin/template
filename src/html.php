@@ -302,6 +302,20 @@ class html{
         return $html;
     }
 
+    public function file(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+                         mixed $value): string|array
+    {
+        $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
+            required:  $required);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $html = "<input type='file' name='$params->name' value='$value' |class| $params->disabled $params->required ";
+        $html.= "id='$id_css'/>";
+        return $html;
+    }
+
     /**
      * Integra los options en forma de html
      * @param string $descripcion_select Descripcion del option

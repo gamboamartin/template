@@ -13,6 +13,7 @@ class directivas{
     }
 
 
+
     /**
      * Genera un boton next action
      * @param string $label Etiqueta de boton
@@ -161,6 +162,20 @@ class directivas{
         return $div;
     }
 
+    private function div_label(string $html, string $name, string $place_holder): array|string
+    {
+        $label = $this->html->label(id_css: $name, place_holder: $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar label', data: $label);
+        }
+
+        $div = $this->html->div_label(html:  $html,label:$label);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        }
+        return $div;
+    }
+
     /**
      * Genera un input de tipo email como required
      * @param bool $disabled Si disabled el input queda inhabilitado
@@ -236,6 +251,23 @@ class directivas{
 
         return $div;
 
+    }
+
+    private function init_input(string $name, string $place_holder, stdClass $row_upd, bool $value_vacio): array|stdClass
+    {
+        $valida = $this->valida_etiquetas(name: $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar etiquetas', data: $valida);
+        }
+
+
+        $row_upd_ =$row_upd;
+
+        $row_upd_ = $this->row_upd_name(name: $name, value_vacio: $value_vacio, row_upd: $row_upd_);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd_);
+        }
+        return $row_upd_;
     }
 
 
@@ -498,23 +530,9 @@ class directivas{
     public function input_file(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                bool $value_vacio): array|string
     {
-        $name = trim($name);
-        if($name === ''){
-            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
-        }
-        $place_holder = trim($place_holder);
-        if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
-        }
 
-        $row_upd_ =$row_upd;
 
-        $label = $this->html->label(id_css: $name, place_holder: $place_holder);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al generar label', data: $label);
-        }
-
-        $row_upd_ = $this->row_upd_name(name: $name, value_vacio: $value_vacio, row_upd: $row_upd_);
+        $row_upd_ = $this->init_input(name:$name,place_holder:  $place_holder,row_upd:  $row_upd,value_vacio:  $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd_);
         }
@@ -522,7 +540,9 @@ class directivas{
         $html= $this->html->file(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: $required, value: $row_upd_->$name);
 
-        $div = $this->html->div_label(html:  $html,label:$label);
+
+
+        $div = $this->div_label(html:$html, name: $name, place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar div', data: $div);
         }
@@ -545,23 +565,8 @@ class directivas{
                                bool $value_vacio): array|string
     {
 
-        $name = trim($name);
-        if($name === ''){
-            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
-        }
-        $place_holder = trim($place_holder);
-        if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
-        }
 
-        $row_upd_ =$row_upd;
-
-        $label = $this->html->label(id_css: $name, place_holder: $place_holder);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al generar label', data: $label);
-        }
-
-        $row_upd_ = $this->row_upd_name(name: $name, value_vacio: $value_vacio, row_upd: $row_upd_);
+        $row_upd_ = $this->init_input(name:$name,place_holder:  $place_holder,row_upd:  $row_upd,value_vacio:  $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd_);
         }
@@ -570,7 +575,9 @@ class directivas{
         $html= $this->html->text(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: $required, value: $row_upd_->$name);
 
-        $div = $this->html->div_label(html:  $html,label:$label);
+
+
+        $div = $this->div_label(html:$html, name: $name, place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar div', data: $div);
         }
@@ -788,6 +795,19 @@ class directivas{
         $place_holder = trim($place_holder);
         if($place_holder === ''){
             return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder);
+        }
+        return true;
+    }
+
+    private function valida_etiquetas(string $name, string $place_holder): bool|array
+    {
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
+        }
+        $place_holder = trim($place_holder);
+        if($place_holder === ''){
+            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
         }
         return true;
     }

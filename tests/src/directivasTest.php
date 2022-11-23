@@ -166,6 +166,30 @@ class directivasTest extends test {
 
     /**
      */
+    #[NoReturn] public function test_init_input(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $name = 'q';
+        $place_holder = 'f';
+        $row_upd = new stdClass();
+        $value_vacio = false;
+
+
+        $resultado = $html->init_input($name, $place_holder, $row_upd, $value_vacio);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("", $resultado->q);
+
+        errores::$error = false;
+    }
+
+    /**
+     */
     #[NoReturn] public function test_init_text(): void
     {
         errores::$error = false;

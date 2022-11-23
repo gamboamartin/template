@@ -253,16 +253,22 @@ class directivas{
 
     }
 
+    /**
+     * Inicializa un input
+     * @param string $name Name input
+     * @param string $place_holder Tag input
+     * @param stdClass $row_upd Registro en proceso
+     * @param bool $value_vacio si vacio deja el input en vacio
+     * @return array|stdClass
+     * @version 0.104..5
+     */
     private function init_input(string $name, string $place_holder, stdClass $row_upd, bool $value_vacio): array|stdClass
     {
         $valida = $this->valida_etiquetas(name: $name,place_holder:  $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar etiquetas', data: $valida);
         }
-
-
         $row_upd_ =$row_upd;
-
         $row_upd_ = $this->row_upd_name(name: $name, value_vacio: $value_vacio, row_upd: $row_upd_);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd_);

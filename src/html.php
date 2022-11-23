@@ -302,9 +302,26 @@ class html{
         return $html;
     }
 
+    /**
+     * Genera un input de tipo file
+     * @param bool $disabled attr disabled
+     * @param string $id_css identificador css
+     * @param string $name Name input
+     * @param string $place_holder attr place holder
+     * @param bool $required attr required
+     * @param mixed $value value input
+     * @return string|array
+     * @version 0.119.5
+     */
     public function file(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                          mixed $value): string|array
     {
+
+        $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
+
         $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
             required:  $required);
         if(errores::$error){

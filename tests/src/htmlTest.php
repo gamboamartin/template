@@ -325,6 +325,26 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_file(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $required = false;
+        $id_css = 'b';
+        $place_holder = 'c';
+        $name = 'a';
+        $value = '';
+        $resultado = $html->file($disabled, $id_css, $name, $place_holder, $required, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<input type='file' name='a' value='' class = 'form-control'   id='b'/>",$resultado);
+        errores::$error = false;
+    }
+
 
 
     #[NoReturn] public function test_integra_options_html(): void

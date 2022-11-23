@@ -799,6 +799,13 @@ class directivas{
         return true;
     }
 
+    /**
+     * Valida los datos de una etiqueta
+     * @param string $name Name input
+     * @param string $place_holder Tag a mostrar
+     * @return bool|array
+     * @version 0.117.5
+     */
     private function valida_etiquetas(string $name, string $place_holder): bool|array
     {
         $name = trim($name);

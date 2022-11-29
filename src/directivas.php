@@ -162,8 +162,25 @@ class directivas{
         return $div;
     }
 
+    /**
+     * Genera un div con label integrado
+     * @param string $html Html previo
+     * @param string $name Name input
+     * @param string $place_holder Tag input
+     * @return array|string
+     * @version 0.120.5
+     */
     private function div_label(string $html, string $name, string $place_holder): array|string
     {
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error el name esta vacio', data: $name);
+        }
+        $place_holder = trim($place_holder);
+        if($place_holder === ''){
+            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
+        }
+
         $label = $this->html->label(id_css: $name, place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label', data: $label);

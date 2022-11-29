@@ -116,6 +116,27 @@ class directivasTest extends test {
 
     /**
      */
+    #[NoReturn] public function test_div_label(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $name = 'a';
+        $html__ = '';
+        $place_holder = 'b';
+
+        $resultado = $html->div_label($html__, $name, $place_holder);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|></div>", $resultado);
+        errores::$error = false;
+    }
+
+    /**
+     */
     #[NoReturn] public function test_email_required(): void
     {
         errores::$error = false;
@@ -140,7 +161,6 @@ class directivasTest extends test {
     }
 
     /**
-     * @throws JsonException
      */
     #[NoReturn] public function test_fecha_required(): void
     {

@@ -184,6 +184,8 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+
+
     /**
      */
     #[NoReturn] public function test_init_input(): void
@@ -344,8 +346,30 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_input_file(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $name = 'a';
+        $place_holder = 'b';
+        $required = true;
+        $row_upd = new stdClass();
+        $value_vacio = false;
+
+        $resultado = $html->input_file($disabled, $name, $place_holder, $required, $row_upd, $value_vacio);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><input type='file' name='a' value='' class = 'form-control'  required id='a'/></div>", $resultado);
+        errores::$error = false;
+       
+    }
+
     /**
-     * @throws JsonException
      */
     #[NoReturn] public function test_input_id(): void
     {

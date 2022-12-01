@@ -550,10 +550,25 @@ class directivas{
         return $data;
     }
 
+    /**
+     * Genera un input de tipo file
+     * @param bool $disabled atributo disabled
+     * @param string $name Name input
+     * @param string $place_holder Tag input
+     * @param bool $required Atributo required
+     * @param stdClass $row_upd Registro en proceso
+     * @param bool $value_vacio Si vacio deja limpio el input
+     * @return array|string
+     * @version 0.121.5
+     */
     public function input_file(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                bool $value_vacio): array|string
     {
 
+        $valida = $this->valida_etiquetas(name: $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar etiquetas', data: $valida);
+        }
 
         $row_upd_ = $this->init_input(name:$name,place_holder:  $place_holder,row_upd:  $row_upd,value_vacio:  $value_vacio);
         if(errores::$error){

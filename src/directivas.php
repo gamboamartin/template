@@ -954,7 +954,31 @@ class directivas{
         return true;
     }
 
-    private function value_input(stdClass $init, string $name, mixed $value){
+    /**
+     * Integra un value para input dando prioridad a un value
+     * @param stdClass $init Objeto inicializado de input
+     * @param string $name Name input
+     * @param string|null|int|float $value Value del input puede ser nulo
+     * @version 0.130.6
+     */
+    private function value_input(stdClass $init, string $name, string|null|int|float $value): float|int|string|null|array
+    {
+        if(!isset($init->row_upd)){
+            return $this->error->error(mensaje: 'Error $init->row_upd no existe', data: $init);
+        }
+        if(!is_object($init->row_upd)){
+            return $this->error->error(mensaje: 'Error $init->row_upd debe ser un objeto', data: $init);
+        }
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error name esta vacio', data: $name);
+        }
+        if(is_numeric($name)){
+            return $this->error->error(mensaje: 'Error name debe ser un texto no un numero', data: $name);
+        }
+        if(!isset($init->row_upd->$name)){
+            $init->row_upd->$name = '';
+        }
         $value_input = $init->row_upd->$name;
         if(!is_null($value_input)){
             $value_input = $value;

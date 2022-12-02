@@ -715,6 +715,30 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_value_input(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+
+        $init = new stdClass();
+        $name = 'a';
+        $value = 'x';
+
+        $init->row_upd = new stdClass();
+
+        $resultado = $html->value_input($init, $name, $value);
+        $this->assertIsstring($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals('x',$resultado);
+
+        errores::$error = false;
+
+    }
+
 
 }
 

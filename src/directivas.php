@@ -623,6 +623,32 @@ class directivas{
         return $div;
     }
 
+    public function input_monto_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+                                         bool $value_vacio ): array|string
+    {
+
+        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
+        }
+
+        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
+        }
+
+        $html= $this->html->monto(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
+            required: true, value: $init->row_upd->$name);
+
+        $div = $this->html->div_label(html:  $html,label:$init->label);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        }
+
+        return $div;
+
+    }
+
     /**
      * Genera un input text en html
      * @param bool $disabled si disabled el elemento queda deshabilitado

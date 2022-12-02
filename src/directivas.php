@@ -491,6 +491,15 @@ class directivas{
 
     }
 
+    /**
+     * Genera un input de tipo telefono
+     * @param bool $disabled atributo disabled
+     * @param string $name Name input
+     * @param string $place_holder Tag Input
+     * @param stdClass $row_upd Registro en proceso
+     * @param bool $value_vacio Si vacio deja sin value
+     * @return array|string
+     */
     public function input_telefono(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio ): array|string
     {

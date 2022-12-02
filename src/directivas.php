@@ -590,7 +590,7 @@ class directivas{
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
-        $value_input = $init->rrow_upd->$name;
+        $value_input = $init->row_upd->$name;
         if(!is_null($value_input)){
             $value_input = $value;
         }

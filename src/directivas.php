@@ -270,6 +270,22 @@ class directivas{
 
     }
 
+    private function init(string $name, string $place_holder, stdClass $row_upd, mixed $value, bool $value_vacio): array|stdClass
+    {
+        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
+        }
+
+        $value_input = $this->value_input(init: $init,name:  $name,value:  $value);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al obtener value_input', data: $value_input);
+        }
+
+        $init->value_input = $value_input;
+        return $init;
+    }
+
     /**
      * Inicializa un input
      * @param string $name Name input
@@ -585,18 +601,15 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
-        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
+        $init = $this->init(
+            name: $name,place_holder:  $place_holder,row_upd:  $row_upd,value:  $value,value_vacio:  $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
-        $value_input = $init->row_upd->$name;
-        if(!is_null($value_input)){
-            $value_input = $value;
-        }
 
         $html= $this->html->fecha(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: true, value: $value_input);
+            required: true, value: $init->value_input);
 
         $div = $this->html->div_label(html:  $html,label:$init->label);
         if(errores::$error){
@@ -654,18 +667,14 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
-        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
+        $init = $this->init(
+            name: $name,place_holder:  $place_holder,row_upd:  $row_upd,value:  $value,value_vacio:  $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
-        $value_input = $init->row_upd->$name;
-        if(!is_null($value)){
-            $value_input = $value;
-        }
-
         $html= $this->html->monto(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: true, value: $value_input);
+            required: true, value: $init->value_input);
 
         $div = $this->html->div_label(html:  $html,label:$init->label);
         if(errores::$error){
@@ -943,5 +952,13 @@ class directivas{
             return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
         }
         return true;
+    }
+
+    private function value_input(stdClass $init, string $name, mixed $value){
+        $value_input = $init->row_upd->$name;
+        if(!is_null($value_input)){
+            $value_input = $value;
+        }
+        return $value_input;
     }
 }

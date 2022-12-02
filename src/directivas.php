@@ -566,6 +566,16 @@ class directivas{
         return $data;
     }
 
+    /**
+     * Integra un input de tipo fecha required
+     * @param bool $disabled Atributo disabled
+     * @param string $name Name input
+     * @param string $place_holder Label input
+     * @param stdClass $row_upd Registro en proceso
+     * @param bool $value_vacio Si vacio deja vacio el input
+     * @param mixed|null $value Valor prioritario de input
+     * @return array|string
+     */
     public function input_fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                         bool $value_vacio, mixed $value = null ): array|string
     {

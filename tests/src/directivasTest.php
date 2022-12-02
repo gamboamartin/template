@@ -366,7 +366,7 @@ class directivasTest extends test {
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<div |class|><input type='file' name='a' value='' class = 'form-control'  required id='a'/></div>", $resultado);
         errores::$error = false;
-       
+
     }
 
     /**

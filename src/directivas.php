@@ -404,7 +404,6 @@ class directivas{
 
     /**
      * Genera un input text de descripcion_select
-
      * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
@@ -498,10 +497,13 @@ class directivas{
      * @param string $place_holder Tag Input
      * @param stdClass $row_upd Registro en proceso
      * @param bool $value_vacio Si vacio deja sin value
+     * @param bool $required Indica si es requerido
+     * @param mixed|null $value Valor prioritario a integracion en caso de que este seteado
      * @return array|string
+     * @version 0.126.5
      */
     public function input_telefono(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
-                                   bool $value_vacio ): array|string
+                                   bool $value_vacio, bool $required = true, mixed $value = null ): array|string
     {
 
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
@@ -514,8 +516,13 @@ class directivas{
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
-        $html= $this->html->telefono(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: true, value: $init->row_upd->$name);
+        $value_input = $row_upd->$name;
+        if(!is_null($value)){
+            $value_input = $value;
+        }
+
+        $html= $this->html->telefono(disabled: $disabled, id_css: $name, name: $name, place_holder: $place_holder,
+            required: $required, value: $value_input);
 
         $div = $this->html->div_label(html:  $html,label:$init->label);
         if(errores::$error){

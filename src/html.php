@@ -279,8 +279,8 @@ class html{
      * @param string $id_css Identificador de tipo css
      * @param string $name Nombre del input
      * @param string $place_holder Contenido a mostrar previo a la captura del input
-     * @param bool $required
-     * @param mixed $value
+     * @param bool $required Atributo required
+     * @param mixed $value Valor a integrar
      * @return array|string
      */
     public function fecha(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
@@ -383,8 +383,8 @@ class html{
 
     /**
      * Genera un link en el menu lateral con un numero
-     * @param string $etiqueta
-     * @param string $number
+     * @param string $etiqueta Etiqueta a mostrar del menu
+     * @param string $number Numero de etiqueta
      * @return array|string
      */
     public function link_menu_lateral(string $etiqueta, string $number): array|string

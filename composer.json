@@ -27,7 +27,7 @@
         "gamboa.martin/test": "dev-main",
         "gamboa.martin/base_modelos": "dev-main",
         "gamboa.martin/errores": "^1.0.0",
-        "gamboa.martin/administrador": "^4.0.0"
+        "gamboa.martin/administrador": "^3.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"

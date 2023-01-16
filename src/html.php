@@ -442,6 +442,16 @@ class html{
         return "<span class='texto-menu-lateral'>$etiqueta</span>";
     }
 
+    /**
+     *  Integra un input de tipo monto
+     * @param bool $disabled Atributo disabled si true
+     * @param string $id_css Css
+     * @param string $name Atributo name
+     * @param string $place_holder Atributo place holder1
+     * @param bool $required Atributo required si true
+     * @param mixed $value Value input
+     * @return array|string
+     */
     public function monto(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value): array|string
     {

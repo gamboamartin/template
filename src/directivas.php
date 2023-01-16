@@ -727,19 +727,19 @@ class directivas{
     }
 
 
-
     /**
      * Genera un input tipo required
-     * @version 0.48.1
-     * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $disabled si disabled retorna el input como disabled
      * @param string $name Usado para identificador css name input y place holder
      * @param string $place_holder Texto a mostrar en el input
+     * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
+     * @param string $regex
      * @return array|string
+     * @version 0.48.1
      */
     public function input_text_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
-                                        bool $value_vacio ): array|string
+                                        bool $value_vacio, string $regex = '' ): array|string
     {
 
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
@@ -753,7 +753,7 @@ class directivas{
         }
 
         $html= $this->html->text(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: true, value: $init->row_upd->$name);
+            required: true, value: $init->row_upd->$name, regex: $regex);
 
         $div = $this->html->div_label(html:  $html,label:$init->label);
         if(errores::$error){

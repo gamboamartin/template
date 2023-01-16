@@ -190,7 +190,13 @@ class directivas{
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar div', data: $div);
         }
-        return $div;
+
+        $html_r = (new html())->limpia_salida(html: $div);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al limpiar html', data: $html_r);
+        }
+
+        return $html_r;
     }
 
     /**
@@ -709,7 +715,6 @@ class directivas{
 
         $html= $this->html->text(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: $required, value: $row_upd_->$name);
-
 
 
         $div = $this->div_label(html:$html, name: $name, place_holder: $place_holder);

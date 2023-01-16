@@ -156,7 +156,7 @@ class directivasTest extends test {
 
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><input type='text' name='a' value='' |class|  required id='a' placeholder='x' pattern='[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$' /></div>",$resultado);
+        $this->assertEquals("<div |class|><input type='text' name='a' value='' |class| required id='a' placeholder='x' pattern='[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$' /></div>",$resultado);
 
     }
 
@@ -179,7 +179,7 @@ class directivasTest extends test {
         $resultado = $html->fecha_required($disable, $name, $place_holder, $row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><input type='date' name='a' value='' |class|  required id='a' placeholder='c' /></div>", $resultado);
+        $this->assertEquals("<div |class|><input type='date' name='a' value='' |class| required id='a' placeholder='c' /></div>", $resultado);
 
         errores::$error = false;
     }
@@ -251,7 +251,7 @@ class directivasTest extends test {
         $resultado = $html->input_alias($row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><div |class|><input type='text' name='alias' value='' |class|  required id='alias' placeholder='Alias' /></div></div>", $resultado);
+        $this->assertEquals("<div |class|><div |class|><input type='text' name='alias' value='' |class| required id='alias' placeholder='Alias' /></div></div>", $resultado);
         errores::$error = false;
     }
 
@@ -273,7 +273,7 @@ class directivasTest extends test {
 
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><div |class|><input type='text' name='codigo' value='' |class|  required id='codigo' placeholder='Codigo' /></div></div>", $resultado);
+        $this->assertEquals("<div |class|><div |class|><input type='text' name='codigo' value='' |class| required id='codigo' placeholder='Codigo' /></div></div>", $resultado);
         errores::$error = false;
     }
     /**
@@ -294,7 +294,7 @@ class directivasTest extends test {
 
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><div |class|><input type='text' name='codigo_bis' value='' |class|  required id='codigo_bis' placeholder='Codigo BIS' /></div></div>", $resultado);
+        $this->assertEquals("<div |class|><div |class|><input type='text' name='codigo_bis' value='' |class| required id='codigo_bis' placeholder='Codigo BIS' /></div></div>", $resultado);
         errores::$error = false;
     }
 
@@ -315,7 +315,7 @@ class directivasTest extends test {
         $resultado = $html->input_descripcion($row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><div |class|><input type='text' name='descripcion' value='' |class|  required id='descripcion' placeholder='Descripcion' /></div></div>", $resultado);
+        $this->assertEquals("<div |class|><div |class|><input type='text' name='descripcion' value='' |class| required id='descripcion' placeholder='Descripcion' /></div></div>", $resultado);
         errores::$error = false;
     }
 
@@ -341,7 +341,7 @@ class directivasTest extends test {
         $resultado = $html->input_descripcion_select($row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><div |class|><input type='text' name='descripcion_select' value='' |class|  required id='descripcion_select' placeholder='Descripcion Select' /></div></div>", $resultado);
+        $this->assertEquals("<div |class|><div |class|><input type='text' name='descripcion_select' value='' |class| required id='descripcion_select' placeholder='Descripcion Select' /></div></div>", $resultado);
 
         errores::$error = false;
     }
@@ -364,7 +364,7 @@ class directivasTest extends test {
         $resultado = $html->input_file($disabled, $name, $place_holder, $required, $row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><input type='file' name='a' value='' class = 'form-control'  required id='a'/></div>", $resultado);
+        $this->assertEquals("<div |class|><input type='file' name='a' value='' class = 'form-control' required id='a'/></div>", $resultado);
         errores::$error = false;
 
     }
@@ -386,7 +386,7 @@ class directivasTest extends test {
         $resultado = $html->input_id($cols, $row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><div |class|><input type='text' name='id' value='' |class| disabled  id='id' placeholder='ID' /></div></div>", $resultado);
+        $this->assertEquals("<div |class|><div |class|><input type='text' name='id' value='' |class| disabled id='id' placeholder='ID' /></div></div>", $resultado);
         errores::$error = false;
     }
 
@@ -409,7 +409,7 @@ class directivasTest extends test {
         $resultado = $html->input_password($disable, $name, $place_holder, $row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><input type='password' name='a' value='' class='form-control'   required id='a' placeholder='b' /></div>", $resultado);
+        $this->assertEquals("<div |class|><input type='password' name='a' value='' class='form-control' required id='a' placeholder='b' /></div>", $resultado);
 
         errores::$error = false;
     }
@@ -432,7 +432,7 @@ class directivasTest extends test {
         $resultado = $html->input_telefono($disabled, $name, $place_holder, $row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><input type='text' name='a' value='' class='form-control'   required id='a' placeholder='b' pattern='[1-9]{1}[0-9]{9}' /></div>", $resultado);
+        $this->assertEquals("<div |class|><input type='text' name='a' value='' class='form-control' required id='a' placeholder='b' pattern='[1-9]{1}[0-9]{9}' /></div>", $resultado);
         errores::$error = false;
 
     }
@@ -459,7 +459,7 @@ class directivasTest extends test {
         $resultado = $html->input_text($disable, $name, $place_holder, $required, $row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><input type='text' name='a' value='' |class|   id='a' placeholder='b' /></div>", $resultado);
+        $this->assertEquals("<div |class|><input type='text' name='a' value='' |class| id='a' placeholder='b' /></div>", $resultado);
         errores::$error = false;
     }
 
@@ -482,7 +482,7 @@ class directivasTest extends test {
         $resultado = $html->input_text_required($disable, $name, $place_holder, $row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><input type='text' name='z' value='' |class|  required id='z' placeholder='d' /></div>", $resultado);
+        $this->assertEquals("<div |class|><input type='text' name='z' value='' |class| required id='z' placeholder='d' /></div>", $resultado);
         errores::$error = false;
     }
 

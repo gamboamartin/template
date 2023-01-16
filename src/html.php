@@ -167,7 +167,15 @@ class html{
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
         }
-        return "<div |class|>$html</div>";
+
+        $html_r = "<div |class|>$html</div>";
+
+        $html_r = $this->limpia_salida(html: $html_r);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al limpiar salida', data: $html_r);
+        }
+
+        return $html_r;
     }
 
     /**
@@ -179,7 +187,14 @@ class html{
      */
     public function div_label(string $html, string $label): string
     {
-        return $label."<div |class|>$html</div>";
+        $div_r = $label."<div |class|>$html</div>";
+
+        $div_r = $this->limpia_salida(html: $div_r);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al limpiar salida', data: $div_r);
+        }
+
+        return $div_r;
     }
 
     /**
@@ -379,6 +394,16 @@ class html{
         }
 
        return "";
+    }
+
+    public function limpia_salida(string $html): array|string
+    {
+        $html_r = str_replace('  ',' ', $html);
+        $html_r = str_replace('  ',' ', $html_r);
+        $html_r = str_replace('  ',' ', $html_r);
+        $html_r = str_replace('  ',' ', $html_r);
+        $html_r = str_replace('  ',' ', $html_r);
+        return str_replace('  /',' /', $html_r);
     }
 
     /**
@@ -630,16 +655,17 @@ class html{
 
     /**
      * Genera y valida los parametros de in input tipo text
-     * @version 0.28.0
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css
      * @param string $name Nombre del input
      * @param string $place_holder Contenido a mostrar previo a la captura del input
      * @param bool $required Si required aplica required en html
+     * @param string $regex Integra un regex para atributo pattern del input
      * @return array|stdClass
+     * @version 0.28.0
      */
     private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder,
-                                bool $required): array|stdClass
+                                bool $required, string $regex = ''): array|stdClass
     {
 
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
@@ -658,12 +684,20 @@ class html{
             return $this->error->error(mensaje: 'Error al generar $required_html', data: $required_html);
         }
 
+        $regex_html = '';
+        $regex = trim($regex);
+        if($regex !== ''){
+            $regex_html = "pattern='$regex'";
+        }
+
+
         $params = new stdClass();
         $params->name = $name;
         $params->id_css = $id_css;
         $params->place_holder = $place_holder;
         $params->disabled = $disabled_html;
         $params->required = $required_html;
+        $params->regex = $regex_html;
 
         return $params;
     }
@@ -823,23 +857,30 @@ class html{
      * @param string $place_holder Muestra elemento en input
      * @param bool $required indica si es requerido o no
      * @param mixed $value Valor en caso de que exista
+     * @param mixed $regex Integra regex a pattern
      * @return string|array Html en forma de input text
      * @version 0.9.0
      */
     public function text(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
-                         mixed $value): string|array
+                         mixed $value, string $regex = ''): string|array
     {
 
         $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
-            required:  $required);
+            required:  $required, regex: $regex);
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
         }
 
         $html = "<input type='text' name='$params->name' value='$value' |class| $params->disabled $params->required ";
-        $html.= "id='$id_css' placeholder='$params->place_holder' />";
-        return $html;
+        $html.= "id='$id_css' placeholder='$params->place_holder' $params->regex />";
+
+        $html_r = $this->limpia_salida(html: $html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al limpiar html', data: $html_r);
+        }
+
+        return $html_r;
     }
 
 

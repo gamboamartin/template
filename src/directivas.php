@@ -276,6 +276,14 @@ class directivas{
 
     }
 
+    /** Inicializa un input de tipo text
+     * @param string $name Name input
+     * @param string $place_holder place_holder input
+     * @param stdClass $row_upd Registro en proceso
+     * @param mixed $value Valor del input
+     * @param bool $value_vacio si vacio no integra value de row
+     * @return array|stdClass
+     */
     private function init(string $name, string $place_holder, stdClass $row_upd, mixed $value, bool $value_vacio): array|stdClass
     {
         $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);

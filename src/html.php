@@ -671,18 +671,18 @@ class html{
      * @param string $place_holder Contenido a mostrar previo a la captura del input
      * @param bool $required Si required aplica required en html
      * @param string $regex Integra un regex para atributo pattern del input
+     * @param string $title Title de input
      * @return array|stdClass
      * @version 0.28.0
      */
     private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder,
-                                bool $required, string $regex = ''): array|stdClass
+                                bool $required, string $regex = '', string $title = ''): array|stdClass
     {
 
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
-
 
         $disabled_html = (new params_inputs())->disabled_html(disabled:$disabled);
         if(errores::$error){
@@ -694,12 +694,15 @@ class html{
             return $this->error->error(mensaje: 'Error al generar $required_html', data: $required_html);
         }
 
-        $regex_html = '';
-        $regex = trim($regex);
-        if($regex !== ''){
-            $regex_html = "pattern='$regex'";
+        $regex_html = (new params_inputs())->regex_html(regex: $regex);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar regex_html', data: $regex_html);
         }
 
+        $title_html = (new params_inputs())->title_html(place_holder: $place_holder, title: $title);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar title_html', data: $title_html);
+        }
 
         $params = new stdClass();
         $params->name = $name;
@@ -708,6 +711,7 @@ class html{
         $params->disabled = $disabled_html;
         $params->required = $required_html;
         $params->regex = $regex_html;
+        $params->title = $title_html;
 
         return $params;
     }
@@ -872,11 +876,13 @@ class html{
      * @version 0.9.0
      */
     public function text(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
-                         mixed $value, string $regex = ''): string|array
+                         mixed $value, string $regex = '', string $title = ''): string|array
     {
 
+
+
         $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
-            required:  $required, regex: $regex);
+            required:  $required, regex: $regex, title: $title);
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);

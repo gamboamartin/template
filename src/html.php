@@ -287,6 +287,15 @@ class html{
         return $extra_params_html;
     }
 
+    private function extra_param_data(array $extra_params_key, array $row): array
+    {
+        $extra_params = array();
+        foreach ($extra_params_key as $key_extra_param){
+            $extra_params[$key_extra_param] = $row[$key_extra_param];
+        }
+        return $extra_params;
+    }
+
     /**
      * Obtiene el html de una fecha
      * @version 0.31.1
@@ -528,6 +537,27 @@ class html{
         return "<option value='$value' $selected_html $extra_params_html>$descripcion</option>";
     }
 
+    private function option_con_extra_param(array $extra_params_key, int|null $id_selected, string $options_html_,
+                                            array $row, mixed $row_id){
+        $keys = array('descripcion_select');
+        $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar row', data: $valida);
+        }
+
+        $extra_params = $this->extra_param_data(extra_params_key: $extra_params_key,row:  $row);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar extra params', data: $extra_params);
+        }
+
+        $options_html_ = $this->integra_options_html(descripcion_select: $row['descripcion_select'],
+            id_selected: $id_selected,options_html: $options_html_,value: $row_id, extra_params: $extra_params);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
+        }
+        return $options_html_;
+    }
+
     /**
      * Genera un option en forma de html
      * @param string $descripcion_select Descripcion a mostrar en option
@@ -608,9 +638,6 @@ class html{
     private function options_html_data(mixed $id_selected, string $options_html, array $values,
                                        array $extra_params_key = array()): array|string
     {
-        /**
-         * REFACTORIZAR
-         */
         $options_html_ = $options_html;
         foreach ($values as $row_id=>$row){
             if(!is_array($row)){
@@ -622,12 +649,8 @@ class html{
                 return $this->error->error(mensaje: 'Error al validar row', data: $valida);
             }
 
-            $extra_params = array();
-            foreach ($extra_params_key as $key_extra_param){
-                $extra_params[$key_extra_param] = $row[$key_extra_param];
-            }
-            $options_html_ = $this->integra_options_html(descripcion_select: $row['descripcion_select'],
-                id_selected: $id_selected,options_html: $options_html_,value: $row_id, extra_params: $extra_params);
+            $options_html_ = $this->option_con_extra_param(extra_params_key: $extra_params_key,
+                id_selected:  $id_selected,options_html_:  $options_html_,row:  $row,row_id:  $row_id);
             if(errores::$error){
                 return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
             }
@@ -983,7 +1006,7 @@ class html{
 
     /**
      * Valida los parametros de un input text
-     * @param string $id_css Identifcador css
+     * @param string $id_css Identificador css
      * @param string $name Nombre del input
      * @param string $place_holder Label a mostrar en input
      * @return bool|array

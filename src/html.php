@@ -894,7 +894,7 @@ class html{
         }
 
         $html = "<input type='text' name='$params->name' value='$value' |class| $params->disabled $params->required ";
-        $html.= "id='$id_css' placeholder='$params->place_holder' $params->regex />";
+        $html.= "id='$id_css' placeholder='$params->place_holder' $params->regex $params->title />";
 
         $html_r = $this->limpia_salida(html: $html);
         if(errores::$error){

@@ -396,6 +396,11 @@ class html{
        return "";
     }
 
+    /**
+     * Limpiar la salida html
+     * @param string $html dato a limpiar
+     * @return array|string
+     */
     public function limpia_salida(string $html): array|string
     {
         $html_r = str_replace('  ',' ', $html);

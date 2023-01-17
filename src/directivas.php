@@ -896,6 +896,12 @@ class directivas{
         return true;
     }
 
+    /**
+     * Valida los elementos base de un input
+     * @param string $label Etiqueta
+     * @param string $value Valor
+     * @return bool|array
+     */
     public function valida_data_base(string $label, string $value): bool|array
     {
         $label = trim($label);

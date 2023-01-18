@@ -902,7 +902,7 @@ class directivas{
      * @param string $value Valor
      * @return bool|array
      */
-    public function valida_data_base(string $label, string $value): bool|array
+    final public function valida_data_base(string $label, string $value): bool|array
     {
         $label = trim($label);
         if($label === ''){

@@ -940,7 +940,7 @@ class directivas{
      * @param string $place_holder Dato a mostrar dentro del input de manera inicial
      * @return bool|array
      */
-    public function valida_data_label(string $name, string $place_holder): bool|array
+    final public function valida_data_label(string $name, string $place_holder): bool|array
     {
 
         $name = trim($name);

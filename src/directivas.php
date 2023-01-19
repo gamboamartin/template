@@ -46,7 +46,7 @@ class directivas{
      * @return array|string
      * @version 0.84.4
      */
-    public function btn_action_next_div(string $label,string $value, int $cols = 6, string $style = 'info',
+    final public function btn_action_next_div(string $label,string $value, int $cols = 6, string $style = 'info',
                                         string $type='submit'): array|string
     {
         $valida = $this->valida_btn_next(label: $label,style:  $style,type:  $type,value:  $value);
@@ -876,7 +876,7 @@ class directivas{
      * @return bool|array
      * @version 0.92.4
      */
-    public function valida_btn_next(string $label, string $style, string $type, string $value): bool|array
+    final public function valida_btn_next(string $label, string $style, string $type, string $value): bool|array
     {
 
         $valida = $this->valida_data_base(label: $label,value:  $value);
@@ -922,7 +922,7 @@ class directivas{
      * @version 0.4.0
      * @return bool|array
      */
-    public function valida_cols(int $cols): bool|array
+    final public function valida_cols(int $cols): bool|array
     {
         if($cols<=0){
             return $this->error->error(mensaje: 'Error cols debe ser mayor a 0', data: $cols);

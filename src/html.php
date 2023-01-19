@@ -20,7 +20,7 @@ class html{
      * @return string|array Resultado en un html
      * @version 0.78.4
      */
-    public function alert_success(string $mensaje): string|array
+    final public function alert_success(string $mensaje): string|array
     {
         $mensaje = trim($mensaje);
         if($mensaje === ''){

@@ -800,7 +800,7 @@ class directivas{
      * @param string $mensaje_exito mensaje a mostrar
      * @return array|string
      */
-    public function mensaje_exito(string $mensaje_exito): array|string
+    final public function mensaje_exito(string $mensaje_exito): array|string
     {
         $alert_exito = '';
         if($mensaje_exito!==''){

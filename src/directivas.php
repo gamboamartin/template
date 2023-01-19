@@ -79,7 +79,7 @@ class directivas{
      * @param string $style Estilo del boton info,danger,warning etc
      * @return array|string
      */
-    protected function button_href(string $accion, string $etiqueta, string $name, string $place_holder, int $registro_id,
+    final protected function button_href(string $accion, string $etiqueta, string $name, string $place_holder, int $registro_id,
                                  string $seccion, string $style): array|string
     {
 
@@ -127,7 +127,7 @@ class directivas{
      * @param string $status debe ser activo inactivo
      * @return array|string
      */
-    public function button_href_status(int $cols, int $registro_id, string $seccion, string $status): array|string
+    final public function button_href_status(int $cols, int $registro_id, string $seccion, string $status): array|string
     {
 
         $seccion = trim($seccion);
@@ -781,7 +781,7 @@ class directivas{
      * @param string $place_holder Etiqueta a mostrar
      * @return array|string
      */
-    protected function label_input(string $name, string $place_holder): array|string
+    final protected function label_input(string $name, string $place_holder): array|string
     {
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
         if(errores::$error){

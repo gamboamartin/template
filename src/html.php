@@ -55,6 +55,7 @@ class html{
      * @param array $params Parametros para incrustar post GET
      * @return string|array
      * @version 0.11.0
+     * @final revisada
      */
     public function button_href(string $accion, string $etiqueta, int $registro_id, string $seccion,
                                 string $style, array $params = array()): string|array
@@ -160,6 +161,7 @@ class html{
      * @param string $html Html a integrar en contendedor
      * @return string|array
      * @version 0.14.0
+     * @final revisada
      */
     public function div_group(int $cols, string $html): string|array
     {
@@ -184,6 +186,7 @@ class html{
      * @param string $html Contenido del div
      * @param string $label Contenido de etiqueta
      * @return string
+     * @final revisada
      */
     public function div_label(string $html, string $label): string
     {
@@ -391,7 +394,7 @@ class html{
      * @param string $place_holder Etiqueta a mostrar
      * @return string|array string Salida html de label
      */
-    public function label(string $id_css, string $place_holder): string|array
+    final public function label(string $id_css, string $place_holder): string|array
     {
         $id_css = trim($id_css);
         if($id_css === ''){
@@ -410,7 +413,7 @@ class html{
      * @param string $html dato a limpiar
      * @return array|string
      */
-    public function limpia_salida(string $html): array|string
+    final public function limpia_salida(string $html): array|string
     {
         $html_r = str_replace('  ',' ', $html);
         $html_r = str_replace('  ',' ', $html_r);
@@ -938,7 +941,7 @@ class html{
      * @param string $style Estilo css
      * @return bool|array
      */
-    public function valida_input(string $accion, string $etiqueta, string $seccion, string $style): bool|array
+    final public function valida_input(string $accion, string $etiqueta, string $seccion, string $style): bool|array
     {
         $seccion = trim($seccion);
         if($seccion === ''){

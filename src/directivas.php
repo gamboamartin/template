@@ -819,7 +819,7 @@ class directivas{
      * @return array|string
 
      */
-    public function mensaje_warning( string $mensaje_warning): array|string
+    final public function mensaje_warning( string $mensaje_warning): array|string
     {
         $alert_warning = '';
         if($mensaje_warning!==''){

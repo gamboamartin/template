@@ -35,7 +35,7 @@ class html{
      * @return string|array
      * @version 0.89.4
      */
-    public function alert_warning(string $mensaje): string|array
+    final public function alert_warning(string $mensaje): string|array
     {
         $mensaje = trim($mensaje);
         if($mensaje === ''){

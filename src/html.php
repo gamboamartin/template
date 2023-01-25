@@ -89,7 +89,7 @@ class html{
      * @return string|array
      * @version 0.50.1
      */
-    protected function div_control_group_cols(int $cols, string $contenido): string|array
+    final protected function div_control_group_cols(int $cols, string $contenido): string|array
     {
         $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
         if(errores::$error){

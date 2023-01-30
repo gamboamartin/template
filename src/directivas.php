@@ -246,7 +246,7 @@ class directivas{
      * @return array|string
      * @version 0.102.4
      */
-    public function fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+    final public function fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio ): array|string
     {
 

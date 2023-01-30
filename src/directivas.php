@@ -209,7 +209,7 @@ class directivas{
      * @return array|string
      * @version 0.99.4
      */
-    public function email_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+    final public function email_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio ): array|string
     {
 
@@ -573,7 +573,8 @@ class directivas{
      * @param bool $value_vacio Si vacio inicializa row name como vacio
      * @return array|stdClass
      */
-    protected function init_text(string $name, string $place_holder, stdClass $row_upd, bool $value_vacio): array|stdClass
+    final protected function init_text(string $name, string $place_holder, stdClass $row_upd,
+                                       bool $value_vacio): array|stdClass
     {
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
         if(errores::$error){

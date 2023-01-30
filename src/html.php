@@ -241,6 +241,7 @@ class html{
      * @param bool $required Si required aplica required en html
      * @param mixed $value Valor de input
      * @return array|string
+     * @final rev
      */
     public function email(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value): array|string
@@ -1015,7 +1016,7 @@ class html{
      * @return bool|array
      * @version 0.90.4
      */
-    protected function valida_params_txt(string $id_css, string $name, string $place_holder): bool|array
+    final protected function valida_params_txt(string $id_css, string $name, string $place_holder): bool|array
     {
         $name = trim($name);
         if($name === ''){

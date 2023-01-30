@@ -208,8 +208,9 @@ class directivas{
      * @param bool $value_vacio Si valor vacio el value lo deja vacio
      * @return array|string
      * @version 0.99.4
+     * @final rev
      */
-    final public function email_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+    public function email_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio ): array|string
     {
 

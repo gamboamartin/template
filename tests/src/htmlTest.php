@@ -366,6 +366,23 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_limpia_salida(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $html_ = '/  /    /  /';
+
+
+        $resultado = $html->limpia_salida($html_);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("/ / / /",$resultado);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_menu_lateral(): void
     {
         errores::$error = false;

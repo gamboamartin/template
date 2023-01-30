@@ -15,10 +15,10 @@ class html{
 
     /**
      * Genera un alert html boostrap con un mensaje incluido
-
      * @param string $mensaje Mensaje a mostrar
      * @return string|array Resultado en un html
      * @version 0.78.4
+     * @por_doc true
      */
     final public function alert_success(string $mensaje): string|array
     {
@@ -34,6 +34,7 @@ class html{
      * @param string $mensaje Mensaje a mostrar en el warning
      * @return string|array
      * @version 0.89.4
+     * @por_doc true
      */
     final public function alert_warning(string $mensaje): string|array
     {
@@ -908,6 +909,7 @@ class html{
      * @param mixed $regex Integra regex a pattern
      * @return string|array Html en forma de input text
      * @version 0.9.0
+     * @final rev
      */
     public function text(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                          mixed $value, string $regex = '', string $title = ''): string|array
@@ -943,6 +945,7 @@ class html{
      * @param string $seccion Seccion en ejecucion
      * @param string $style Estilo css
      * @return bool|array
+     * @por_doc true
      */
     final public function valida_input(string $accion, string $etiqueta, string $seccion, string $style): bool|array
     {

@@ -394,8 +394,9 @@ class html{
      * @param string $id_css id de css
      * @param string $place_holder Etiqueta a mostrar
      * @return string|array string Salida html de label
+     * @final rev
      */
-    final public function label(string $id_css, string $place_holder): string|array
+    public function label(string $id_css, string $place_holder): string|array
     {
         $id_css = trim($id_css);
         if($id_css === ''){

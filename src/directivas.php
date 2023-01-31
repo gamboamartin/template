@@ -441,7 +441,7 @@ class directivas{
      * @return array|string
      * @version 0.94.4
      */
-    public function input_descripcion_select(stdClass $row_upd, bool $value_vacio): array|string
+    final public function input_descripcion_select(stdClass $row_upd, bool $value_vacio): array|string
     {
         $html =$this->input_text_required(disabled: false,name: 'descripcion_select',
             place_holder: 'Descripcion Select', row_upd: $row_upd, value_vacio: $value_vacio);
@@ -713,7 +713,7 @@ class directivas{
      * @return array|string
      * @version 0.101.4
      */
-    public function input_text(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
+    final public function input_text(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                bool $value_vacio): array|string
     {
 

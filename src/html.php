@@ -311,8 +311,9 @@ class html{
      * @param bool $required Atributo required
      * @param mixed $value Valor a integrar
      * @return array|string
+     * @final rev
      */
-    final public function fecha(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+     public function fecha(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value): array|string
     {
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);

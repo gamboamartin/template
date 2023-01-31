@@ -417,7 +417,7 @@ class directivas{
      * @return array|string
      * @version 0.106.4
      */
-    public function input_descripcion(stdClass $row_upd, bool $value_vacio): array|string
+    final public function input_descripcion(stdClass $row_upd, bool $value_vacio): array|string
     {
         $html =$this->input_text_required(disabled: false,name: 'descripcion', place_holder: 'Descripcion',
             row_upd: $row_upd, value_vacio: $value_vacio);

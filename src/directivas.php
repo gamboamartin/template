@@ -358,7 +358,7 @@ class directivas{
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
      */
-    public function input_codigo(int $cols, stdClass $row_upd, bool $value_vacio): array|string
+    final public function input_codigo(int $cols, stdClass $row_upd, bool $value_vacio): array|string
     {
 
         $valida = $this->valida_cols(cols: $cols);
@@ -388,7 +388,7 @@ class directivas{
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
      */
-    public function input_codigo_bis(int $cols, stdClass $row_upd, bool $value_vacio): array|string
+    final public function input_codigo_bis(int $cols, stdClass $row_upd, bool $value_vacio): array|string
     {
 
         $valida = $this->valida_cols(cols: $cols);

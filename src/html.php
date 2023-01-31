@@ -977,7 +977,7 @@ class html{
      * @return bool|array
      * @version 0.88.4
      */
-    protected function valida_input_select(int $cols, string $label, string $name): bool|array
+    final protected function valida_input_select(int $cols, string $label, string $name): bool|array
     {
         $label = trim($label);
         if($label === ''){

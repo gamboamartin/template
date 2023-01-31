@@ -332,6 +332,7 @@ class directivas{
      * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
+     * @final rev
      */
     public function input_alias(stdClass $row_upd, bool $value_vacio): array|string
     {
@@ -749,7 +750,7 @@ class directivas{
      * @return array|string
      * @version 0.48.1
      */
-    public function input_text_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+    final public function input_text_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                         bool $value_vacio, string $regex = '', string $title = '' ): array|string
     {
 

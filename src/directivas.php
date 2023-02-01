@@ -465,7 +465,7 @@ class directivas{
      * @return array|string
      * @version 0.103.4
      */
-    public function input_id(int $cols, stdClass $row_upd, bool $value_vacio): array|string
+    final public function input_id(int $cols, stdClass $row_upd, bool $value_vacio): array|string
     {
         $valida = (new directivas(html: $this->html))->valida_cols(cols: $cols);
         if(errores::$error){

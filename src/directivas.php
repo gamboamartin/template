@@ -534,7 +534,7 @@ class directivas{
      * @return array|string
      * @version 0.126.5
      */
-    public function input_telefono(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+    final public function input_telefono(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio, bool $required = true, mixed $value = null ): array|string
     {
 

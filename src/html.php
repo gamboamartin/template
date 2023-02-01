@@ -868,7 +868,7 @@ class html{
      * @return string|array
      * @version 0.112.4
      */
-    public function telefono(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+    final public function telefono(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                              mixed $value): string|array
     {
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);

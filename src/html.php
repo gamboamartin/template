@@ -849,7 +849,7 @@ class html{
      * @fecha 2022-08-02 14:17
      * @author mgamboa
      */
-    protected function selected(mixed $value, mixed $id_selected): bool
+    final protected function selected(mixed $value, mixed $id_selected): bool
     {
         $selected = false;
         if((string)$value === (string)$id_selected){

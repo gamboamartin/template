@@ -434,7 +434,7 @@ class html{
      * @param string $number Numero de etiqueta
      * @return array|string
      */
-    public function link_menu_lateral(string $etiqueta, string $number): array|string
+    final public function link_menu_lateral(string $etiqueta, string $number): array|string
     {
         $number_html = $this->number_menu_lateral(number: $number);
         if(errores::$error){
@@ -455,7 +455,7 @@ class html{
      * @return string|array
      * @version 0.96.4
      */
-    public function menu_lateral(string $etiqueta): string|array
+    final public function menu_lateral(string $etiqueta): string|array
     {
         $etiqueta = trim($etiqueta);
         if($etiqueta === ''){

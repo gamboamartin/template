@@ -343,7 +343,7 @@ class html{
      * @return string|array
      * @version 0.119.5
      */
-    public function file(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+    final public function file(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                          mixed $value): string|array
     {
 

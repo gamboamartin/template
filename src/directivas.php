@@ -609,7 +609,7 @@ class directivas{
      * @param mixed|null $value Valor prioritario de input
      * @return array|string
      */
-    public function input_fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+    final public function input_fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                         bool $value_vacio, mixed $value = null ): array|string
     {
 
@@ -648,7 +648,7 @@ class directivas{
      * @return array|string
      * @version 0.121.5
      */
-    public function input_file(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
+    final public function input_file(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                bool $value_vacio): array|string
     {
 

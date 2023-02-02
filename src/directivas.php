@@ -675,7 +675,7 @@ class directivas{
         return $div;
     }
 
-    public function input_monto_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+    final public function input_monto_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                          bool $value_vacio , mixed $value = null): array|string
     {
 

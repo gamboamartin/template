@@ -473,6 +473,7 @@ class html{
      * @param bool $required Atributo required si true
      * @param mixed $value Value input
      * @return array|string
+     * @final rev
      */
     public function monto(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value): array|string

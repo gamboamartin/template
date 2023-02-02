@@ -496,7 +496,7 @@ class directivas{
      * @return array|string
      * @version 1.110.4
      */
-    public function input_password(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+    final public function input_password(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                         bool $value_vacio ): array|string
     {
 

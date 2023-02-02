@@ -770,7 +770,7 @@ class html{
      * @fecha 2022-08-03 15:42
      * @author mgamboa
      */
-    public function select(int $cols, int $id_selected, string $label,string $name, array $values,
+    final public function select(int $cols, int $id_selected, string $label,string $name, array $values,
                            bool $disabled = false, array $extra_params_key = array(),
                            bool $required = false): array|string
     {

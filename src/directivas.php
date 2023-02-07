@@ -284,9 +284,17 @@ class directivas{
      * @param mixed $value Valor del input
      * @param bool $value_vacio si vacio no integra value de row
      * @return array|stdClass
+     * @version 6.24.2
      */
-    private function init(string $name, string $place_holder, stdClass $row_upd, mixed $value, bool $value_vacio): array|stdClass
+    private function init(string $name, string $place_holder, stdClass $row_upd, mixed $value,
+                          bool $value_vacio): array|stdClass
     {
+
+        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
+        }
+
         $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);

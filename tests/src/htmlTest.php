@@ -398,6 +398,26 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_monto(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $id_css = 'd';
+        $required = true;
+        $name = 'd';
+        $place_holder = 'd';
+        $value = '';
+        $resultado = $html->monto($disabled, $id_css, $name, $place_holder, $required, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<input type='text' name='d' value='' |class|  required id='d' placeholder='d' />", $resultado);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_number_menu_lateral(): void
     {
         errores::$error = false;

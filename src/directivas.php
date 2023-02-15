@@ -277,6 +277,37 @@ class directivas{
 
     }
 
+    final public function fecha(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
+                                   bool $value_vacio ): array|string
+    {
+
+        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
+        }
+
+        $data_init = $this->init_text(name: $name, place_holder: $place_holder,row_upd:  $row_upd,
+            value_vacio: $value_vacio);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al inicializar row_upd div', data: $data_init);
+        }
+
+        $html= $this->html->fecha(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
+            required: $required, value: $data_init->row_upd->$name);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar input fecha', data: $html);
+        }
+
+        $div = $this->html->div_label(html:  $html,label:$data_init->label);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        }
+
+        return $div;
+
+    }
+
     /** Inicializa un input de tipo text
      * @param string $name Name input
      * @param string $place_holder place_holder input

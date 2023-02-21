@@ -214,7 +214,7 @@ class html{
      * @fecha 2022-08-03 15:07
      * @author mgamboa
      */
-    final protected function div_select(string $name, string $options_html, bool $disabled = false,
+    public function div_select(string $name, string $options_html, bool $disabled = false,
                                   bool $required = false): array|string
     {
         $required_html = (new params_inputs())->required_html(required: $required);

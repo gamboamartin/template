@@ -266,7 +266,7 @@ class html{
         }
 
         $html = "<input type='text' name='$params->name' value='$value' |class| $params->disabled $params->required ";
-        $html.= "id='$params->id_css' placeholder='$params->place_holder' pattern='{$val->patterns['correo_html5']}' />";
+        $html.= "id='$params->id_css' placeholder='$params->place_holder' pattern='".$val->patterns['correo_html_base']."' />";
         return $html;
     }
 

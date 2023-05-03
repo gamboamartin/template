@@ -156,7 +156,7 @@ class directivasTest extends test {
 
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><input type='text' name='a' value='' |class| required id='a' placeholder='x' pattern='[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$' /></div>",$resultado);
+        $this->assertEquals("<div |class|><input type='text' name='a' value='' |class| required id='a' placeholder='x' pattern='[^@\s]+@[^@\s]+[^.\s]' /></div>",$resultado);
 
     }
 

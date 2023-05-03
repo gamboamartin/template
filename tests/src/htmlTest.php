@@ -272,7 +272,7 @@ class htmlTest extends test {
         $resultado = $html->email($disabled, $id_css, $name, $place_holder, $required, $value);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<input type='text' name='a' value='' |class|   id='c' placeholder='c' pattern='[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$' />",$resultado);
+        $this->assertEquals("<input type='text' name='a' value='' |class|   id='c' placeholder='c' pattern='[^@\s]+@[^@\s]+[^.\s]' />",$resultado);
 
     }
 

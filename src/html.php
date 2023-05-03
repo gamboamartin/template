@@ -303,19 +303,21 @@ class html{
 
     /**
      * Obtiene el html de una fecha
-     * @version 0.31.1
      * @param bool $disabled Si disabled retorna text disabled
      * @param string $id_css Identificador de tipo css
      * @param string $name Nombre del input
      * @param string $place_holder Contenido a mostrar previo a la captura del input
      * @param bool $required Atributo required
      * @param mixed $value Valor a integrar
+     * @param bool $value_hora te integra date time si value hora es true
      * @return array|string
-     * @final rev
+     * @finalrev
+     * @version 0.31.1
      */
      public function fecha(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
-                          mixed $value): array|string
+                          mixed $value, bool $value_hora = false): array|string
     {
+
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
@@ -325,6 +327,11 @@ class html{
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $type = 'date';
+        if($value_hora){
+            $type = 'datetime-local';
         }
 
         $html = "<input type='date' name='$params->name' value='$value' |class| $params->disabled $params->required ";

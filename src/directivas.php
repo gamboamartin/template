@@ -646,10 +646,11 @@ class directivas{
      * @param stdClass $row_upd Registro en proceso
      * @param bool $value_vacio Si vacio deja vacio el input
      * @param mixed|null $value Valor prioritario de input
+     * @param bool $value_hora Si es verdadero integra datetime en input
      * @return array|string
      */
     final public function input_fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
-                                        bool $value_vacio, mixed $value = null ): array|string
+                                        bool $value_vacio, mixed $value = null, bool $value_hora = false ): array|string
     {
 
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
@@ -665,7 +666,7 @@ class directivas{
 
 
         $html= $this->html->fecha(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: true, value: $init->value_input);
+            required: true, value: $init->value_input, value_hora: $value_hora);
 
         $div = $this->html->div_label(html:  $html,label:$init->label);
         if(errores::$error){

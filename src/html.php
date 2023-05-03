@@ -334,7 +334,7 @@ class html{
             $type = 'datetime-local';
         }
 
-        $html = "<input type='date' name='$params->name' value='$value' |class| $params->disabled $params->required ";
+        $html = "<input type='$type' name='$params->name' value='$value' |class| $params->disabled $params->required ";
         $html.= "id='$params->id_css' placeholder='$params->place_holder' />";
         return $html;
     }

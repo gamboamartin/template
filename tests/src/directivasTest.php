@@ -437,6 +437,41 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_input_monto_required(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $name = 'a';
+        $row_upd = new stdClass();
+        $place_holder = 'b';
+        $value_vacio = false;
+
+        $resultado = $html->input_monto_required($disabled, $name, $place_holder, $row_upd, $value_vacio, );
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><input type='text' name='a' value='' |class| required id='a' placeholder='b' /></div>", $resultado);
+
+        errores::$error = false;
+
+        $disabled = false;
+        $name = 'a';
+        $row_upd = new stdClass();
+        $place_holder = 'b';
+        $value_vacio = false;
+
+        $resultado = $html->input_monto_required($disabled, $name, $place_holder, $row_upd, $value_vacio,false );
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<input type='text' name='a' value='' |class|  required id='a' placeholder='b' />", $resultado);
+
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_input_telefono(): void
     {
         errores::$error = false;

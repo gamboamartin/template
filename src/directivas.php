@@ -723,8 +723,9 @@ class directivas{
      * @param stdClass $row_upd Registro base en proceso
      * @param bool $value_vacio si vacio deja vacio
      * @param bool $con_label Si con label integra la etiqueta
-     * @param mixed|null $value Valor 
+     * @param mixed|null $value Valor
      * @return array|string
+     * @version 7.8.0
      */
     final public function input_monto_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                          bool $value_vacio, bool $con_label = true , mixed $value = null): array|string

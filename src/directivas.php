@@ -284,7 +284,7 @@ class directivas{
      * @param string $place_holder Texto a mostrar en el input
      * @param bool $required Integra el atributo requerido en el input
      * @param stdClass $row_upd Registro en proceso
-     * @param bool $value_vacio
+     * @param bool $value_vacio Si el valor esta vacio no integra datos
      * @return array|string
      */
     final public function fecha(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
@@ -381,7 +381,7 @@ class directivas{
      * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @return array|string
-     * @final rev
+     * @finalrev
      */
     public function input_alias(stdClass $row_upd, bool $value_vacio): array|string
     {
@@ -835,13 +835,15 @@ class directivas{
      * @param string $place_holder Texto a mostrar en el input
      * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
+     * @param bool $con_label Integra el label en el input
      * @param string $regex regex a integrar en pattern
      * @param string $title title a integrar a input
      * @return array|string
      * @version 0.48.1
      */
     final public function input_text_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
-                                        bool $value_vacio, string $regex = '', string $title = '' ): array|string
+                                        bool $value_vacio, bool $con_label = true, string $regex = '',
+                                              string $title = '' ): array|string
     {
 
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
@@ -857,12 +859,14 @@ class directivas{
         $html= $this->html->text(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: true, value: $init->row_upd->$name, regex: $regex, title: $title);
 
-        $div = $this->html->div_label(html:  $html,label:$init->label);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        if($con_label) {
+            $html = $this->html->div_label(html: $html, label: $init->label);
+            if (errores::$error) {
+                return $this->error->error(mensaje: 'Error al integrar div', data: $html);
+            }
         }
 
-        return $div;
+        return $html;
 
     }
 

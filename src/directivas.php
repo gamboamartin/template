@@ -277,6 +277,16 @@ class directivas{
 
     }
 
+    /**
+     * Genera un input de tipo fecha
+     * @param bool $disabled si disabled retorna el input como disabled
+     * @param string $name Usado para identificador css name input y place holder
+     * @param string $place_holder Texto a mostrar en el input
+     * @param bool $required Integra el atributo requerido en el input
+     * @param stdClass $row_upd Registro en proceso
+     * @param bool $value_vacio
+     * @return array|string
+     */
     final public function fecha(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                    bool $value_vacio ): array|string
     {

@@ -715,8 +715,19 @@ class directivas{
         return $div;
     }
 
+    /**
+     * Genera un input de tipo monto requerido
+     * @param bool $disabled Si disabled deja el input deshabilitado
+     * @param string $name Name del input
+     * @param string $place_holder Se muestra en input
+     * @param stdClass $row_upd Registro base en proceso
+     * @param bool $value_vacio si vacio deja vacio
+     * @param bool $con_label Si con label integra la etiqueta
+     * @param mixed|null $value Valor 
+     * @return array|string
+     */
     final public function input_monto_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
-                                         bool $value_vacio , mixed $value = null): array|string
+                                         bool $value_vacio, bool $con_label = true , mixed $value = null): array|string
     {
 
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
@@ -733,12 +744,14 @@ class directivas{
         $html= $this->html->monto(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
             required: true, value: $init->value_input);
 
-        $div = $this->html->div_label(html:  $html,label:$init->label);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        if($con_label) {
+            $html = $this->html->div_label(html: $html, label: $init->label);
+            if (errores::$error) {
+                return $this->error->error(mensaje: 'Error al integrar div', data: $html);
+            }
         }
 
-        return $div;
+        return $html;
 
     }
 

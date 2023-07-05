@@ -286,6 +286,7 @@ class directivas{
      * @param stdClass $row_upd Registro en proceso
      * @param bool $value_vacio Si el valor esta vacio no integra datos
      * @return array|string
+     * @version 7.12.0
      */
     final public function fecha(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                    bool $value_vacio ): array|string

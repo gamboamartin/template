@@ -160,6 +160,29 @@ class directivasTest extends test {
 
     }
 
+    #[NoReturn] public function test_fecha(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        // $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $name = 'a';
+        $disabled = false;
+        $value_vacio = false;
+        $place_holder = 'b';
+        $row_upd = new stdClass();
+        $required = false;
+
+        $resultado = $html->fecha($disabled, $name, $place_holder, $required, $row_upd, $value_vacio);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><input type='date' name='a' value='' |class| id='a' placeholder='b' /></div>", $resultado);
+
+        errores::$error = false;
+    }
+
     /**
      */
     #[NoReturn] public function test_fecha_required(): void

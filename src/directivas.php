@@ -12,6 +12,45 @@ class directivas{
         $this->html = $html;
     }
 
+    /**
+     * Genera un boton
+     * @param array $ids_css
+     * @param array $clases_css
+     * @param array $extra_params
+     * @param string $label
+     * @param string $name
+     * @param string $value
+     * @param int $cols
+     * @param string $style
+     * @param string $type
+     * @return array|string
+     */
+    final public function btn(array $ids_css, array $clases_css, array $extra_params, string $label, string $name,
+                              string $value, int $cols = 6 , string $style = 'info',
+                              string $type='button'): array|string
+    {
+        $valida = $this->valida_btn_next(label: $label,style:  $style,type:  $type,value:  $value);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
+        $ids_css_html = '';
+        foreach ($ids_css as $id_css){
+            $ids_css_html.=' '.$id_css;
+        }
+        $clases_css_html = '';
+        foreach ($clases_css as $class_css){
+            $clases_css_html.=' '.$class_css;
+        }
+
+        $extra_params_data = '';
+        foreach ($extra_params as $key=>$value_param){
+            $extra_params_data = " data-$key='$value_param' ";
+        }
+
+        $btn = "<button type='$type' class='btn btn-$style btn-guarda col-md-$cols $clases_css_html' id='$ids_css_html' ";
+        $btn .= "name='$name' value='$value' $extra_params_data>$label</button>";
+        return $btn;
+    }
 
 
     /**

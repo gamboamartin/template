@@ -736,13 +736,15 @@ class html{
      * @param string $name Nombre del input
      * @param string $place_holder Contenido a mostrar previo a la captura del input
      * @param bool $required Si required aplica required en html
+     * @param array $class_css Integra clases css
      * @param string $regex Integra un regex para atributo pattern del input
      * @param string $title Title de input
      * @return array|stdClass
      * @version 0.28.0
      */
     private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder,
-                                bool $required, string $regex = '', string $title = ''): array|stdClass
+                                bool $required, array $class_css = array(), string $regex = '',
+                                string $title = ''): array|stdClass
     {
 
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
@@ -770,6 +772,11 @@ class html{
             return $this->error->error(mensaje: 'Error al generar title_html', data: $title_html);
         }
 
+        $class_html = (new params_inputs())->class_html(class_css: $class_css);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar class_html', data: $class_html);
+        }
+
         $params = new stdClass();
         $params->name = $name;
         $params->id_css = $id_css;
@@ -778,6 +785,7 @@ class html{
         $params->required = $required_html;
         $params->regex = $regex_html;
         $params->title = $title_html;
+        $params->class = $class_html;
 
         return $params;
     }
@@ -958,6 +966,41 @@ class html{
         }
 
         $html = "<input type='text' name='$params->name' value='$value' |class| $params->disabled $params->required ";
+        $html.= "id='$id_css' placeholder='$params->place_holder' $params->regex $params->title />";
+
+        $html_r = $this->limpia_salida(html: $html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al limpiar html', data: $html_r);
+        }
+
+        return $html_r;
+    }
+
+    /**
+     * Genera un input type de texto con clases asignadas
+     * @param array $class_css
+     * @param bool $disabled
+     * @param string $id_css
+     * @param string $name
+     * @param string $place_holder
+     * @param bool $required
+     * @param mixed $value
+     * @param string $regex
+     * @param string $title
+     * @return string|array
+     */
+    final public function text_class(array $class_css, bool $disabled, string $id_css, string $name, string $place_holder,
+                               bool $required, mixed $value, string $regex = '', string $title = ''): string|array
+    {
+
+        $params = $this->params_txt(disabled: $disabled, id_css: $id_css, name: $name, place_holder: $place_holder,
+            required: $required, class_css: $class_css, regex: $regex, title: $title);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $html = "<input type='text' name='$params->name' value='$value' $params->class $params->disabled $params->required ";
         $html.= "id='$id_css' placeholder='$params->place_holder' $params->regex $params->title />";
 
         $html_r = $this->limpia_salida(html: $html);

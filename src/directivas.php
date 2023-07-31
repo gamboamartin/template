@@ -841,18 +841,20 @@ class directivas{
 
     }
 
-    final public function input_text_sin_label(int $cols, bool $disabled, string $name, string $place_holder,
-                                               bool $required, stdClass $row_upd, bool $value_vacio): array|string
+    final public function input_text_sin_label(array $class_css,int $cols, bool $disabled, string $name,
+                                               string $place_holder, bool $required, stdClass $row_upd,
+                                               bool $value_vacio): array|string
     {
 
 
-        $row_upd_ = $this->init_input(name:$name,place_holder:  $place_holder,row_upd:  $row_upd,value_vacio:  $value_vacio);
+        $row_upd_ = $this->init_input(name:$name,place_holder:  $place_holder,row_upd:  $row_upd,
+            value_vacio:  $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd_);
         }
 
-        $html= $this->html->text(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: $required, value: $row_upd_->$name);
+        $html= $this->html->text_class(class_css: $class_css, disabled:$disabled, id_css: $name, name: $name,
+            place_holder: $place_holder, required: $required, value: $row_upd_->$name);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar html', data: $html);
         }

@@ -978,15 +978,15 @@ class html{
 
     /**
      * Genera un input type de texto con clases asignadas
-     * @param array $class_css
-     * @param bool $disabled
-     * @param string $id_css
-     * @param string $name
-     * @param string $place_holder
-     * @param bool $required
-     * @param mixed $value
-     * @param string $regex
-     * @param string $title
+     * @param array $class_css Clases css a integrar
+     * @param bool $disabled if disabled input disabled
+     * @param string $id_css Ids a integrar
+     * @param string $name name input
+     * @param string $place_holder marca agua input
+     * @param bool $required atributo required si es verdadero
+     * @param mixed $value Valor
+     * @param string $regex validacion de input
+     * @param string $title titulo input
      * @return string|array
      */
     final public function text_class(array $class_css, bool $disabled, string $id_css, string $name, string $place_holder,

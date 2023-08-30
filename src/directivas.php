@@ -951,16 +951,32 @@ class directivas{
 
     /**
      * Genera el label para un input de tipo radio
-     * @param string $for
-     * @param string $label_html
-     * @return string
+     * @param string $for Param for de label
+     * @param string $label_html Label a integrar
+     * @return string|array
+     * @version 8.2.0
      */
-    private function label_radio(string $for, string $label_html): string
+    private function label_radio(string $for, string $label_html): string|array
     {
         $for = trim($for);
         if($for === ''){
             $for = $label_html;
         }
+
+        $label_html = trim($label_html);
+        if($label_html === ''){
+            $label_html = $for;
+        }
+        $for = trim($for);
+        $label_html = trim($label_html);
+
+        if($for === ''){
+            return $this->error->error(mensaje: 'Error for esta vacio',data:  $for);
+        }
+        if($label_html === ''){
+            return $this->error->error(mensaje: 'Error label_html esta vacio',data:  $label_html);
+        }
+
         return "<label class='control-label' for='$for'>$label_html</label>";
     }
 
@@ -1065,7 +1081,7 @@ class directivas{
         }
 
 
-        return "<div class='control-group $cols'>
+        return "<div class='control-group col-sm-$cols'>
             $label_html
             $label_input_v1
             $label_input_v2

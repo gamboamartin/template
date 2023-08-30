@@ -438,7 +438,7 @@ class directivasTest extends test {
 
     /**
      */
-    #[NoReturn] public function test_input_input_password(): void
+    #[NoReturn] public function test_input_password(): void
     {
         errores::$error = false;
         $html_ = new html();
@@ -586,6 +586,42 @@ class directivasTest extends test {
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals('', $resultado);
+        errores::$error = false;
+    }
+
+    #[NoReturn] public function test_label_radio(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $for = 'a';
+        $label_html = '';
+
+        $resultado = $html->label_radio($for, $label_html);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<label class='control-label' for='a'>a</label>", $resultado);
+
+        errores::$error = false;
+        $for = '';
+        $label_html = 'b';
+
+        $resultado = $html->label_radio($for, $label_html);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<label class='control-label' for='b'>b</label>", $resultado);
+
+        errores::$error = false;
+        $for = 'a';
+        $label_html = 'b';
+
+        $resultado = $html->label_radio($for, $label_html);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<label class='control-label' for='a'>b</label>", $resultado);
         errores::$error = false;
     }
 

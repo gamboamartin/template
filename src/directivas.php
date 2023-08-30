@@ -203,8 +203,6 @@ class directivas{
     }
 
 
-
-
     /**
      * Genera un div con label integrado
      * @param string $html Html previo
@@ -418,7 +416,6 @@ class directivas{
     }
 
 
-
     /**
      * Genera un input de tipo alias
      * @version 0.49.1
@@ -612,6 +609,25 @@ class directivas{
         }
 
         return $div;
+
+    }
+
+    final public function input_radio_doble(string $campo, int $checked_default, string $tag, string $val_1,
+                                            string $val_2){
+        $params_chk = (new params_inputs())->params_base_chk(campo: $campo,tag:  $tag);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al obtener params_chk',data:  $params_chk);
+        }
+
+        $radio = $this->radio_doble(checked_default: $checked_default,
+            class_label:  $params_chk->class_label,class_radio:  $params_chk->class_radio,cols:6,
+            for: $params_chk->for, ids_css: $params_chk->ids_css,label_html:  $params_chk->label_html,
+            name:  $params_chk->name,title:  $params_chk->title,val_1: $val_1,val_2: $val_2);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al obtener radio',data:  $radio);
+        }
+        return $radio;
 
     }
 
@@ -1027,7 +1043,7 @@ class directivas{
         return "<img src='$img' class='numero'>";
     }
 
-    final public function radio_doble(int $checked_default,array $class_label, array $class_radio, int $cols,string $for, array $ids_css,
+    private function radio_doble(int $checked_default,array $class_label, array $class_radio, int $cols,string $for, array $ids_css,
                                       string $label_html, string $name, string $title, string $val_1, string $val_2){
         $label_html = $this->label_radio(for: $for,label_html:  $label_html);
         if(errores::$error){

@@ -466,6 +466,32 @@ class directivas{
     }
 
     /**
+     * Inicializa elementos de tipo name y title
+     * @param string $name Nombre del input
+     * @param string $title Title del input
+     * @return array|stdClass
+     * @version 8.10.0
+     */
+    private function init_names(string $name, string $title): array|stdClass
+    {
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
+        }
+        if($title === ''){
+            $title = $name;
+            $title = str_replace('_', ' ', $title);
+            $title = ucwords($title);
+            $title = trim($title);
+        }
+
+        $data = new stdClass();
+        $data->name = $name;
+        $data->title = $title;
+        return $data;
+    }
+
+    /**
      * Inicializa un input
      * @param string $name Name input
      * @param string $place_holder Tag input
@@ -1053,19 +1079,17 @@ class directivas{
         $title = trim($title);
         $val = trim($val);
 
-        if($name === ''){
-            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
-        }
-        if($title === ''){
-            $title = $name;
-            $title = str_replace('_', ' ', $title);
-            $title = ucwords($title);
-            $title = trim($title);
+
+
+        $init = $this->init_names(name: $name,title:  $title);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error integrar datos',data:  $init);
         }
 
         return trim("
             <label $class_label_html>
-                <input type='radio' name='$name' value='$val' $class_radio_html $ids_html title='$title' $checked>
+                <input type='radio' name='$init->name' value='$val' $class_radio_html $ids_html 
+                title='$init->title' $checked>
                 $val
             </label>");
     }
@@ -1127,20 +1151,16 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar params', data: $valida);
         }
 
-        if($name === ''){
-            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
-        }
-        if($title === ''){
-            $title = $name;
-            $title = str_replace('_', ' ', $title);
-            $title = ucwords($title);
-            $title = trim($title);
+
+        $init = $this->init_names(name: $name,title:  $title);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error integrar datos',data:  $init);
         }
 
 
         $label_input_v1 = $this->label_input_radio(checked: $params->checked_default->checked_default_v1,
             class_label_html:  $params->class_label_html, class_radio_html:  $params->class_radio_html,
-            ids_html:  $params->ids_html,name:  $name,title:  $title,val:  $val_1);
+            ids_html:  $params->ids_html,name:  $init->name,title:  $init->title,val:  $val_1);
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar label_input_v1', data: $label_input_v1);

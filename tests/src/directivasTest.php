@@ -274,6 +274,26 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_init_names(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $name = 'a';
+        $title = '';
+
+
+        $resultado = $html->init_names($name, $title);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("a", $resultado->name);
+        $this->assertEquals("A", $resultado->title);
+        errores::$error = false;
+    }
+
     /**
      */
     #[NoReturn] public function test_init_text(): void
@@ -627,7 +647,9 @@ class directivasTest extends test {
         $resultado = $html->label_input_radio($checked, $class_label_html, $class_radio_html, $ids_html, $name, $title, $val);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertStringContainsStringIgnoringCase("<input type='radio' name='a' value=''   title='A' >", $resultado);
+        $this->assertStringContainsStringIgnoringCase("<input type='radio' name='a' value=''", $resultado);
+        $this->assertStringContainsStringIgnoringCase("title='A'", $resultado);
+        $this->assertStringContainsStringIgnoringCase(" title='a'", $resultado);
         errores::$error = false;
     }
 
@@ -691,8 +713,10 @@ class directivasTest extends test {
         $resultado = $html->labels_radios($name, $params, $title, $val_1, $val_2);
         $this->assertIsObject($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertStringContainsStringIgnoringCase("<input type='radio' name='a' value=''   title='A' >", $resultado->label_input_v1);
-        $this->assertStringContainsStringIgnoringCase("<input type='radio' name='a' value=''   title='A' >", $resultado->label_input_v2);
+        $this->assertStringContainsStringIgnoringCase("<input type='radio' name='a' value=''", $resultado->label_input_v1);
+        $this->assertStringContainsStringIgnoringCase("title='A'", $resultado->label_input_v1);
+        $this->assertStringContainsStringIgnoringCase("<input type='radio' name='a' value=''", $resultado->label_input_v2);
+        $this->assertStringContainsStringIgnoringCase("<label >", $resultado->label_input_v2);
         errores::$error = false;
     }
 

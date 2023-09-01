@@ -108,6 +108,24 @@ class directivasTest extends test {
        errores::$error = false;
     }
 
+    #[NoReturn] public function test_class_radio_html(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+
+        $class_radio = array();
+        $class_radio[] = 'a';
+        $resultado = $html->class_radio_html($class_radio);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("class='a form-check-input'", $resultado);
+        errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

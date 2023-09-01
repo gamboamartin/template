@@ -239,8 +239,10 @@ class directivas{
     }
 
     /**
-     * @param array $class_radio
+     * Genera las clases css para input radio
+     * @param array $class_radio Clases precargadas
      * @return array|string
+     * @version 8.11.0
      */
     private function class_radio_html(array $class_radio): array|string
     {
@@ -249,7 +251,8 @@ class directivas{
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar class_radio_html', data: $class_radio_html);
         }
-        return $class_radio_html;
+        return str_replace('  ', ' ', $class_radio_html);
+
     }
 
 
@@ -419,6 +422,10 @@ class directivas{
 
     }
 
+    /**
+     * @param array $ids_css
+     * @return string
+     */
     private function ids_html(array $ids_css): string
     {
         $ids_html = '';

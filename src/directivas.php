@@ -957,13 +957,25 @@ class directivas{
         return $label;
     }
 
+    /**
+     * Integra el label de un radio
+     * @param string $checked attr checked
+     * @param string $class_label_html clases css en div label
+     * @param string $class_radio_html clases css en input radio
+     * @param string $ids_html Identificador css
+     * @param string $name name input
+     * @param string $title titulo input
+     * @param string $val Value input
+     * @return string
+     */
     private function label_input_radio(string $checked, string $class_label_html,string $class_radio_html, string $ids_html,
                                        string $name, string $title, string $val): string
     {
-        return "<label $class_label_html>
-            <input type='radio' name='$name' value='$val' $class_radio_html $ids_html title='$title' $checked>
-            $val
-        </label>";
+        return trim("
+            <label $class_label_html>
+                <input type='radio' name='$name' value='$val' $class_radio_html $ids_html title='$title' $checked>
+                $val
+            </label>");
     }
 
     /**

@@ -202,6 +202,50 @@ class directivas{
         return $div;
     }
 
+    private function checked_default(int $checked_default): stdClass
+    {
+        $checked_default_v1 = '';
+        $checked_default_v2 = '';
+
+        if($checked_default === 1){
+            $checked_default_v1 = 'checked';
+        }
+        if($checked_default === 2){
+            $checked_default_v2 = 'checked';
+        }
+
+        $data = new stdClass();
+        $data->checked_default_v1 = $checked_default_v1;
+        $data->checked_default_v2 = $checked_default_v2;
+        return $data;
+    }
+
+    /**
+     * Genera un conjunto de class para input radio
+     * @param array $class_label Clase label precargada
+     * @return array|string
+     * @version 8.7.0
+     */
+    private function class_label_html(array $class_label): array|string
+    {
+        $class_label[] = 'form-check-label';
+
+        $class_label_html = (new params_inputs())->class_html(class_css: $class_label);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar class_label', data: $class_label_html);
+        }
+        return str_replace('  ', ' ', $class_label_html);
+    }
+
+    private function class_radio_html(array $class_radio){
+        $class_radio[] = 'form-check-input';
+        $class_radio_html = (new params_inputs())->class_html(class_css: $class_radio);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar class_radio_html', data: $class_radio_html);
+        }
+        return $class_radio_html;
+    }
+
 
     /**
      * Genera un div con label integrado
@@ -238,6 +282,15 @@ class directivas{
         }
 
         return $html_r;
+    }
+
+    private function div_radio(int $cols, stdClass $inputs, string $label_html): string
+    {
+        return "<div class='control-group col-sm-$cols'>
+            $label_html
+            $inputs->label_input_v1
+            $inputs->label_input_v2
+        </div>";
     }
 
     /**
@@ -358,6 +411,20 @@ class directivas{
 
         return $div;
 
+    }
+
+    private function ids_html(array $ids_css): string
+    {
+        $ids_html = '';
+        foreach ($ids_css as $id_css){
+            $ids_html.=" $id_css ";
+        }
+
+        if($ids_html!==''){
+            $ids_html = "id='$ids_html'";
+        }
+
+        return $ids_html;
     }
 
     /** Inicializa un input de tipo text
@@ -969,8 +1036,8 @@ class directivas{
      * @return string|array
      * @version 8.6.0
      */
-    private function label_input_radio(string $checked, string $class_label_html,string $class_radio_html, string $ids_html,
-                                       string $name, string $title, string $val): string|array
+    private function label_input_radio(string $checked, string $class_label_html,string $class_radio_html,
+                                       string $ids_html, string $name, string $title, string $val): string|array
     {
         $checked = trim($checked);
         $class_label_html = trim($class_label_html);
@@ -1028,6 +1095,27 @@ class directivas{
         return "<label class='control-label' for='$for'>$label_html</label>";
     }
 
+    private function labels_radios(string $name, stdClass $params, string $title, string $val_1, string $val_2){
+        $label_input_v1 = $this->label_input_radio(checked: $params->checked_default->checked_default_v1,class_label_html:  $params->class_label_html,
+            class_radio_html:  $params->class_radio_html,ids_html:  $params->ids_html,name:  $name,title:  $title,val:  $val_1);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar label_input_v1', data: $label_input_v1);
+        }
+
+        $label_input_v2 = $this->label_input_radio(checked: $params->checked_default->checked_default_v2,class_label_html:  $params->class_label_html,
+            class_radio_html:  $params->class_radio_html,ids_html:  $params->ids_html,name:  $name,title:  $title,val:  $val_2);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar label_input_v2', data: $label_input_v2);
+        }
+
+        $data = new stdClass();
+        $data->label_input_v1 = $label_input_v1;
+        $data->label_input_v2 = $label_input_v2;
+        return $data;
+    }
+
     /**
      * Genera un mensaje de exito
      * @param string $mensaje_exito mensaje a mostrar
@@ -1075,66 +1163,67 @@ class directivas{
         return "<img src='$img' class='numero'>";
     }
 
-    private function radio_doble(int $checked_default,array $class_label, array $class_radio, int $cols,string $for, array $ids_css,
-                                      string $label_html, string $name, string $title, string $val_1, string $val_2){
+    private function params_html(int $checked_default, array $class_label, array $class_radio, array $ids_css, string $label_html, string $for){
         $label_html = $this->label_radio(for: $for,label_html:  $label_html);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label_html', data: $label_html);
         }
 
-        $class_label[] = 'form-check-label';
-
-        $class_label_html = (new params_inputs())->class_html(class_css: $class_label);
+        $class_label_html = $this->class_label_html(class_label: $class_label);
         if(errores::$error){
-            return $this->error->error(mensaje: 'Error al integrar class_label', data: $label_html);
+            return $this->error->error(mensaje: 'Error al integrar class_label', data: $class_label_html);
         }
 
-        $class_radio[] = 'form-check-input';
-        $class_radio_html = (new params_inputs())->class_html(class_css: $class_radio);
+        $class_radio_html = $this->class_radio_html(class_radio: $class_radio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar class_radio_html', data: $class_radio_html);
         }
 
-        $ids_html = '';
-        foreach ($ids_css as $id_css){
-            $ids_html.=" $id_css ";
-        }
-
-        if($ids_html!==''){
-            $ids_html = "id='$ids_html'";
-        }
-
-        $checked_default_v1 = '';
-        $checked_default_v2 = '';
-
-        if($checked_default === 1){
-            $checked_default_v1 = 'checked';
-        }
-        if($checked_default === 2){
-            $checked_default_v2 = 'checked';
-        }
-
-
-        $label_input_v1 = $this->label_input_radio(checked: $checked_default_v1,class_label_html:  $class_label_html,
-            class_radio_html:  $class_radio_html,ids_html:  $ids_html,name:  $name,title:  $title,val:  $val_1);
-
+        $ids_html = $this->ids_html(ids_css: $ids_css);
         if(errores::$error){
-            return $this->error->error(mensaje: 'Error al integrar label_input_v1', data: $label_input_v1);
+            return $this->error->error(mensaje: 'Error al integrar ids_html', data: $ids_html);
         }
 
-        $label_input_v2 = $this->label_input_radio(checked: $checked_default_v2,class_label_html:  $class_label_html,
-            class_radio_html:  $class_radio_html,ids_html:  $ids_html,name:  $name,title:  $title,val:  $val_2);
-
+        $checked_default = $this->checked_default(checked_default: $checked_default);
         if(errores::$error){
-            return $this->error->error(mensaje: 'Error al integrar label_input_v2', data: $label_input_v2);
+            return $this->error->error(mensaje: 'Error al integrar checked_default', data: $checked_default);
+        }
+
+        $params = new stdClass();
+        $params->label_html = $label_html;
+        $params->class_label_html = $class_label_html;
+        $params->class_radio_html = $class_radio_html;
+        $params->ids_html = $ids_html;
+        $params->checked_default = $checked_default;
+
+        return $params;
+
+
+    }
+
+    private function radio_doble(int $checked_default,array $class_label, array $class_radio, int $cols,string $for,
+                                 array $ids_css, string $label_html, string $name, string $title, string $val_1,
+                                 string $val_2){
+
+        $params = $this->params_html(checked_default: $checked_default,class_label:  $class_label,
+            class_radio:  $class_radio, ids_css: $ids_css,label_html:  $label_html,for:  $for);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar params', data: $params);
         }
 
 
-        return "<div class='control-group col-sm-$cols'>
-            $label_html
-            $label_input_v1
-            $label_input_v2
-        </div>";
+        $inputs = $this->labels_radios(name: $name,params:  $params,title:  $title,val_1: $val_1,val_2:  $val_2);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar inputs', data: $inputs);
+        }
+
+
+        $radios = $this->div_radio(cols: $cols,inputs:  $inputs,label_html:  $label_html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar radios', data: $radios);
+        }
+
+        return $radios;
     }
 
     /**

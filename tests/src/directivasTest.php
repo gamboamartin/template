@@ -90,6 +90,24 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_class_label_html(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $class_label = array();
+        $class_label[] = 'a';
+
+        $resultado = $html->class_label_html($class_label);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("class='a form-check-label'", $resultado);
+       errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

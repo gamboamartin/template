@@ -1095,16 +1095,29 @@ class directivas{
         return "<label class='control-label' for='$for'>$label_html</label>";
     }
 
-    private function labels_radios(string $name, stdClass $params, string $title, string $val_1, string $val_2){
-        $label_input_v1 = $this->label_input_radio(checked: $params->checked_default->checked_default_v1,class_label_html:  $params->class_label_html,
-            class_radio_html:  $params->class_radio_html,ids_html:  $params->ids_html,name:  $name,title:  $title,val:  $val_1);
+    /**
+     * Obtiene los inputs de tipo radio dos opciones
+     * @param string $name Nombre del input
+     * @param stdClass $params Parametros de input
+     * @param string $title Titulo de radios
+     * @param string $val_1 Valor de input 1
+     * @param string $val_2 Valor de input 2
+     * @return array|stdClass
+     */
+    private function labels_radios(
+        string $name, stdClass $params, string $title, string $val_1, string $val_2): array|stdClass
+    {
+        $label_input_v1 = $this->label_input_radio(checked: $params->checked_default->checked_default_v1,
+            class_label_html:  $params->class_label_html, class_radio_html:  $params->class_radio_html,
+            ids_html:  $params->ids_html,name:  $name,title:  $title,val:  $val_1);
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar label_input_v1', data: $label_input_v1);
         }
 
-        $label_input_v2 = $this->label_input_radio(checked: $params->checked_default->checked_default_v2,class_label_html:  $params->class_label_html,
-            class_radio_html:  $params->class_radio_html,ids_html:  $params->ids_html,name:  $name,title:  $title,val:  $val_2);
+        $label_input_v2 = $this->label_input_radio(checked: $params->checked_default->checked_default_v2,
+            class_label_html:  $params->class_label_html, class_radio_html:  $params->class_radio_html,
+            ids_html:  $params->ids_html,name:  $name,title:  $title,val:  $val_2);
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar label_input_v2', data: $label_input_v2);

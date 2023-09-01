@@ -3,6 +3,7 @@ namespace gamboamartin\template;
 use base\frontend\params_inputs;
 use config\views;
 use gamboamartin\errores\errores;
+use gamboamartin\validacion\validacion;
 use stdClass;
 
 class directivas{
@@ -237,7 +238,12 @@ class directivas{
         return str_replace('  ', ' ', $class_label_html);
     }
 
-    private function class_radio_html(array $class_radio){
+    /**
+     * @param array $class_radio
+     * @return array|string
+     */
+    private function class_radio_html(array $class_radio): array|string
+    {
         $class_radio[] = 'form-check-input';
         $class_radio_html = (new params_inputs())->class_html(class_css: $class_radio);
         if(errores::$error){
@@ -1103,10 +1109,35 @@ class directivas{
      * @param string $val_1 Valor de input 1
      * @param string $val_2 Valor de input 2
      * @return array|stdClass
+     * @version 8.9.0
      */
     private function labels_radios(
         string $name, stdClass $params, string $title, string $val_1, string $val_2): array|stdClass
     {
+        $keys = array('checked_default','class_label_html','class_radio_html','ids_html');
+        $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $params,valida_vacio: false);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar params', data: $valida);
+        }
+
+        $keys = array('checked_default_v1','checked_default_v2');
+        $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $params->checked_default,
+            valida_vacio: false);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar params', data: $valida);
+        }
+
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
+        }
+        if($title === ''){
+            $title = $name;
+            $title = str_replace('_', ' ', $title);
+            $title = ucwords($title);
+            $title = trim($title);
+        }
+
+
         $label_input_v1 = $this->label_input_radio(checked: $params->checked_default->checked_default_v1,
             class_label_html:  $params->class_label_html, class_radio_html:  $params->class_radio_html,
             ids_html:  $params->ids_html,name:  $name,title:  $title,val:  $val_1);

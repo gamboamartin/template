@@ -667,6 +667,35 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_labels_radios(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $name = 'a';
+        $params = new stdClass();
+        $title = '';
+        $val_1 = '';
+        $val_2 = '';
+
+        $params->checked_default =  new stdClass();
+        $params->checked_default->checked_default_v1 =  '';
+        $params->checked_default->checked_default_v2 =  '';
+        $params->class_label_html = '';
+        $params->class_radio_html = '';
+        $params->ids_html = '';
+
+        $resultado = $html->labels_radios($name, $params, $title, $val_1, $val_2);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase("<input type='radio' name='a' value=''   title='A' >", $resultado->label_input_v1);
+        $this->assertStringContainsStringIgnoringCase("<input type='radio' name='a' value=''   title='A' >", $resultado->label_input_v2);
+        errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

@@ -966,11 +966,30 @@ class directivas{
      * @param string $name name input
      * @param string $title titulo input
      * @param string $val Value input
-     * @return string
+     * @return string|array
+     * @version 8.6.0
      */
     private function label_input_radio(string $checked, string $class_label_html,string $class_radio_html, string $ids_html,
-                                       string $name, string $title, string $val): string
+                                       string $name, string $title, string $val): string|array
     {
+        $checked = trim($checked);
+        $class_label_html = trim($class_label_html);
+        $class_radio_html = trim($class_radio_html);
+        $ids_html = trim($ids_html);
+        $name = trim($name);
+        $title = trim($title);
+        $val = trim($val);
+
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
+        }
+        if($title === ''){
+            $title = $name;
+            $title = str_replace('_', ' ', $title);
+            $title = ucwords($title);
+            $title = trim($title);
+        }
+
         return trim("
             <label $class_label_html>
                 <input type='radio' name='$name' value='$val' $class_radio_html $ids_html title='$title' $checked>
@@ -1080,6 +1099,7 @@ class directivas{
         foreach ($ids_css as $id_css){
             $ids_html.=" $id_css ";
         }
+
         if($ids_html!==''){
             $ids_html = "id='$ids_html'";
         }

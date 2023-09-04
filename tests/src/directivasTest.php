@@ -787,6 +787,31 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_params_html(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $checked_default = 1;
+        $class_label = array();
+        $class_radio = array();
+        $ids_css = array();
+        $label_html = '';
+        $for = 'a';
+
+        $resultado = $html->params_html($checked_default, $class_label, $class_radio, $ids_css, $label_html, $for);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<label class='control-label' for='a'>a</label>", $resultado->label_html);
+        $this->assertEquals("class='form-check-label'", $resultado->class_label_html);
+        $this->assertEquals("class='form-check-input'", $resultado->class_radio_html);
+        $this->assertEquals("", $resultado->ids_html);
+        errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

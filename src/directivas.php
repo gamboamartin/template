@@ -307,9 +307,10 @@ class directivas{
     }
 
     /**
-     * @param int $cols
-     * @param stdClass $inputs
-     * @param string $label_html
+     * Integra en un div u radio
+     * @param int $cols N columnas css
+     * @param stdClass $inputs Inputs a integrar
+     * @param string $label_html Label de input
      * @return string
      */
     private function div_radio(int $cols, stdClass $inputs, string $label_html): string
@@ -1066,6 +1067,34 @@ class directivas{
     }
 
 
+    private function label_init(string $for, string $label_html): stdClass|array
+    {
+        $for = trim($for);
+        if($for === ''){
+            $for = $label_html;
+        }
+
+        $label_html = trim($label_html);
+        if($label_html === ''){
+            $label_html = $for;
+        }
+        $for = trim($for);
+        $label_html = trim($label_html);
+
+        if($for === ''){
+            return $this->error->error(mensaje: 'Error for esta vacio',data:  $for);
+        }
+        if($label_html === ''){
+            return $this->error->error(mensaje: 'Error label_html esta vacio',data:  $label_html);
+        }
+
+        $data = new stdClass();
+        $data->for = $for;
+        $data->label_html = $label_html;
+
+        return $data;
+    }
+
 
     /**
      *
@@ -1136,26 +1165,13 @@ class directivas{
      */
     private function label_radio(string $for, string $label_html): string|array
     {
-        $for = trim($for);
-        if($for === ''){
-            $for = $label_html;
+
+        $params = $this->label_init(for: $for, label_html: $label_html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar params',data:  $params);
         }
 
-        $label_html = trim($label_html);
-        if($label_html === ''){
-            $label_html = $for;
-        }
-        $for = trim($for);
-        $label_html = trim($label_html);
-
-        if($for === ''){
-            return $this->error->error(mensaje: 'Error for esta vacio',data:  $for);
-        }
-        if($label_html === ''){
-            return $this->error->error(mensaje: 'Error label_html esta vacio',data:  $label_html);
-        }
-
-        return "<label class='control-label' for='$for'>$label_html</label>";
+        return "<label class='control-label' for='$params->for'>$params->label_html</label>";
     }
 
     /**
@@ -1274,7 +1290,19 @@ class directivas{
     private function params_html(int $checked_default, array $class_label, array $class_radio, array $ids_css,
                                  string $label_html, string $for): array|stdClass
     {
-        $label_html = $this->label_radio(for: $for,label_html:  $label_html);
+
+        $params_radio = $this->label_init(for: $for, label_html: $label_html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar params',data:  $params_radio);
+        }
+        if($checked_default <=0){
+            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default);
+        }
+        if($checked_default > 2){
+            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default);
+        }
+
+        $label_html = $this->label_radio(for: $params_radio->for,label_html:  $params_radio->label_html);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label_html', data: $label_html);
         }

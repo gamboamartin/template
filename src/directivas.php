@@ -311,10 +311,25 @@ class directivas{
      * @param int $cols N columnas css
      * @param stdClass $inputs Inputs a integrar
      * @param string $label_html Label de input
-     * @return string
+     * @return string|array
+     * @version 8.19.0
      */
-    private function div_radio(int $cols, stdClass $inputs, string $label_html): string
+    private function div_radio(int $cols, stdClass $inputs, string $label_html): string|array
     {
+        $valida = $this->valida_cols(cols: $cols);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error validar cols', data: $valida);
+        }
+
+        $keys = array('label_input_v1','label_input_v2');
+
+        $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $inputs);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error validar inputs', data: $valida);
+        }
+
+        $label_html = trim($label_html);
+
         return "<div class='control-group col-sm-$cols'>
             $label_html
             $inputs->label_input_v1
@@ -1292,6 +1307,7 @@ class directivas{
      * @param string $label_html Tag de input
      * @param string $for For de input
      * @return array|stdClass
+     * @version 8.19.0
      */
     private function params_html(int $checked_default, array $class_label, array $class_radio, array $ids_css,
                                  string $label_html, string $for): array|stdClass
@@ -1345,9 +1361,26 @@ class directivas{
 
     }
 
+    /**
+     * Se integra un input de tipo radio
+     * @param int $checked_default checked input checked
+     * @param array $class_label Clases Label
+     * @param array $class_radio  Clases input radio
+     * @param int $cols n columnas css
+     * @param string $for tag
+     * @param array $ids_css ids css
+     * @param string $label_html Label de input
+     * @param string $name Name input
+     * @param string $title Titulo input
+     * @param string $val_1 Valor input 1
+     * @param string $val_2 Valor input 2
+     * @return array|string
+     * 
+     */
     private function radio_doble(int $checked_default,array $class_label, array $class_radio, int $cols,string $for,
                                  array $ids_css, string $label_html, string $name, string $title, string $val_1,
-                                 string $val_2){
+                                 string $val_2): array|string
+    {
 
         $params = $this->params_html(checked_default: $checked_default,class_label:  $class_label,
             class_radio:  $class_radio, ids_css: $ids_css,label_html:  $label_html,for:  $for);

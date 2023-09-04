@@ -168,8 +168,6 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
-
-
     /**
      */
     #[NoReturn] public function test_div_label(): void
@@ -188,6 +186,27 @@ class directivasTest extends test {
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<div |class|></div>", $resultado);
+        errores::$error = false;
+    }
+
+    #[NoReturn] public function test_div_radio(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $cols = 1;
+        $inputs = new stdClass();
+        $label_html = '';
+        $inputs->label_input_v1 = 'a';
+        $inputs->label_input_v2 = 'b';
+
+        $resultado = $html->div_radio($cols, $inputs, $label_html);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase("<div class='control-group col-sm-1'>", $resultado);
         errores::$error = false;
     }
 

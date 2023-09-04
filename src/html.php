@@ -988,10 +988,28 @@ class html{
      * @param string $regex validacion de input
      * @param string $title titulo input
      * @return string|array
+     * @version 8.25.0
      */
     final public function text_class(array $class_css, bool $disabled, string $id_css, string $name, string $place_holder,
                                bool $required, mixed $value, string $regex = '', string $title = ''): string|array
     {
+
+        $name = trim($name);
+        $place_holder = trim($place_holder);
+        $id_css = trim($id_css);
+        if($place_holder === ''){
+            $place_holder = $name;
+            $place_holder = str_replace('_', $place_holder, $place_holder);
+            $place_holder = ucwords($place_holder);
+        }
+        if($id_css === ''){
+            $id_css = $name;
+        }
+
+        $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
+        }
 
         $params = $this->params_txt(disabled: $disabled, id_css: $id_css, name: $name, place_holder: $place_holder,
             required: $required, class_css: $class_css, regex: $regex, title: $title);

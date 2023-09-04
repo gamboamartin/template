@@ -696,6 +696,26 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_text_class(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $id_css = '';
+        $name = 'a';
+        $place_holder = '';
+        $required = false;
+        $value = '';
+        $class_css = array();
+        $resultado = $html->text_class($class_css, $disabled, $id_css, $name, $place_holder, $required, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<input type='text' name='a' value='' id='a' placeholder='A' title='A' />",$resultado);
+        errores::$error = false;
+    }
+
 
     public function test_valida_input(): void
     {

@@ -760,8 +760,18 @@ class directivas{
 
     }
 
+    /**
+     * Genera un input de tipo radio double
+     * @param string $campo Campo A integrar
+     * @param int $checked_default  Value default checked
+     * @param string $tag Etiqueta
+     * @param string $val_1 Value 1
+     * @param string $val_2 Value 2
+     * @return array|string
+     */
     final public function input_radio_doble(string $campo, int $checked_default, string $tag, string $val_1,
-                                            string $val_2){
+                                            string $val_2): array|string
+    {
         $params_chk = (new params_inputs())->params_base_chk(campo: $campo,tag:  $tag);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al obtener params_chk',data:  $params_chk);
@@ -1220,6 +1230,10 @@ class directivas{
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar params', data: $valida);
         }
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
+        }
 
 
         $init = $this->init_names(name: $name,title:  $title);
@@ -1375,15 +1389,37 @@ class directivas{
      * @param string $val_1 Valor input 1
      * @param string $val_2 Valor input 2
      * @return array|string
-     * 
+     * @version 1.99.1
+     *
      */
     private function radio_doble(int $checked_default,array $class_label, array $class_radio, int $cols,string $for,
                                  array $ids_css, string $label_html, string $name, string $title, string $val_1,
                                  string $val_2): array|string
     {
 
+        $params_radio = $this->label_init(for: $for, label_html: $label_html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar params',data:  $params_radio);
+        }
+        if($checked_default <=0){
+            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default);
+        }
+        if($checked_default > 2){
+            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default);
+        }
+        $name = trim($name);
+        if($name === ''){
+            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
+        }
+        $valida = $this->valida_cols(cols: $cols);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error validar cols', data: $valida);
+        }
+
+
         $params = $this->params_html(checked_default: $checked_default,class_label:  $class_label,
-            class_radio:  $class_radio, ids_css: $ids_css,label_html:  $label_html,for:  $for);
+            class_radio:  $class_radio, ids_css: $ids_css,label_html:  $params_radio->label_html,
+            for:  $params_radio->for);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar params', data: $params);
         }
@@ -1395,7 +1431,7 @@ class directivas{
         }
 
 
-        $radios = $this->div_radio(cols: $cols,inputs:  $inputs,label_html:  $label_html);
+        $radios = $this->div_radio(cols: $cols,inputs:  $inputs,label_html:  $params->label_html);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar radios', data: $radios);
         }

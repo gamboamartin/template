@@ -849,6 +849,35 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_radio_doble(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $checked_default = 1;
+        $class_label = array();
+        $class_radio = array();
+        $cols = 1;
+        $for = 'a';
+        $ids_css = array();
+        $label_html = '';
+        $name = 'b';
+        $title = '';
+        $val_1 = '';
+        $val_2 = '';
+
+        $resultado = $html->radio_doble($checked_default, $class_label, $class_radio, $cols, $for, $ids_css,
+            $label_html, $name, $title, $val_1, $val_2);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertStringContainsStringIgnoringCase("title='B' checked>", $resultado);
+        errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

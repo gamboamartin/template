@@ -205,7 +205,8 @@ class directivas{
 
     /**
      *
-     * @param int $checked_default
+     * Integra el elemento checked del radio predeterminado
+     * @param int $checked_default Numero de input predeterminado
      * @return stdClass
      */
     private function checked_default(int $checked_default): stdClass

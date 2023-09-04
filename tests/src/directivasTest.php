@@ -672,6 +672,24 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_label_init(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $for = 'a';
+        $label_html = '';
+
+
+        $resultado = $html->label_init($for, $label_html);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals('a', $resultado->label_html);
+    }
+
     /**
      * @throws JsonException
      */

@@ -1071,6 +1071,7 @@ class directivas{
      * @param string $for Tag
      * @param string $label_html Label
      * @return stdClass|array
+     * @version 8.18.0
      */
     private function label_init(string $for, string $label_html): stdClass|array
     {

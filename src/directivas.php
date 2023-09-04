@@ -768,10 +768,22 @@ class directivas{
      * @param string $val_1 Value 1
      * @param string $val_2 Value 2
      * @return array|string
+     * @version 8.21.0
      */
     final public function input_radio_doble(string $campo, int $checked_default, string $tag, string $val_1,
                                             string $val_2): array|string
     {
+        $campo = trim($campo);
+        if($campo === ''){
+            return $this->error->error(mensaje: 'Error campo vacio',data:  $campo);
+        }
+        if($checked_default <=0){
+            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default);
+        }
+        if($checked_default > 2){
+            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default);
+        }
+
         $params_chk = (new params_inputs())->params_base_chk(campo: $campo,tag:  $tag);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al obtener params_chk',data:  $params_chk);

@@ -114,6 +114,24 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_checked_default()
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $checked_default = 1;
+
+        $resultado = $html->checked_default($checked_default);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("checked", $resultado->checked_default_v1);
+        $this->assertEquals("", $resultado->checked_default_v2);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_class_label_html(): void
     {
         errores::$error = false;

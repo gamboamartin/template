@@ -207,10 +207,17 @@ class directivas{
      *
      * Integra el elemento checked del radio predeterminado
      * @param int $checked_default Numero de input predeterminado
-     * @return stdClass
+     * @return stdClass|array
+     * @version 8.15.0
      */
-    private function checked_default(int $checked_default): stdClass
+    private function checked_default(int $checked_default): stdClass|array
     {
+        if($checked_default <=0){
+            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default);
+        }
+        if($checked_default > 2){
+            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default);
+        }
         $checked_default_v1 = '';
         $checked_default_v2 = '';
 
@@ -299,6 +306,12 @@ class directivas{
         return $html_r;
     }
 
+    /**
+     * @param int $cols
+     * @param stdClass $inputs
+     * @param string $label_html
+     * @return string
+     */
     private function div_radio(int $cols, stdClass $inputs, string $label_html): string
     {
         return "<div class='control-group col-sm-$cols'>
@@ -1247,7 +1260,20 @@ class directivas{
         return "<img src='$img' class='numero'>";
     }
 
-    private function params_html(int $checked_default, array $class_label, array $class_radio, array $ids_css, string $label_html, string $for){
+
+    /**
+     * Integra los parametros para un input radio
+     * @param int $checked_default valor 1 0 2 integra checked input
+     * @param array $class_label Clases del label radio
+     * @param array $class_radio Clases del input radio
+     * @param array $ids_css Ids del input radio
+     * @param string $label_html Tag de input
+     * @param string $for For de input
+     * @return array|stdClass
+     */
+    private function params_html(int $checked_default, array $class_label, array $class_radio, array $ids_css,
+                                 string $label_html, string $for): array|stdClass
+    {
         $label_html = $this->label_radio(for: $for,label_html:  $label_html);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label_html', data: $label_html);

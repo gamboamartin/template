@@ -358,7 +358,6 @@ class directivasTest extends test {
     }
 
 
-
     /**
      */
     #[NoReturn] public function test_init_input(): void
@@ -512,10 +511,6 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
-
-
-
-
     /**
      * @throws JsonException
      */
@@ -536,6 +531,28 @@ class directivasTest extends test {
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<div |class|><div |class|><input type='text' name='descripcion_select' value='' |class| required id='descripcion_select' placeholder='Descripcion Select' title='Descripcion Select' /></div></div>", $resultado);
 
+        errores::$error = false;
+    }
+
+    #[NoReturn] public function test_input_fecha_required(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $disabled = false;
+        $name = 'a';
+        $place_holder = '';
+        $row_upd = new stdClass();
+        $value_vacio = false;
+
+
+        $resultado = $html->input_fecha_required($disabled, $name, $place_holder, $row_upd, $value_vacio);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><input type='date' name='a' value='' |class| required id='a' placeholder='A' /></div>", $resultado);
         errores::$error = false;
     }
 

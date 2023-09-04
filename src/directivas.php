@@ -74,7 +74,8 @@ class directivas{
      * @return string|array
      * @version 0.83.4
      */
-    private function btn_action_next(string $label,string $value, string $style = 'info', string $type='submit'): string|array
+    private function btn_action_next(string $label,string $value, string $style = 'info',
+                                     string $type='submit'): string|array
     {
         $valida = $this->valida_btn_next(label: $label,style:  $style,type:  $type,value:  $value);
         if(errores::$error){
@@ -130,8 +131,8 @@ class directivas{
      * @param string $style Estilo del boton info,danger,warning etc
      * @return array|string
      */
-    final protected function button_href(string $accion, string $etiqueta, string $name, string $place_holder, int $registro_id,
-                                 string $seccion, string $style): array|string
+    final protected function button_href(string $accion, string $etiqueta, string $name, string $place_holder,
+                                         int $registro_id, string $seccion, string $style): array|string
     {
 
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
@@ -559,7 +560,8 @@ class directivas{
      * @return array|stdClass
      * @version 0.104.5
      */
-    private function init_input(string $name, string $place_holder, stdClass $row_upd, bool $value_vacio): array|stdClass
+    private function init_input(string $name, string $place_holder, stdClass $row_upd,
+                                bool $value_vacio): array|stdClass
     {
         $valida = $this->valida_etiquetas(name: $name,place_holder:  $place_holder);
         if(errores::$error){
@@ -753,7 +755,8 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
-        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
+        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,
+            value_vacio:  $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
@@ -898,10 +901,19 @@ class directivas{
      * @param mixed|null $value Valor prioritario de input
      * @param bool $value_hora Si es verdadero integra datetime en input
      * @return array|string
+     * @version 8.24.0
      */
     final public function input_fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                         bool $value_vacio, mixed $value = null, bool $value_hora = false ): array|string
     {
+
+        $name = trim($name);
+        $place_holder = trim($place_holder);
+        if($place_holder === ''){
+            $place_holder = $name;
+            $place_holder = str_replace('_', ' ',$place_holder);
+            $place_holder = ucwords($place_holder);
+        }
 
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
         if(errores::$error){

@@ -423,7 +423,8 @@ class directivas{
     }
 
     /**
-     * @param array $ids_css
+     * Integra los id para inputs radio
+     * @param array $ids_css Identificadores a integrar
      * @return string
      */
     private function ids_html(array $ids_css): string

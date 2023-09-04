@@ -16,15 +16,15 @@ class directivas{
 
     /**
      * Genera un boton
-     * @param array $ids_css
-     * @param array $clases_css
-     * @param array $extra_params
-     * @param string $label
-     * @param string $name
-     * @param string $value
-     * @param int $cols
-     * @param string $style
-     * @param string $type
+     * @param array $ids_css Identificadores css
+     * @param array $clases_css Clases css
+     * @param array $extra_params Parametros para envio por GET
+     * @param string $label Etiqueta de boton
+     * @param string $name Name boton
+     * @param string $value Valor de boton
+     * @param int $cols Columnas css
+     * @param string $style Estilo css
+     * @param string $type Tipo boton o submit
      * @return array|string
      */
     final public function btn(array $ids_css, array $clases_css, array $extra_params, string $label, string $name,

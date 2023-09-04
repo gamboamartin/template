@@ -1066,7 +1066,12 @@ class directivas{
 
     }
 
-
+    /**
+     * Se inicializa los parametros de front de un radio
+     * @param string $for Tag
+     * @param string $label_html Label
+     * @return stdClass|array
+     */
     private function label_init(string $for, string $label_html): stdClass|array
     {
         $for = trim($for);

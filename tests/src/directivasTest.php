@@ -21,6 +21,29 @@ class directivasTest extends test {
 
     }
 
+    #[NoReturn] public function test_btn(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $ids_css = array();
+        $clases_css = array();
+        $extra_params = array();
+        $label = '';
+        $name = 'a';
+        $value = 'b';
+
+
+        $resultado = $html->btn($ids_css, $clases_css, $extra_params, $label, $name, $value);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<button type='button' class='btn btn-info btn-guarda col-md-6 ' id='' name='a' value='b' >A</button>", $resultado);
+        errores::$error = false;
+    }
+
     /**
      */
     #[NoReturn] public function test_btn_action_next(): void

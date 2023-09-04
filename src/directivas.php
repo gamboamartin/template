@@ -26,11 +26,21 @@ class directivas{
      * @param string $style Estilo css
      * @param string $type Tipo boton o submit
      * @return array|string
+     * @version 8.23.0
      */
     final public function btn(array $ids_css, array $clases_css, array $extra_params, string $label, string $name,
                               string $value, int $cols = 6 , string $style = 'info',
                               string $type='button'): array|string
     {
+
+        $label = trim($label);
+        $name = trim($name);
+        if($label === ''){
+            $label = $name;
+            $label = str_replace('_', ' ', $label);
+            $label = ucwords($label);
+        }
+
         $valida = $this->valida_btn_next(label: $label,style:  $style,type:  $type,value:  $value);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
@@ -547,7 +557,7 @@ class directivas{
      * @param stdClass $row_upd Registro en proceso
      * @param bool $value_vacio si vacio deja el input en vacio
      * @return array|stdClass
-     * @version 0.104..5
+     * @version 0.104.5
      */
     private function init_input(string $name, string $place_holder, stdClass $row_upd, bool $value_vacio): array|stdClass
     {

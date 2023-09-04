@@ -203,6 +203,11 @@ class directivas{
         return $div;
     }
 
+    /**
+     *
+     * @param int $checked_default
+     * @return stdClass
+     */
     private function checked_default(int $checked_default): stdClass
     {
         $checked_default_v1 = '';
@@ -425,14 +430,20 @@ class directivas{
     /**
      * Integra los id para inputs radio
      * @param array $ids_css Identificadores a integrar
-     * @return string
+     * @return string|array
+     * @version 8.13.0
      */
-    private function ids_html(array $ids_css): string
+    private function ids_html(array $ids_css): string|array
     {
         $ids_html = '';
         foreach ($ids_css as $id_css){
+            $ids_html = trim($ids_html);
+            if($id_css === ''){
+                return $this->error->error(mensaje: 'Error ids_html', data: $id_css);
+            }
             $ids_html.=" $id_css ";
         }
+        $ids_html = trim($ids_html);
 
         if($ids_html!==''){
             $ids_html = "id='$ids_html'";

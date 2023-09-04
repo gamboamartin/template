@@ -90,6 +90,30 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    /**
+     * @throws JsonException
+     */
+    #[NoReturn] public function test_button_href_status(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $cols = '2';
+        $registro_id = '-1';
+        $seccion = 'a';
+        $status = 'c';
+
+
+        $resultado = $html->button_href_status($cols, $registro_id, $seccion, $status);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div |class|><div |class|><a |role| href='index.php?seccion=a&accion=status&registro_id=-1&session_id=1' |class|>c</a></div></div>", $resultado);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_class_label_html(): void
     {
         errores::$error = false;
@@ -126,29 +150,7 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
-    /**
-     * @throws JsonException
-     */
-    #[NoReturn] public function test_button_href_status(): void
-    {
-        errores::$error = false;
-        $html_ = new html();
-        $html = new directivas($html_);
-        //$html = new liberator($html);
-        $_GET['session_id'] = 1;
 
-        $cols = '2';
-        $registro_id = '-1';
-        $seccion = 'a';
-        $status = 'c';
-
-
-        $resultado = $html->button_href_status($cols, $registro_id, $seccion, $status);
-        $this->assertIsString($resultado);
-        $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><div |class|><a |role| href='index.php?seccion=a&accion=status&registro_id=-1&session_id=1' |class|>c</a></div></div>", $resultado);
-        errores::$error = false;
-    }
 
     /**
      */
@@ -241,6 +243,35 @@ class directivasTest extends test {
         $this->assertEquals("<div |class|><input type='date' name='a' value='' |class| required id='a' placeholder='c' /></div>", $resultado);
 
         errores::$error = false;
+    }
+
+    #[NoReturn] public function test_ids_html(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $ids_css = array();
+
+
+        $resultado = $html->ids_html($ids_css);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("", $resultado);
+
+        errores::$error = false;
+        $ids_css = array();
+        $ids_css[] = ' a';
+        $ids_css[] = 'b  ';
+        $resultado = $html->ids_html($ids_css);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("id='a b'", $resultado);
+
+        errores::$error = false;
+
     }
 
     #[NoReturn] public function test_init()

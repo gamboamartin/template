@@ -737,14 +737,15 @@ class html{
      * @param string $place_holder Contenido a mostrar previo a la captura del input
      * @param bool $required Si required aplica required en html
      * @param array $class_css Integra clases css
+     * @param array $ids_css
      * @param string $regex Integra un regex para atributo pattern del input
      * @param string $title Title de input
      * @return array|stdClass
      * @version 0.28.0
      */
     private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder,
-                                bool $required, array $class_css = array(), string $regex = '',
-                                string $title = ''): array|stdClass
+                                bool $required, array $class_css = array(), array $ids_css = array(),
+                                string $regex = '', string $title = ''): array|stdClass
     {
 
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
@@ -776,6 +777,11 @@ class html{
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar class_html', data: $class_html);
         }
+        $ids_css[] = $id_css;
+        $ids_css_html = (new params_inputs())->ids_html($ids_css);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar id_css', data: $ids_css_html);
+        }
 
         $params = new stdClass();
         $params->name = $name;
@@ -786,6 +792,7 @@ class html{
         $params->regex = $regex_html;
         $params->title = $title_html;
         $params->class = $class_html;
+        $params->ids_css_html = $ids_css_html;
 
         return $params;
     }
@@ -948,25 +955,26 @@ class html{
      * @param bool $required indica si es requerido o no
      * @param mixed $value Valor en caso de que exista
      * @param mixed $regex Integra regex a pattern
+     * @param array $ids_css Integra los identificadores css
      * @return string|array Html en forma de input text
      * @version 0.9.0
      * @final rev
      */
     public function text(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
-                         mixed $value, string $regex = '', string $title = ''): string|array
+                         mixed $value, array $ids_css = array(), string $regex = '', string $title = ''): string|array
     {
 
 
 
-        $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
-            required:  $required, regex: $regex, title: $title);
+        $params = $this->params_txt(disabled: $disabled, id_css: $id_css, name: $name, place_holder: $place_holder,
+            required: $required, ids_css: $ids_css, regex: $regex, title: $title);
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
         }
 
         $html = "<input type='text' name='$params->name' value='$value' |class| $params->disabled $params->required ";
-        $html.= "id='$id_css' placeholder='$params->place_holder' $params->regex $params->title />";
+        $html.= $params->ids_css_html." placeholder='$params->place_holder' $params->regex $params->title />";
 
         $html_r = $this->limpia_salida(html: $html);
         if(errores::$error){
@@ -990,8 +998,9 @@ class html{
      * @return string|array
      * @version 8.25.0
      */
-    final public function text_class(array $class_css, bool $disabled, string $id_css, string $name, string $place_holder,
-                               bool $required, mixed $value, string $regex = '', string $title = ''): string|array
+    final public function text_class(
+        array $class_css, bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+        mixed $value, string $regex = '', string $title = ''): string|array
     {
 
         $name = trim($name);

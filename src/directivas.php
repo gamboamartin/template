@@ -1026,12 +1026,14 @@ class directivas{
      * @param bool $required si required integra attr required
      * @param stdClass $row_upd Registro en proceso
      * @param bool $value_vacio Si vacio deja input sin value
+     * @param array $ids_css
      * @param string $regex
      * @return array|string
      * @version 0.101.4
      */
-    final public function input_text(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
-                               bool $value_vacio, string $regex = ''): array|string
+    final public function input_text(bool $disabled, string $name, string $place_holder, bool $required,
+                                     stdClass $row_upd, bool $value_vacio, array $ids_css = array(),
+                                     string $regex = ''): array|string
     {
 
 
@@ -1041,8 +1043,8 @@ class directivas{
         }
 
 
-        $html= $this->html->text(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: $required, value: $row_upd_->$name, regex: $regex);
+        $html= $this->html->text(disabled: $disabled, id_css: $name, name: $name, place_holder: $place_holder,
+            required: $required, value: $row_upd_->$name, ids_css: $ids_css, regex: $regex);
 
 
         $div = $this->div_label(html:$html, name: $name, place_holder: $place_holder);
@@ -1091,14 +1093,15 @@ class directivas{
      * @param stdClass $row_upd Registro obtenido para actualizar
      * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
      * @param bool $con_label Integra el label en el input
+     * @param array $ids_css Identificadores extra
      * @param string $regex regex a integrar en pattern
      * @param string $title title a integrar a input
      * @return array|string
      * @version 0.48.1
      */
     final public function input_text_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
-                                        bool $value_vacio, bool $con_label = true, string $regex = '',
-                                              string $title = '' ): array|string
+                                        bool $value_vacio, bool $con_label = true, array $ids_css = array(),
+                                              string $regex = '', string $title = '' ): array|string
     {
 
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
@@ -1111,8 +1114,8 @@ class directivas{
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
-        $html= $this->html->text(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: true, value: $init->row_upd->$name, regex: $regex, title: $title);
+        $html= $this->html->text(disabled: $disabled, id_css: $name, name: $name, place_holder: $place_holder,
+            required: true, value: $init->row_upd->$name, ids_css: $ids_css, regex: $regex, title: $title);
 
         if($con_label) {
             $html = $this->html->div_label(html: $html, label: $init->label);

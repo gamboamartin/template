@@ -1129,6 +1129,37 @@ class directivas{
 
     }
 
+    final public function input_text_base(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
+                                          bool $value_vacio, array $class_css = array(), bool $con_label = true,
+                                          array $ids_css = array(), string $regex = '',
+                                          string $title = '' ): array|string
+    {
+
+        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
+        }
+
+        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
+        }
+
+        $html= $this->html->text_base(disabled: $disabled, id_css: $name, name: $name, place_holder: $place_holder,
+            required: true, value: $init->row_upd->$name, class_css: $class_css, ids_css: $ids_css, regex: $regex,
+            title: $title);
+
+        if($con_label) {
+            $html = $this->html->div_label(html: $html, label: $init->label);
+            if (errores::$error) {
+                return $this->error->error(mensaje: 'Error al integrar div', data: $html);
+            }
+        }
+
+        return $html;
+
+    }
+
     /**
      * Se inicializa los parametros de front de un radio
      * @param string $for Tag

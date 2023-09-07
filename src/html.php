@@ -984,6 +984,29 @@ class html{
         return $html_r;
     }
 
+    final public function text_base(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+                                    mixed $value, array $class_css = array(), array $ids_css = array(),
+                                    string $regex = '', string $title = ''): string|array
+    {
+
+        $params = $this->params_txt(disabled: $disabled, id_css: $id_css, name: $name, place_holder: $place_holder,
+            required: $required, class_css: $class_css, ids_css: $ids_css, regex: $regex, title: $title);
+
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $html = "<input type='text' name='$params->name' value='$value' $params->class $params->disabled $params->required ";
+        $html.= $params->ids_css_html." placeholder='$params->place_holder' $params->regex $params->title />";
+
+        $html_r = $this->limpia_salida(html: $html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al limpiar html', data: $html_r);
+        }
+
+        return $html_r;
+    }
+
     /**
      * Genera un input type de texto con clases asignadas
      * @param array $class_css Clases css a integrar

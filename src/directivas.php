@@ -1026,14 +1026,15 @@ class directivas{
      * @param bool $required si required integra attr required
      * @param stdClass $row_upd Registro en proceso
      * @param bool $value_vacio Si vacio deja input sin value
-     * @param array $ids_css
-     * @param string $regex
+     * @param array $ids_css Identificadores css
+     * @param string $regex Regex
+     * @param string $title Titulo on over
      * @return array|string
      * @version 0.101.4
      */
     final public function input_text(bool $disabled, string $name, string $place_holder, bool $required,
                                      stdClass $row_upd, bool $value_vacio, array $ids_css = array(),
-                                     string $regex = ''): array|string
+                                     string $regex = '', string $title = ''): array|string
     {
 
 
@@ -1044,7 +1045,7 @@ class directivas{
 
 
         $html= $this->html->text(disabled: $disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: $required, value: $row_upd_->$name, ids_css: $ids_css, regex: $regex);
+            required: $required, value: $row_upd_->$name, ids_css: $ids_css, regex: $regex, title: $title);
 
 
         $div = $this->div_label(html:$html, name: $name, place_holder: $place_holder);

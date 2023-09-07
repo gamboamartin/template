@@ -1131,7 +1131,7 @@ class directivas{
 
     final public function input_text_base(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                           bool $value_vacio, array $class_css = array(), bool $con_label = true,
-                                          array $ids_css = array(), string $regex = '',
+                                          array $ids_css = array(), string $regex = '', bool $required = true,
                                           string $title = '' ): array|string
     {
 
@@ -1146,7 +1146,7 @@ class directivas{
         }
 
         $html= $this->html->text_base(disabled: $disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: true, value: $init->row_upd->$name, class_css: $class_css, ids_css: $ids_css, regex: $regex,
+            required: $required, value: $init->row_upd->$name, class_css: $class_css, ids_css: $ids_css, regex: $regex,
             title: $title);
 
         if($con_label) {

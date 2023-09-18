@@ -296,6 +296,9 @@ class html{
     {
         $extra_params = array();
         foreach ($extra_params_key as $key_extra_param){
+            if(!isset($row[$key_extra_param])){
+                $row[$key_extra_param] = 'SON DATOS';
+            }
             $extra_params[$key_extra_param] = $row[$key_extra_param];
         }
         return $extra_params;
@@ -621,9 +624,6 @@ class html{
      * @param array $columns_ds Columnas a integrar a descripcion de option
      * @param array $extra_params_key keys de extra params para integrar valor
      * @return array|string
-     * @version 0.65.4
-     * @verfuncion 0.1.0
-     * @fecha 2022-08-03 14:55
      * @author mgamboa
      */
     private function options(mixed $id_selected, array $values, array $columns_ds = array(),
@@ -650,10 +650,6 @@ class html{
      * @param array $extra_params_key Conjunto de keys para asignar el valor e integrar un extra param basado en el
      * valor puesto
      * @return array|string
-     * @version 0.66.4
-     * @verfuncion 0.1.0
-     * @fecha 2022-08-03 14:30
-     * @
      */
     private function options_html_data(mixed $id_selected, string $options_html, array $values,
                                        array $columns_ds = array(), array $extra_params_key = array()): array|string
@@ -809,10 +805,6 @@ class html{
      * @param array $extra_params_key keys de extra params para integrar valor
      * @param bool $required if required integra required a select
      * @return array|string
-     * @version 0.71.4
-     * @verfuncion 0.1.0
-     * @verfuncion 0.2.0
-     * @fecha 2022-08-03 15:42
      * @author mgamboa
      */
     final public function select(int $cols, int $id_selected, string $label,string $name, array $values,

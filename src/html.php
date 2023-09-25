@@ -378,6 +378,7 @@ class html{
      * Integra los options en forma de html
      * @param string $descripcion_select Descripcion del option
      * @param string $entidad_contenedora Entidad que tiene los datos
+     * @param string $entidad_preferida
      * @param bool $id_preferido Si aplica id preferido utiliza ael mas usado
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param modelo $modelo Modelo da datos
@@ -391,8 +392,9 @@ class html{
      * @author mgamboa
      */
     private function integra_options_html(string $descripcion_select, string $entidad_contenedora,
-                                          bool $id_preferido, mixed $id_selected, modelo $modelo, string $options_html,
-                                          mixed $value, array $extra_params = array()): array|string
+                                          string $entidad_preferida, bool $id_preferido, mixed $id_selected,
+                                          modelo $modelo, string $options_html, mixed $value,
+                                          array $extra_params = array()): array|string
     {
 
         if($id_preferido){
@@ -401,11 +403,16 @@ class html{
                 return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
                     data:  $entidad_contenedora);
             }
+            $entidad_preferida = trim($entidad_preferida);
+            if($entidad_preferida === ''){
+                return $this->error->error(mensaje: 'Error entidad_preferida esta vacia',data:  $entidad_preferida);
+            }
         }
 
         $option_html = $this->option_html(descripcion_select: $descripcion_select,
-            entidad_contenedora: $entidad_contenedora, id_preferido: $id_preferido, id_selected: $id_selected,
-            modelo: $modelo, value: $value, extra_params: $extra_params);
+            entidad_contenedora: $entidad_contenedora, entidad_preferida: $entidad_preferida,
+            id_preferido: $id_preferido, id_selected: $id_selected, modelo: $modelo, value: $value,
+            extra_params: $extra_params);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar option', data: $option_html);
         }
@@ -572,9 +579,9 @@ class html{
         return "<option value='$value' $selected_html $extra_params_html>$descripcion</option>";
     }
 
-    private function option_con_extra_param(string $entidad_contenedora, array $extra_params_key, bool $id_preferido,
-                                            int|null $id_selected, modelo $modelo, string $options_html_, array $row,
-                                            mixed $row_id){
+    private function option_con_extra_param(string $entidad_contenedora, string $entidad_preferida,
+                                            array $extra_params_key, bool $id_preferido, int|null $id_selected,
+                                            modelo $modelo, string $options_html_, array $row, mixed $row_id){
         $keys = array('descripcion_select');
         $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
         if(errores::$error){
@@ -586,6 +593,10 @@ class html{
                 return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
                     data:  $entidad_contenedora);
             }
+            $entidad_preferida = trim($entidad_preferida);
+            if($entidad_preferida === ''){
+                return $this->error->error(mensaje: 'Error entidad_preferida esta vacia',data:  $entidad_preferida);
+            }
         }
 
         $extra_params = $this->extra_param_data(extra_params_key: $extra_params_key,row:  $row);
@@ -594,8 +605,9 @@ class html{
         }
 
         $options_html_ = $this->integra_options_html(descripcion_select: $row['descripcion_select'],
-            entidad_contenedora: $entidad_contenedora, id_preferido: $id_preferido, id_selected: $id_selected,
-            modelo: $modelo, options_html: $options_html_, value: $row_id, extra_params: $extra_params);
+            entidad_contenedora: $entidad_contenedora, entidad_preferida: $entidad_preferida,
+            id_preferido: $id_preferido, id_selected: $id_selected, modelo: $modelo, options_html: $options_html_,
+            value: $row_id, extra_params: $extra_params);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
         }
@@ -606,6 +618,7 @@ class html{
      * Genera un option en forma de html
      * @param string $descripcion_select Descripcion a mostrar en option
      * @param string $entidad_contenedora Entidad que tiene el id a usar cmo preferido
+     * @param string $entidad_preferida
      * @param bool $id_preferido Si es Id preferido este obtiene el elemento mas usado
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param modelo $modelo Modelo de datos donde se obtiene el elemento base da datos
@@ -617,8 +630,8 @@ class html{
      * @fecha 2022-08-03 12:03
      * @author mgamboa
      */
-    private function option_html(string $descripcion_select, string $entidad_contenedora, bool $id_preferido,
-                                 mixed $id_selected, modelo $modelo, mixed $value,
+    private function option_html(string $descripcion_select, string $entidad_contenedora, string $entidad_preferida,
+                                 bool $id_preferido, mixed $id_selected, modelo $modelo, mixed $value,
                                  array $extra_params = array()): array|string
     {
         $descripcion_select = trim($descripcion_select);
@@ -638,9 +651,13 @@ class html{
                 return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
                     data:  $entidad_contenedora);
             }
+            $entidad_preferida = trim($entidad_preferida);
+            if($entidad_preferida === ''){
+                return $this->error->error(mensaje: 'Error entidad_preferida esta vacia',data:  $entidad_preferida);
+            }
 
             $id = $modelo->id_preferido_detalle(entidad_contenedora: $entidad_contenedora,
-                entidad_preferida:  $modelo->tabla);
+                entidad_preferida:  $entidad_preferida);
             if(errores::$error){
                 return $this->error->error(mensaje: 'Error al obtener preferido', data: $id);
             }
@@ -664,6 +681,7 @@ class html{
     /**
      * Integra todos los options de un html select
      * @param string $entidad_contenedora
+     * @param string $entidad_preferida
      * @param bool $id_preferido
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param modelo $modelo
@@ -673,8 +691,8 @@ class html{
      * @return array|string
      * @author mgamboa
      */
-    private function options(string $entidad_contenedora, bool $id_preferido, mixed $id_selected, modelo $modelo,
-                             array $values, array $columns_ds = array(),
+    private function options(string $entidad_contenedora, string $entidad_preferida, bool $id_preferido,
+                             mixed $id_selected, modelo $modelo, array $values, array $columns_ds = array(),
                              array $extra_params_key = array()): array|string
     {
         if($id_preferido){
@@ -683,15 +701,20 @@ class html{
                 return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
                     data:  $entidad_contenedora);
             }
+            $entidad_preferida = trim($entidad_preferida);
+            if($entidad_preferida === ''){
+                return $this->error->error(mensaje: 'Error entidad_preferida esta vacia',data:  $entidad_preferida);
+            }
         }
 
         $options_html = $this->option(descripcion: 'Selecciona una opcion',selected:  false, value: -1);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar option', data: $options_html);
         }
-        $options_html = $this->options_html_data(entidad_contenedora: $entidad_contenedora, id_preferido: $id_preferido,
-            id_selected: $id_selected, modelo: $modelo, options_html: $options_html, values: $values,
-            columns_ds: $columns_ds, extra_params_key: $extra_params_key);
+        $options_html = $this->options_html_data(entidad_contenedora: $entidad_contenedora,
+            entidad_preferida: $entidad_preferida, id_preferido: $id_preferido, id_selected: $id_selected,
+            modelo: $modelo, options_html: $options_html, values: $values, columns_ds: $columns_ds,
+            extra_params_key: $extra_params_key);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }
@@ -701,6 +724,7 @@ class html{
     /**
      * Integra el html de un conjunto de options
      * @param string $entidad_contenedora
+     * @param string $entidad_preferida
      * @param bool $id_preferido
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @param modelo $modelo
@@ -711,15 +735,19 @@ class html{
      * valor puesto
      * @return array|string
      */
-    private function options_html_data(string $entidad_contenedora, bool $id_preferido, mixed $id_selected,
-                                       modelo $modelo, string $options_html, array $values, array $columns_ds = array(),
-                                       array $extra_params_key = array()): array|string
+    private function options_html_data(string $entidad_contenedora, string $entidad_preferida, bool $id_preferido,
+                                       mixed $id_selected, modelo $modelo, string $options_html, array $values,
+                                       array $columns_ds = array(), array $extra_params_key = array()): array|string
     {
         if($id_preferido){
             $entidad_contenedora = trim($entidad_contenedora);
             if($entidad_contenedora === ''){
                 return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
                     data:  $entidad_contenedora);
+            }
+            $entidad_preferida = trim($entidad_preferida);
+            if($entidad_preferida === ''){
+                return $this->error->error(mensaje: 'Error entidad_preferida esta vacia',data:  $entidad_preferida);
             }
         }
 
@@ -753,8 +781,8 @@ class html{
                 return $this->error->error(mensaje: 'Error al validar row', data: $valida);
             }
             $options_html_ = $this->option_con_extra_param(entidad_contenedora: $entidad_contenedora,
-                extra_params_key: $extra_params_key, id_preferido: $id_preferido, id_selected: $id_selected,
-                modelo: $modelo, options_html_: $options_html_, row: $row, row_id: $row_id);
+                entidad_preferida: $entidad_preferida, extra_params_key: $extra_params_key, id_preferido: $id_preferido,
+                id_selected: $id_selected, modelo: $modelo, options_html_: $options_html_, row: $row, row_id: $row_id);
             if(errores::$error){
                 return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
             }
@@ -874,6 +902,7 @@ class html{
      * @param array $columns_ds Columnas a integrar a descripcion de option
      * @param bool $disabled Si disabled el input quedara disabled
      * @param string $entidad_contenedora
+     * @param string $entidad_preferida
      * @param array $extra_params_key keys de extra params para integrar valor
      * @param bool $id_preferido
      * @param bool $required if required integra required a select
@@ -882,8 +911,8 @@ class html{
      */
     final public function select(int $cols, int $id_selected, string $label, modelo $modelo,string $name, array $values,
                                  array $columns_ds = array(), bool $disabled = false, string $entidad_contenedora = '',
-                                 array $extra_params_key = array(), bool $id_preferido = false,
-                                 bool $required = false): array|string
+                                 string $entidad_preferida = '', array $extra_params_key = array(),
+                                 bool $id_preferido = false, bool $required = false): array|string
     {
 
         $label = trim($label);
@@ -899,12 +928,16 @@ class html{
                 return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
                     data:  $entidad_contenedora);
             }
+            $entidad_preferida = trim($entidad_preferida);
+            if($entidad_preferida === ''){
+                return $this->error->error(mensaje: 'Error entidad_preferida esta vacia',data:  $entidad_preferida);
+            }
         }
 
 
-        $options_html = $this->options(entidad_contenedora: $entidad_contenedora, id_preferido: $id_preferido,
-            id_selected: $id_selected, modelo: $modelo, values: $values, columns_ds: $columns_ds,
-            extra_params_key: $extra_params_key);
+        $options_html = $this->options(entidad_contenedora: $entidad_contenedora, entidad_preferida: $entidad_preferida,
+            id_preferido: $id_preferido, id_selected: $id_selected, modelo: $modelo, values: $values,
+            columns_ds: $columns_ds, extra_params_key: $extra_params_key);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }

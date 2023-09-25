@@ -362,7 +362,8 @@ class htmlTest extends test {
         $modelo = new adm_accion(link: $this->link);
 
         $resultado = $html->integra_options_html(descripcion_select: $descripcion_select, entidad_contenedora: '',
-            id_preferido: false, id_selected: $id_selected, modelo: $modelo, options_html: $options_html, value: $value);
+            id_preferido: false, id_selected: $id_selected, modelo: $modelo, options_html: $options_html, value: $value,
+            entidad_preferida:'');
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value='1' selected >a</option>",$resultado);
@@ -523,6 +524,7 @@ class htmlTest extends test {
         $modelo = new adm_accion(link: $this->link);
 
         $resultado = $html->option_html(descripcion_select: $descripcion_select, entidad_contenedora: '',
+            entidad_preferida: '',
             id_preferido: false, id_selected: $id_selected, modelo: $modelo, value: $value);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
@@ -544,7 +546,7 @@ class htmlTest extends test {
         $values = array();
         $values[1]['descripcion_select'] = 'x';
         $resultado = $html->options(entidad_contenedora: '', id_preferido: false, id_selected: $id_selected,
-            modelo: $modelo, values: $values);
+            modelo: $modelo, values: $values, entidad_preferida: '');
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value=''  >Selecciona una opcion</option><option value='1' selected >x</option>",$resultado);
@@ -564,7 +566,7 @@ class htmlTest extends test {
         $values[0]['descripcion_select'] = 'x';
         $modelo = new adm_accion(link: $this->link);
         $resultado = $html->options_html_data(entidad_contenedora: '', id_preferido: false, id_selected: $id_selected,
-            modelo: $modelo, options_html: $options_html, values: $values);
+            modelo: $modelo, options_html: $options_html, values: $values,entidad_preferida: '');
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value='0'  >x</option>",$resultado);

@@ -394,6 +394,15 @@ class html{
                                           bool $id_preferido, mixed $id_selected, modelo $modelo, string $options_html,
                                           mixed $value, array $extra_params = array()): array|string
     {
+
+        if($id_preferido){
+            $entidad_contenedora = trim($entidad_contenedora);
+            if($entidad_contenedora === ''){
+                return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
+                    data:  $entidad_contenedora);
+            }
+        }
+
         $option_html = $this->option_html(descripcion_select: $descripcion_select,
             entidad_contenedora: $entidad_contenedora, id_preferido: $id_preferido, id_selected: $id_selected,
             modelo: $modelo, value: $value, extra_params: $extra_params);
@@ -571,6 +580,13 @@ class html{
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar row', data: $valida);
         }
+        if($id_preferido){
+            $entidad_contenedora = trim($entidad_contenedora);
+            if($entidad_contenedora === ''){
+                return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
+                    data:  $entidad_contenedora);
+            }
+        }
 
         $extra_params = $this->extra_param_data(extra_params_key: $extra_params_key,row:  $row);
         if(errores::$error){
@@ -616,6 +632,13 @@ class html{
         }
 
         if($id_preferido){
+
+            $entidad_contenedora = trim($entidad_contenedora);
+            if($entidad_contenedora === ''){
+                return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
+                    data:  $entidad_contenedora);
+            }
+
             $id = $modelo->id_preferido_detalle(entidad_contenedora: $entidad_contenedora,
                 entidad_preferida:  $modelo->tabla);
             if(errores::$error){
@@ -654,6 +677,14 @@ class html{
                              array $values, array $columns_ds = array(),
                              array $extra_params_key = array()): array|string
     {
+        if($id_preferido){
+            $entidad_contenedora = trim($entidad_contenedora);
+            if($entidad_contenedora === ''){
+                return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
+                    data:  $entidad_contenedora);
+            }
+        }
+
         $options_html = $this->option(descripcion: 'Selecciona una opcion',selected:  false, value: -1);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar option', data: $options_html);
@@ -684,6 +715,14 @@ class html{
                                        modelo $modelo, string $options_html, array $values, array $columns_ds = array(),
                                        array $extra_params_key = array()): array|string
     {
+        if($id_preferido){
+            $entidad_contenedora = trim($entidad_contenedora);
+            if($entidad_contenedora === ''){
+                return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
+                    data:  $entidad_contenedora);
+            }
+        }
+
         $options_html_ = $options_html;
         foreach ($values as $row_id=>$row){
             if(!is_array($row)){
@@ -853,6 +892,15 @@ class html{
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar input', data: $valida);
         }
+
+        if($id_preferido){
+            $entidad_contenedora = trim($entidad_contenedora);
+            if($entidad_contenedora === ''){
+                return $this->error->error(mensaje: 'Error existe id_preferido entidad_contenedora debe tener datos',
+                    data:  $entidad_contenedora);
+            }
+        }
+
 
         $options_html = $this->options(entidad_contenedora: $entidad_contenedora, id_preferido: $id_preferido,
             id_selected: $id_selected, modelo: $modelo, values: $values, columns_ds: $columns_ds,

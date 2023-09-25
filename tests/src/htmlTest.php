@@ -1,6 +1,7 @@
 <?php
 namespace tests\src;
 
+use gamboamartin\administrador\models\adm_accion;
 use gamboamartin\errores\errores;
 use gamboamartin\template\html;
 use gamboamartin\test\liberator;
@@ -358,8 +359,10 @@ class htmlTest extends test {
         $id_selected = 1;
         $value = "1";
         $options_html = "";
+        $modelo = new adm_accion(link: $this->link);
 
-        $resultado = $html->integra_options_html($descripcion_select, $id_selected, $options_html, $value);
+        $resultado = $html->integra_options_html(descripcion_select: $descripcion_select, entidad_contenedora: '',
+            id_preferido: false, id_selected: $id_selected, modelo: $modelo, options_html: $options_html, value: $value);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value='1' selected >a</option>",$resultado);
@@ -517,7 +520,10 @@ class htmlTest extends test {
         $id_selected = -1;
         $value = "";
 
-        $resultado = $html->option_html($descripcion_select, $id_selected, $value);
+        $modelo = new adm_accion(link: $this->link);
+
+        $resultado = $html->option_html(descripcion_select: $descripcion_select, entidad_contenedora: '',
+            id_preferido: false, id_selected: $id_selected, modelo: $modelo, value: $value);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value='' selected >a</option>",$resultado);
@@ -533,10 +539,12 @@ class htmlTest extends test {
         $_GET['session_id'] = 1;
 
         $id_selected = 1;
+        $modelo = new adm_accion(link: $this->link);
 
         $values = array();
         $values[1]['descripcion_select'] = 'x';
-        $resultado = $html->options($id_selected, $values);
+        $resultado = $html->options(entidad_contenedora: '', id_preferido: false, id_selected: $id_selected,
+            modelo: $modelo, values: $values);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value=''  >Selecciona una opcion</option><option value='1' selected >x</option>",$resultado);
@@ -554,7 +562,9 @@ class htmlTest extends test {
         $options_html = "";
         $values = array();
         $values[0]['descripcion_select'] = 'x';
-        $resultado = $html->options_html_data($id_selected, $options_html, $values);
+        $modelo = new adm_accion(link: $this->link);
+        $resultado = $html->options_html_data(entidad_contenedora: '', id_preferido: false, id_selected: $id_selected,
+            modelo: $modelo, options_html: $options_html, values: $values);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value='0'  >x</option>",$resultado);
@@ -592,9 +602,12 @@ class htmlTest extends test {
         $id_selected = -1;
         $cols = 12;
         $label = 'a';
+
         $name = 'z';
         $values = array();
-        $resultado = $html->select($cols, $id_selected, $label, $name, $values);
+        $modelo = new adm_accion(link: $this->link);
+        $resultado = $html->select(cols: $cols, id_selected: $id_selected, label: $label, modelo: $modelo, name: $name,
+            values: $values);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<div class='control-group col-sm-12'><div class='controls'><select class='form-control selectpicker color-secondary  z' data-live-search='true' id='z' name='z'  ><option value=''  >Selecciona una opcion</option></select></div></div>",$resultado);

@@ -1134,7 +1134,7 @@ class directivas{
     final public function input_text_base(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                           bool $value_vacio, array $class_css = array(), bool $con_label = true,
                                           array $ids_css = array(), string $regex = '', bool $required = true,
-                                          string $title = '' ): array|string
+                                          string $title = '', string|null $value = '' ): array|string
     {
 
         $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
@@ -1147,8 +1147,19 @@ class directivas{
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
 
+        $value_input = $init->row_upd->$name;
+
+        if(is_null($value)){
+            $value = '';
+        }
+
+        $value = trim($value);
+        if($value!==''){
+            $value_input = $value;
+        }
+
         $html= $this->html->text_base(disabled: $disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: $required, value: $init->row_upd->$name, class_css: $class_css, ids_css: $ids_css, regex: $regex,
+            required: $required, value: $value_input, class_css: $class_css, ids_css: $ids_css, regex: $regex,
             title: $title);
 
         if($con_label) {

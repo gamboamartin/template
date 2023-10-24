@@ -221,11 +221,12 @@ class html{
      * @param string $options_html Options en html
      * @param array $class_css Class css nuevas
      * @param bool $disabled Si disabled el input quedara disabled
+     * @param string $id_css Si existe lo cambia por el name
      * @param bool $required si required integra requieren en select
      * @return array|string
      */
     public function div_select(string $name, string $options_html, array $class_css = array(), bool $disabled = false,
-                                  bool $required = false): array|string
+                               string $id_css = '', bool $required = false): array|string
     {
         $required_html = (new params_inputs())->required_html(required: $required);
         if(errores::$error){
@@ -242,8 +243,14 @@ class html{
             return $this->error->error(mensaje: 'Error al generar class css', data: $class_html);
         }
 
+        $id_css = trim($id_css);
+        if($id_css === ''){
+            $id_css = trim($name);
+        }
+
+
         $select_in  ="<select class='form-control selectpicker color-secondary $name $class_html' ";
-        $select_in  .="data-live-search='true' id='$name' name='$name' ";
+        $select_in  .="data-live-search='true' id='$id_css' name='$name' ";
         $select_in  .="$required_html $disabled_html>";
 
         $select_fin = '</select>';
@@ -824,13 +831,15 @@ class html{
      * @param array $columns_ds Columnas a integrar a descripcion de option
      * @param bool $disabled Si disabled el input quedara disabled
      * @param array $extra_params_key keys de extra params para integrar valor
+     * @param string $id_css Identificador css si esta vacio integra en name
      * @param bool $required if required integra required a select
      * @return array|string
      * @author mgamboa
      */
     final public function select(int $cols, int $id_selected, string $label, string $name, array $values,
                                  array $class_css = array(), array $columns_ds = array(), bool $disabled = false,
-                                 array $extra_params_key = array(), bool $required = false): array|string
+                                 array $extra_params_key = array(), string $id_css = '',
+                                 bool $required = false): array|string
     {
 
         $label = trim($label);
@@ -847,7 +856,7 @@ class html{
         }
 
         $select = $this->select_html(cols: $cols, label: $label, name: $name, options_html: $options_html,
-            class_css: $class_css, disabled: $disabled, required: $required);
+            class_css: $class_css, disabled: $disabled, id_css: $id_css, required: $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
         }
@@ -864,11 +873,12 @@ class html{
      * @param string $options_html Options precargados para select
      * @param array $class_css Class extra
      * @param bool $disabled Si disabled el input quedara inactivo
+     * @param string $id_css Si existe lo integra en lugar del name
      * @param bool $required Si required se integra required como atributo del input
      * @return array|string
      */
     private function select_html(int $cols, string $label, string $name, string $options_html,
-                                 array $class_css = array(), bool $disabled = false,
+                                 array $class_css = array(), bool $disabled = false, string $id_css = '',
                                  bool $required = false): array|string
     {
 
@@ -880,7 +890,7 @@ class html{
         }
 
         $select = $this->div_select(name: $name, options_html: $options_html, class_css: $class_css,
-            disabled: $disabled, required: $required);
+            disabled: $disabled, id_css: $id_css, required: $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar contenedor', data: $select);
         }

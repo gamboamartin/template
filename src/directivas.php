@@ -26,7 +26,6 @@ class directivas{
      * @param string $style Estilo css
      * @param string $type Tipo boton o submit
      * @return array|string
-     * @version 8.23.0
      */
     final public function btn(array $ids_css, array $clases_css, array $extra_params, string $label, string $name,
                               string $value, int $cols = 6 , string $style = 'info',
@@ -1553,7 +1552,6 @@ class directivas{
      * @param string $type Tipo submit o button
      * @param string $value Valor
      * @return bool|array
-     * @version 0.92.4
      */
     final public function valida_btn_next(string $label, string $style, string $type, string $value): bool|array
     {
@@ -1576,12 +1574,17 @@ class directivas{
     }
 
     /**
-     * Valida los elementos base de un input
-     * @param string $label Etiqueta
-     * @param string $value Valor
-     * @return bool|array
+     * POR DOCUMENTAR EN WIKI
+     * Valida los datos de entrada para asegurarse de que la etiqueta y el valor no estén vacíos.
+     *
+     * @param string $label Etiqueta a comprobar.
+     * @param string $value Valor a comprobar.
+     * @return true|array Devuelve true si la etiqueta y el valor no están vacíos,
+     *                    o devuelve un array con un mensaje de error en caso contrario.
+     *
+     * @version 15.0.0
      */
-    final public function valida_data_base(string $label, string $value): bool|array
+    final public function valida_data_base(string $label, string $value): true|array
     {
         $label = trim($label);
         if($label === ''){
@@ -1598,10 +1601,9 @@ class directivas{
 
     /**
      * @param int $cols Numero de columnas css
-     * @version 0.4.0
-     * @return bool|array
+     * @return true|array
      */
-    final public function valida_cols(int $cols): bool|array
+    final public function valida_cols(int $cols): true|array
     {
         if($cols<=0){
             return $this->error->error(mensaje: 'Error cols debe ser mayor a 0', data: $cols);
@@ -1614,10 +1616,9 @@ class directivas{
 
     /**
      * Verifica los datos de entrada de un label
-     * @version 0.1.0
      * @param string $name Nombre del input
      * @param string $place_holder Dato a mostrar dentro del input de manera inicial
-     * @return bool|array
+     * @return true|array
      */
     final public function valida_data_label(string $name, string $place_holder): bool|array
     {

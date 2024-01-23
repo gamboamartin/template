@@ -1080,6 +1080,26 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_valida_data_base(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        //$_GET['session_id'] = 1;
+
+        $label = 'a';
+        $value = 'v';
+
+
+        $resultado = $html->valida_data_base($label, $value);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertTrue($resultado);
+
+        errores::$error = false;
+    }
+
     /**
      * @throws JsonException
      */

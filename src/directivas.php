@@ -171,7 +171,6 @@ class directivas{
 
     /**
      * Genera un boton de tipo link para transaccionar status
-     * @version 0.15.0
      * @param int $cols Columnas en formato css de 1 a 12
      * @param int $registro_id Registro id a mandar transaccion
      * @param string $seccion Seccion a ejecutar
@@ -1615,12 +1614,18 @@ class directivas{
     }
 
     /**
-     * Verifica los datos de entrada de un label
-     * @param string $name Nombre del input
-     * @param string $place_holder Dato a mostrar dentro del input de manera inicial
-     * @return true|array
+     * POR DOCUMENTAR EN WIKI
+     * Método para validar si el nombre y el lugar de reserva proporcionados no están vacíos.
+     *
+     * @param string $name El nombre a validar. La cadena no debe ser vacía después de haber sido recortada.
+     * @param string $place_holder El marcador de posición a validar. La cadena no debe estar vacía después de haber sido recortada.
+     *
+     * @return true|array True si ambas entradas son válidas, de lo contrario, se devuelve un conjunto de información de error.
+     *
+     * @final
+     * @version 15.1.0
      */
-    final public function valida_data_label(string $name, string $place_holder): bool|array
+    final public function valida_data_label(string $name, string $place_holder): true|array
     {
 
         $name = trim($name);

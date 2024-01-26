@@ -120,7 +120,6 @@ class directivas{
 
     /**
      * Genera un boton tipo link
-     * @version 0.13.0
      * @param string $accion Accion a ejecutar
      * @param string $etiqueta Etiqueta de boton
      * @param string $name Nombre para ser aplicado a for
@@ -1210,7 +1209,6 @@ class directivas{
     /**
      *
      * Genera el label de in input para ser mostrado en el front
-     * @version 0.8.0
      * @param string $name Nombre del input
      * @param string $place_holder Etiqueta a mostrar
      * @return array|string

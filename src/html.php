@@ -427,7 +427,6 @@ class html{
 
     /**
      * Genera un label html
-     * @version 0.7.0
      * @param string $id_css id de css
      * @param string $place_holder Etiqueta a mostrar
      * @return string|array string Salida html de label
@@ -1085,16 +1084,38 @@ class html{
 
 
     /**
-     * Valida los datos de un input sean correctos
-     * @version 0.36.5
-     * @param string $accion Accion a verificar
-     * @param string $etiqueta Etiqueta a mostrar en el input
-     * @param string $seccion Seccion en ejecucion
-     * @param string $style Estilo css
-     * @return bool|array
-     * @por_doc true
+     * POR DOCUMENTAR EN WIKI
+     * Función que valida varias entradas de strings (accion, etiqueta, seccion, style).
+     *
+     * Esta función toma cuatro parámetros en formato de string, y verifica que cada uno de ellos no esté vacío
+     * después de eliminar los espacios en blanco en ambos extremos. Si alguno de los strings está vacío después
+     * del trim, se devuelve un error con un mensaje específico y los datos que se intentaron validar.
+     * Si todos los strings pasan la validación, la función devuelve true.
+     *
+     * @param string $accion Una acción a validar.
+     * @param string $etiqueta Una etiqueta a validar.
+     * @param string $seccion Una sección a validar.
+     * @param string $style Un estilo a validar.
+     *
+     * @return true|array La función devuelve true si todas las entradas no están vacías después del trim.
+     * Si alguna de las entradas está vacía, se devuelve un array con un mensaje de error y los datos que fallaron en la validación.
+     *
+     * @example
+     *
+     *  $accion = "miAccion";
+     *  $etiqueta = "miEtiqueta";
+     *  $seccion = " miSeccion ";  // Nota el espacio al principio y al final
+     *  $style = "";
+     *
+     *  $result = valida_input($accion, $etiqueta, $seccion, $style);
+     *
+     *  var_dump($result);
+     *  // Imprimirá un array con un mensaje de error ya que $style es una cadena vacía.
+     *
+     * @version 15.2.0
+     *
      */
-    final public function valida_input(string $accion, string $etiqueta, string $seccion, string $style): bool|array
+    final public function valida_input(string $accion, string $etiqueta, string $seccion, string $style): true|array
     {
         $seccion = trim($seccion);
         if($seccion === ''){

@@ -1543,14 +1543,17 @@ class directivas{
     }
 
     /**
-     * Valida los elementos de un boton
-     * @param string $label Etiqueta
-     * @param string $style Stilo
-     * @param string $type Tipo submit o button
-     * @param string $value Valor
-     * @return bool|array
+     * POR DOCUMENTAR EN WIKI
+     * Valida los botones del siguiente.
+     *
+     * @param string $label Etiqueta del botón, también se valida en la base de datos.
+     * @param string $style Estilo del botón, no puede estar vacío.
+     * @param string $type Tipo del botón, no puede estar vacío.
+     * @param string $value Valor del botón, se valida en la base de datos.
+     * @return true|array Devuelve verdadero si la validación es exitosa, de lo contrario, devuelve un array con los errores.
+     * @version 16.0.0
      */
-    final public function valida_btn_next(string $label, string $style, string $type, string $value): bool|array
+    final public function valida_btn_next(string $label, string $style, string $type, string $value): true|array
     {
 
         $valida = $this->valida_data_base(label: $label,value:  $value);

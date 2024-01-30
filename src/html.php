@@ -426,11 +426,23 @@ class html{
     }
 
     /**
-     * Genera un label html
-     * @param string $id_css id de css
-     * @param string $place_holder Etiqueta a mostrar
-     * @return string|array string Salida html de label
-     * @final rev
+     * POR DOCUMENTAR EN WIKI
+     * Genera una etiqueta HTML <label>.
+     *
+     * Esta función crea una etiqueta de 'label' para ser usada en formularios HTML. El valor de 'for' de la
+     * etiqueta de 'label' sera el valor de '$id_css' y el contenido de la etiqueta será el valor de '$place_holder'.
+     *
+     * @param string $id_css        Define el valor de la propiedad 'for' del label. Se usa para asociar el elemento del
+     *                              formulario especificado por su id. Este valor no debe estar vacío.
+     *
+     * @param string $place_holder  Define el texto visible que se mostrará dentro de la etiqueta 'label'.
+     *                              Este valor tampoco debe estar vacío.
+     *
+     * @throws errores Si '$id_css' o '$place_holder' están vacíos.
+     *
+     * @return string|array           Si la entrada es válida, retorna una cadena que representa la etiqueta 'label'.
+     *                                Si ocurre algún error, devuelve un arreglo con información del error.
+     * @version 16.1.0
      */
     public function label(string $id_css, string $place_holder): string|array
     {

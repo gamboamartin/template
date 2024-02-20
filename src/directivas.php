@@ -1600,8 +1600,16 @@ class directivas{
 
 
     /**
-     * @param int $cols Numero de columnas css
-     * @return true|array
+     * POR DOCUMENTAR EN WIKI
+     * Valida el número de columnas proporcionado.
+     *
+     * Esta función valida que el número de columnas ($cols) este entre 1 y 12. Si el valor es menor
+     * o igual a cero, o mayor o igual a trece, la función retorna un error.
+     *
+     * @param int $cols El número de columnas a validar.
+     * @return bool|array Devuelve true si el número de columnas esta dentro del rango aceptable,
+     * o un array con información de error en caso contrario.
+     * @version 16.2.0
      */
     final public function valida_cols(int $cols): true|array
     {

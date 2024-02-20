@@ -1037,8 +1037,6 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
-
-
     /**
      * @throws JsonException
      */
@@ -1047,7 +1045,7 @@ class directivasTest extends test {
         errores::$error = false;
         $html_ = new html();
         $html = new directivas($html_);
-        $html = new liberator($html);
+        //$html = new liberator($html);
         $_GET['session_id'] = 1;
 
         $cols = -1;

@@ -71,7 +71,6 @@ class directivas{
      * @param string $style Stilo info success etc
      * @param string $type Typo submit o button
      * @return string|array
-     * @version 0.83.4
      */
     private function btn_action_next(string $label,string $value, string $style = 'info',
                                      string $type='submit'): string|array
@@ -95,7 +94,6 @@ class directivas{
      * @param string $style estilo del boton
      * @param string $type tipo de btn submit button
      * @return array|string
-     * @version 0.84.4
      */
     final public function btn_action_next_div(string $label,string $value, int $cols = 6, string $style = 'info',
                                         string $type='submit'): array|string

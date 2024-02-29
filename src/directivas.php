@@ -65,12 +65,19 @@ class directivas{
 
 
     /**
-     * Genera un boton next action
-     * @param string $label Etiqueta de boton
-     * @param string $value Valor de siguiente accion
-     * @param string $style Stilo info success etc
-     * @param string $type Typo submit o button
-     * @return string|array
+     * POR DOCUMENTAR EN WIKI
+     * Genera un botón de formulario HTML.
+     *
+     * @param string $label La etiqueta visible para el botón.
+     * @param string $value El valor que se envía cuando se hace clic en el botón.
+     * @param string $style Estilo css del botón, predeterminado a 'info'.
+     * @param string $type El tipo de botón, por defecto 'submit'.
+     * @return string|array Devuelve una cadena que representa el marcado html para el botón.
+     *                      Si ocurre un error durante la validación, devuelve un array que contiene
+     *                      información sobre el error.
+     *
+     * @throws errores Si la validación de los datos falla.
+     * @version 16.4.0
      */
     private function btn_action_next(string $label,string $value, string $style = 'info',
                                      string $type='submit'): string|array

@@ -94,13 +94,20 @@ class directivas{
     }
 
     /**
-     * Genera un boton con un div para ser usado en views
-     * @param string $label Etiqueta
-     * @param string $value siguiente accion
-     * @param int $cols n cols css
-     * @param string $style estilo del boton
-     * @param string $type tipo de btn submit button
-     * @return array|string
+     * POR DOCUMENTAR EN WIKI
+     * Genera un botón contenido dentro de un div con las especificaciones propias asignadas.
+     *
+     * @param string $label Etiqueta del botón.
+     * @param string $value Valor del botón. Se usa como atributo value en el código HTML.
+     * @param int $cols Número de columnas que ocupará el botón en un diseño con Bootstrap. Valor por defecto es 6.
+     * @param string $style Estilo de color del botón. Configura la clase de botón en Bootstrap. Valor por defecto es 'info'.
+     * @param string $type Tipo del botón. Configura el atributo 'type' en el botón HTML. Valor por defecto es 'submit'.
+     *
+     * @return array|string Devuelve un error si las validaciones en los datos de entrada o en las operaciones internas fallan.
+     *                      En caso contrario, devuelve una cadena con el código HTML del botón dentro de un elemento div.
+     *
+     * @final
+     * @version 16.5.0
      */
     final public function btn_action_next_div(string $label,string $value, int $cols = 6, string $style = 'info',
                                         string $type='submit'): array|string

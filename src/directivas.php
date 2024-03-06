@@ -15,17 +15,26 @@ class directivas{
     }
 
     /**
-     * Genera un boton
-     * @param array $ids_css Identificadores css
-     * @param array $clases_css Clases css
-     * @param array $extra_params Parametros para envio por GET
-     * @param string $label Etiqueta de boton
-     * @param string $name Name boton
-     * @param string $value Valor de boton
-     * @param int $cols Columnas css
-     * @param string $style Estilo css
-     * @param string $type Tipo boton o submit
-     * @return array|string
+     * POR DOCUMENTAR EN WIKI
+     * Genera un botón HTML dinámicamente.
+     *
+     * @param array $ids_css        - Array de identificadores CSS que se asignarán al botón.
+     * @param array $clases_css     - Array de clases CSS que se asignarán al botón.
+     * @param array $extra_params   - Array de atributos adicionales que se asignarán al botón.
+     * @param string $label         - Texto que se mostrará en el botón.
+     * @param string $name          - Nombre del botón.
+     * @param string $value         - Valor del botón.
+     * @param int $cols             - Columnas que ocupará el botón (Bootstrap Grid).
+     * @param string $style         - Estilo del botón (Bootstrap button style).
+     * @param string $type          - Tipo del botón ('button', 'submit', etc.).
+     *                                 El valor predeterminado es 'button'.
+     *
+     * @return array|string         - Devuelve una cadena que representa el código HTML del botón si
+     *                                no hay errores.
+     *                                Si hay algún error durante la validación,
+     *                                devolverá un array de errores.
+     *
+     * @version 16.6.0
      */
     final public function btn(array $ids_css, array $clases_css, array $extra_params, string $label, string $name,
                               string $value, int $cols = 6 , string $style = 'info',

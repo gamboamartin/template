@@ -1228,11 +1228,21 @@ class directivas{
 
 
     /**
+     * POR DOCUMENTAR EN WIKI
+     * Genera una etiqueta HTML a partir del nombre y placeholder proporcionados.
      *
-     * Genera el label de in input para ser mostrado en el front
-     * @param string $name Nombre del input
-     * @param string $place_holder Etiqueta a mostrar
-     * @return array|string
+     * Este método valida primero los datos de entrada. Si hay un error, devolverá un mensaje de error.
+     * Después genera una etiqueta HTML usando el nombre y el placeholder proporcionados.
+     * Si ocurre algún problema al generar la etiqueta, devolverá un mensaje de error.
+     *
+     * @param string $name El nombre que se usará en el atributo 'id' de la etiqueta.
+     * @param string $place_holder El texto que se mostrará en el interior de la etiqueta.
+     * @return array|string Devuelve la etiqueta generada si todo es correcto,
+     *                      de lo contrario retorna un mensaje de error y la data
+     *                      que causó el error.
+     *
+     * @throws errores En caso de algún error lor al generar la etiqueta HTML.
+     * @version 16.7.0
      */
     final protected function label_input(string $name, string $place_holder): array|string
     {

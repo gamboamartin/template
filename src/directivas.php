@@ -575,7 +575,6 @@ class directivas{
      * @param stdClass $row_upd Registro en proceso
      * @param bool $value_vacio si vacio deja el input en vacio
      * @return array|stdClass
-     * @version 0.104.5
      */
     private function init_input(string $name, string $place_holder, stdClass $row_upd,
                                 bool $value_vacio): array|stdClass
@@ -1682,7 +1681,6 @@ class directivas{
      * @param string $name Name input
      * @param string $place_holder Tag a mostrar
      * @return bool|array
-     * @version 0.117.5
      */
     private function valida_etiquetas(string $name, string $place_holder): bool|array
     {

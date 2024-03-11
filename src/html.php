@@ -56,8 +56,6 @@ class html{
      * @param string $style Estilo del boton info,danger,warning etc
      * @param array $params Parametros para incrustar post GET
      * @return string|array
-     * @version 0.11.0
-     * @final revisada
      */
     public function button_href(string $accion, string $etiqueta, int $registro_id, string $seccion,
                                 string $style, array $params = array()): string|array
@@ -197,7 +195,6 @@ class html{
 
     /**
      * Genera un contenedor con label
-     * @version 0.12.0
      * @param string $html Contenido del div
      * @param string $label Contenido de etiqueta
      * @return string
@@ -462,7 +459,6 @@ class html{
      * Limpiar la salida html
      * @param string $html dato a limpiar
      * @return array|string
-     * @version 6.6.1
      */
     final public function limpia_salida(string $html): array|string
     {

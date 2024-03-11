@@ -304,7 +304,6 @@ class directivas{
      * @param string $name Name input
      * @param string $place_holder Tag input
      * @return array|string
-     * @version 0.120.5
      */
     private function div_label(string $html, string $name, string $place_holder): array|string
     {
@@ -968,7 +967,6 @@ class directivas{
      * @param stdClass $row_upd Registro en proceso
      * @param bool $value_vacio Si vacio deja limpio el input
      * @return array|string
-     * @version 0.121.5
      */
     final public function input_file(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                bool $value_vacio): array|string

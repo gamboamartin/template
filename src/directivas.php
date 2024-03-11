@@ -1551,7 +1551,6 @@ class directivas{
      * @param bool $value_vacio Si vacio lo genera
      * @param stdClass $row_upd Datos inicializados
      * @return stdClass|array
-     * @version 0.100.4
      */
     private function row_upd_name(string $name, bool $value_vacio, stdClass $row_upd = new stdClass()): stdClass|array
     {
@@ -1677,12 +1676,28 @@ class directivas{
     }
 
     /**
-     * Valida los datos de una etiqueta
-     * @param string $name Name input
-     * @param string $place_holder Tag a mostrar
-     * @return bool|array
+     * POR DOCUMENTAR EN WIKI
+     * Valida si los valores de 'name' y 'place_holder' existen y no están vacíos.
+     *
+     * Esta función toma dos parámetros 'name' y 'place_holder' como entrada y realiza
+     * una verificación. Si cualquiera de estas entradas está vacía, se genera un error.
+     * Si ambos pasan la verificación, la función retorna verdadero.
+     *
+     * @param string $name Un nombre que se va a validar.
+     * @param string $place_holder Un marcador de posición que se va a validar.
+     *
+     * @return bool|array Retorna true si tanto el 'name' como el 'place_holder' son válidos,
+     * de lo contrario, devuelve el mensaje y el tipo de error.
+     *
+     *
+     * @example
+     * valida_etiquetas('Nombre', 'MarcadorDePosicion');
+     * Este ejemplo retornará 'true' si tanto 'Nombre' como 'MarcadorDePosicion'
+     * no están vacíos, de lo contrario retornará el mensaje y tipo de error.
+     *
+     * @version 16.12.0
      */
-    private function valida_etiquetas(string $name, string $place_holder): bool|array
+    private function valida_etiquetas(string $name, string $place_holder): true|array
     {
         $name = trim($name);
         if($name === ''){

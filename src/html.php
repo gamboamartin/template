@@ -47,7 +47,7 @@ class html{
     }
 
     /**
-     *
+     * POR DOCUMENTAR EN WIKI
      * Funcion que genera un boton de tipo link con href
      * @param string $accion Accion a ejecutar
      * @param string $etiqueta Etiqueta de boton
@@ -56,6 +56,7 @@ class html{
      * @param string $style Estilo del boton info,danger,warning etc
      * @param array $params Parametros para incrustar post GET
      * @return string|array
+     * @version 16.9.0
      */
     public function button_href(string $accion, string $etiqueta, int $registro_id, string $seccion,
                                 string $style, array $params = array()): string|array

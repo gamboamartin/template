@@ -773,7 +773,6 @@ class html{
      * @param string $regex Integra un regex para atributo pattern del input
      * @param string $title Title de input
      * @return array|stdClass
-     * @version 0.28.0
      */
     private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder,
                                 bool $required, array $class_css = array(), array $ids_css = array(),
@@ -1192,13 +1191,17 @@ class html{
     }
 
     /**
-     * Valida los parametros de un input text
-     * @param string $id_css Identificador css
-     * @param string $name Nombre del input
-     * @param string $place_holder Label a mostrar en input
-     * @return bool|array
+     * POR DOCUMENTAR EN WIKI
+     * Valida los parámetros que se pasan a la función.
+     *
+     * @param string $id_css es el identificador CSS para el elemento.
+     * @param string $name es el nombre del elemento.
+     * @param string $place_holder es el placeholder del elemento.
+     *
+     * @return true|array devuelve true si la validación es exitosa, de lo contrario devuelve un array con detalles del error.
+     * @version 16.15.0
      */
-    final protected function valida_params_txt(string $id_css, string $name, string $place_holder): bool|array
+    final protected function valida_params_txt(string $id_css, string $name, string $place_holder): true|array
     {
         $name = trim($name);
         if($name === ''){

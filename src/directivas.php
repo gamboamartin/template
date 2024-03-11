@@ -1546,11 +1546,14 @@ class directivas{
     }
 
     /**
-     * Inicializa un row_upd
-     * @param string $name Nombre de input
-     * @param bool $value_vacio Si vacio lo genera
-     * @param stdClass $row_upd Datos inicializados
-     * @return stdClass|array
+     * POR DOCUMENTAR EN WIKI
+     * Este método `row_upd_name` sirve para procesar y actualizar un nombre de fila.
+     * @param string $name El nombre que se va a procesar.
+     * @param bool $value_vacio Un indicador que determina si el valor de la fila $name debe ser vacío.
+     * @param stdClass $row_upd (opcional) Un objeto que contiene la fila a actualizar.
+     * @return stdClass|array Retorna un objeto stdClass si el proceso es exitoso. En caso contrario,
+     * se devuelve un arreglo con la información del error.
+     * @version 16.13.0
      */
     private function row_upd_name(string $name, bool $value_vacio, stdClass $row_upd = new stdClass()): stdClass|array
     {

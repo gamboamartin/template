@@ -457,9 +457,11 @@ class html{
     }
 
     /**
+     * POR DOCUMENTAR EN WIKI
      * Limpiar la salida html
      * @param string $html dato a limpiar
      * @return array|string
+     * @version 16.10.0
      */
     final public function limpia_salida(string $html): array|string
     {

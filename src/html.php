@@ -373,7 +373,6 @@ class html{
      * @param bool $required attr required
      * @param mixed $value value input
      * @return string|array
-     * @version 0.119.5
      */
     final public function file(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                          mixed $value): string|array
@@ -1198,7 +1197,6 @@ class html{
      * @param string $name Nombre del input
      * @param string $place_holder Label a mostrar en input
      * @return bool|array
-     * @version 0.90.4
      */
     final protected function valida_params_txt(string $id_css, string $name, string $place_holder): bool|array
     {

@@ -569,12 +569,25 @@ class directivas{
     }
 
     /**
-     * Inicializa un input
-     * @param string $name Name input
-     * @param string $place_holder Tag input
-     * @param stdClass $row_upd Registro en proceso
-     * @param bool $value_vacio si vacio deja el input en vacio
-     * @return array|stdClass
+     * POR DOCUMENTAR EN WIKI
+     * Esta función se encarga de inicializar la entrada de los campos.
+     *
+     * @param string $name Este parámetro recibe el nombre del campo de entrada.
+     * @param string $place_holder Este parámetro es el será el placeholder para el campo de entrada.
+     * @param stdClass $row_upd Este parámetro es el objeto que contiene información para actualizar una fila.
+     * @param bool $value_vacio Este parámetro indica si el valor de entrada está vacío o no.
+     *
+     * @return array|stdClass Retorna un objeto o un array dependiendo de las validaciones y operaciones realizadas.
+     *
+     * Esta función primero valida las etiquetas mediante la función `valida_etiquetas`. Si hay un error durante la validación,
+     * se genera un error y se devuelve la información del error.
+     *
+     * Luego intenta generar el 'row upd' utilizando la función `row_upd_name`. Si hay un error durante esta operación,
+     * se genera un error y se devuelve la información del error.
+     *
+     * Finalmente, retorna el 'row upd' si no ha habido errores durante las operaciones anteriores.
+     *
+     * @version 16.14.0
      */
     private function init_input(string $name, string $place_holder, stdClass $row_upd,
                                 bool $value_vacio): array|stdClass

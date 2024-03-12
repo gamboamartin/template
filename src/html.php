@@ -933,6 +933,26 @@ class html{
         return $selected;
     }
 
+    final public function submit(string $css, string $label): string|array
+    {
+        $css = trim($css);
+        if($css === ''){
+            return $this->error->error(mensaje: 'Error css esta vacio', data: $css);
+        }
+        $label = trim($label);
+        if($label === ''){
+            return $this->error->error(mensaje: 'Error label esta vacio', data: $label);
+        }
+        $btn = "<div class='control-group btn-modifica'>";
+        $btn .= "<div class='controls'>";
+        $btn .= "<button type='submit' class='btn btn-$css'>$label</button><br>";
+        $btn .= "</div>";
+        $btn .= "</div>";
+
+        return $btn;
+
+    }
+
     /**
      * Genera un input de tipo telefono
      * @param bool $disabled Si disabled retorna text disabled

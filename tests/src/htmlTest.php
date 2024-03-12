@@ -672,6 +672,21 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_submit(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        //$html = new liberator($html);
+
+        $css = 'a';
+        $label = 'v';
+        $resultado = $html->submit($css, $label);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='control-group btn-modifica'><div class='controls'><button type='submit' class='btn btn-a'>v</button><br></div></div>",$resultado);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_telefono(): void
     {
         errores::$error = false;

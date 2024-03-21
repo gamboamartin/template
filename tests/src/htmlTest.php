@@ -708,13 +708,33 @@ class htmlTest extends test {
 
         $name = 'z';
         $values = array();
-        $modelo = new adm_accion(link: $this->link);
+
         $resultado = $html->select(cols: $cols, id_selected: $id_selected, label: $label,  name: $name,
             values: $values);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<div class='control-group col-sm-12'><div class='controls'><select class='form-control selectpicker color-secondary z ' data-live-search='true' id='z' name='z'  ><option value=''  >Selecciona una opcion</option></select></div></div>",$resultado);
         errores::$error = false;
+
+        $id_selected = -1;
+        $cols = 12;
+        $label = 'a';
+
+        $name = 'z';
+        $values = array();
+        $values[1]['descripcion_select'] = 'A';
+        $values[1]['test'] = 'weq';
+        $key_value_custom = 'test';
+
+        $resultado = $html->select(cols: $cols, id_selected: $id_selected, label: $label,  name: $name,
+            values: $values, key_value_custom: $key_value_custom);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='control-group col-sm-12'><div class='controls'><select class='form-control selectpicker color-secondary z ' data-live-search='true' id='z' name='z'  ><option value=''  >Selecciona una opcion</option><option value='weq'  >A</option></select></div></div>",$resultado);
+        errores::$error = false;
+
+
     }
 
     #[NoReturn] public function test_select_html(): void

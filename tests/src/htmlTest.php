@@ -917,6 +917,33 @@ class htmlTest extends test {
 
     }
 
+    #[NoReturn] public function test_value_select(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+
+        $row_id = 'a';
+        $value_custom = '';
+
+        $resultado = $html->value_select($row_id, $value_custom);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals('a',$resultado);
+        errores::$error = false;
+
+        $row_id = 'a';
+        $value_custom = 'dd';
+
+        $resultado = $html->value_select($row_id, $value_custom);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals('dd',$resultado);
+        errores::$error = false;
+
+
+    }
+
 
 
 }

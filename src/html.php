@@ -603,11 +603,9 @@ class html{
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar extra params', data: $extra_params);
         }
-
-        $value = $row_id;
-        $value_custom = trim($value_custom);
-        if($value_custom !== ''){
-            $value = $value_custom;
+        $value = $this->value_select(row_id: $row_id,value_custom:  $value_custom);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar value', data: $value);
         }
 
         $options_html_ = $this->integra_options_html(descripcion_select: $row['descripcion_select'],
@@ -1255,6 +1253,17 @@ class html{
             return $this->error->error(mensaje: 'Error $place_holder es necesario', data: $place_holder);
         }
         return true;
+
+    }
+
+    private function value_select(int|string|float|null $row_id, int|string|float $value_custom): string
+    {
+        $value = trim($row_id);
+        $value_custom = trim($value_custom);
+        if($value_custom !== ''){
+            $value = $value_custom;
+        }
+        return $value;
 
     }
 }

@@ -643,7 +643,7 @@ class html{
             $value = -1;
         }
 
-        $value = (int)$value;
+        $value = trim($value);
         $selected = $this->selected(value: $value,id_selected: $id_selected);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al verificar selected', data: $selected);
@@ -659,14 +659,16 @@ class html{
 
     /**
      * Integra todos los options de un html select
-     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @param array $values Valores para options
      * @param array $columns_ds Columnas a integrar a descripcion de option
      * @param array $extra_params_key keys de extra params para integrar valor
+     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * @param string $key_value_custom
+     * @param array $values Valores para options
      * @return array|string
      * @author mgamboa
      */
-    private function options(array $columns_ds, array $extra_params_key, mixed $id_selected, array $values): array|string
+    private function options(
+        array $columns_ds, array $extra_params_key, mixed $id_selected, string $key_value_custom, array $values): array|string
     {
 
         $options_html = $this->option(descripcion: 'Selecciona una opcion',selected:  false, value: -1);
@@ -674,7 +676,8 @@ class html{
             return $this->error->error(mensaje: 'Error al generar option', data: $options_html);
         }
         $options_html = $this->options_html_data(columns_ds: $columns_ds, extra_params_key: $extra_params_key,
-            id_selected: $id_selected, options_html: $options_html, values: $values);
+            id_selected: $id_selected, key_value_custom: $key_value_custom, options_html: $options_html,
+            values: $values);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }
@@ -683,16 +686,17 @@ class html{
 
     /**
      * Integra el html de un conjunto de options
-     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @param string $options_html Options previos en html
-     * @param array $values Valores para asignacion y generacion de options
      * @param array $columns_ds Columnas a integrar a descripcion de option
      * @param array $extra_params_key Conjunto de keys para asignar el valor e integrar un extra param basado en el
      * valor puesto
+     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * @param string $key_value_custom
+     * @param string $options_html Options previos en html
+     * @param array $values Valores para asignacion y generacion de options
      * @return array|string
      */
-    private function options_html_data(
-        array $columns_ds, array $extra_params_key, mixed $id_selected, string $options_html, array $values): array|string
+    private function options_html_data(array $columns_ds, array $extra_params_key, mixed $id_selected,
+                                       string $key_value_custom, string $options_html, array $values): array|string
     {
 
         $options_html_ = $options_html;
@@ -724,9 +728,15 @@ class html{
             if(errores::$error){
                 return $this->error->error(mensaje: 'Error al validar row', data: $valida);
             }
+            $key_value_custom = trim($key_value_custom);
+            $value_custom = '';
+            if($key_value_custom !== ''){
+                $value_custom = trim($row[$key_value_custom]);
+            }
+
             $options_html_ = $this->option_con_extra_param(extra_params_key: $extra_params_key,
                 id_selected: $id_selected, options_html_: $options_html_, row: $row, row_id: $row_id,
-                value_custom: '');
+                value_custom: $value_custom);
             if(errores::$error){
                 return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
             }
@@ -846,13 +856,14 @@ class html{
      * @param bool $disabled Si disabled el input quedara disabled
      * @param array $extra_params_key keys de extra params para integrar valor
      * @param string $id_css Identificador css si esta vacio integra en name
+     * @param string $key_value_custom
      * @param bool $required if required integra required a select
      * @return array|string
      * @author mgamboa
      */
     final public function select(int $cols, int $id_selected, string $label, string $name, array $values,
                                  array $class_css = array(), array $columns_ds = array(), bool $disabled = false,
-                                 array $extra_params_key = array(), string $id_css = '',
+                                 array $extra_params_key = array(), string $id_css = '',string $key_value_custom = '',
                                  bool $required = false): array|string
     {
 
@@ -863,8 +874,8 @@ class html{
             return $this->error->error(mensaje: 'Error al validar input', data: $valida);
         }
 
-        $options_html = $this->options(
-            columns_ds: $columns_ds, extra_params_key: $extra_params_key, id_selected: $id_selected, values: $values);
+        $options_html = $this->options(columns_ds: $columns_ds, extra_params_key: $extra_params_key,
+            id_selected: $id_selected, key_value_custom: $key_value_custom, values: $values);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }

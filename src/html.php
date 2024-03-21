@@ -1172,14 +1172,16 @@ class html{
     }
 
     /**
-     * Valida que los datos de un selects sean los correctos
-     * @param int $cols Columnas css
-     * @param string $label Etiqueta a mostrar
-     * @param string $name Nombre del input
-     * @return bool|array
-     * @version 0.88.4
+     * POR DOCUMENTAR EN WIKI
+     * Valida los parámetros de entrada para un elemento select en desarrollador de formularios HTML.
+     *
+     * @param int $cols El número de columnas para el elemento select.
+     * @param string $label La etiqueta para el elemento select.
+     * @param string $name El nombre para el elemento select.
+     * @return true|array Devuelve verdadero en caso de éxito. En caso de error, devuelve un array con el detalle del error.
+     * @version 17.2.0
      */
-    final protected function valida_input_select(int $cols, string $label, string $name): bool|array
+    final protected function valida_input_select(int $cols, string $label, string $name): true|array
     {
         $label = trim($label);
         if($label === ''){

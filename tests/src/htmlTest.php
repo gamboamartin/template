@@ -600,7 +600,6 @@ class htmlTest extends test {
         $_GET['session_id'] = 1;
 
         $id_selected = 1;
-
         $values = array();
         $values[1]['descripcion_select'] = 'x';
         $resultado = $html->options(
@@ -609,6 +608,21 @@ class htmlTest extends test {
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value=''  >Selecciona una opcion</option><option value='1' selected >x</option>",$resultado);
         errores::$error = false;
+
+        $id_selected = 1;
+        $values = array();
+        $values[1]['descripcion_select'] = 'x';
+        $values[1]['test'] = 'abc';
+        $key_value_custom = 'test';
+        $resultado = $html->options(
+            columns_ds: array(), extra_params_key: array(), id_selected: $id_selected, key_value_custom: $key_value_custom, values: $values);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value=''  >Selecciona una opcion</option><option value='abc'  >x</option>",$resultado);
+        errores::$error = false;
+
+
     }
 
     #[NoReturn] public function test_options_html_data(): void

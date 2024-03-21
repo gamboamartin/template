@@ -785,6 +785,25 @@ class htmlTest extends test {
         $this->assertNotTrue(errores::$error);
         $this->assertNotTrue($resultado);
         errores::$error = false;
+        $value = '';
+        $id_selected = '1';
+
+        $resultado = $html->selected($value, $id_selected);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertNotTrue($resultado);
+
+        errores::$error = false;
+        $value = 'x';
+        $id_selected = 'x';
+
+        $resultado = $html->selected($value, $id_selected);
+        $this->assertIsBool($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertTrue($resultado);
+
+        errores::$error = false;
+
     }
 
     #[NoReturn] public function test_submit(): void

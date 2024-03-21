@@ -592,7 +592,7 @@ class html{
     }
 
     private function option_con_extra_param(array $extra_params_key, int|null $id_selected,  string $options_html_,
-                                            array $row, mixed $row_id){
+                                            array $row, mixed $row_id, string|int|float $value_custom){
         $keys = array('descripcion_select');
         $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
         if(errores::$error){
@@ -604,8 +604,14 @@ class html{
             return $this->error->error(mensaje: 'Error al generar extra params', data: $extra_params);
         }
 
+        $value = $row_id;
+        $value_custom = trim($value_custom);
+        if($value_custom !== ''){
+            $value = $value_custom;
+        }
+
         $options_html_ = $this->integra_options_html(descripcion_select: $row['descripcion_select'],
-             id_selected: $id_selected, options_html: $options_html_, value: $row_id, extra_params: $extra_params);
+             id_selected: $id_selected, options_html: $options_html_, value: $value, extra_params: $extra_params);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
         }
@@ -660,16 +666,15 @@ class html{
      * @return array|string
      * @author mgamboa
      */
-    private function options(mixed $id_selected, array $values, array $columns_ds = array(),
-                             array $extra_params_key = array()): array|string
+    private function options(array $columns_ds, array $extra_params_key, mixed $id_selected, array $values): array|string
     {
 
         $options_html = $this->option(descripcion: 'Selecciona una opcion',selected:  false, value: -1);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar option', data: $options_html);
         }
-        $options_html = $this->options_html_data(id_selected: $id_selected,options_html: $options_html,
-            values: $values, columns_ds: $columns_ds, extra_params_key: $extra_params_key);
+        $options_html = $this->options_html_data(columns_ds: $columns_ds, extra_params_key: $extra_params_key,
+            id_selected: $id_selected, options_html: $options_html, values: $values);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }
@@ -686,8 +691,8 @@ class html{
      * valor puesto
      * @return array|string
      */
-    private function options_html_data(mixed $id_selected, string $options_html, array $values,
-                                       array $columns_ds = array(), array $extra_params_key = array()): array|string
+    private function options_html_data(
+        array $columns_ds, array $extra_params_key, mixed $id_selected, string $options_html, array $values): array|string
     {
 
         $options_html_ = $options_html;
@@ -720,7 +725,8 @@ class html{
                 return $this->error->error(mensaje: 'Error al validar row', data: $valida);
             }
             $options_html_ = $this->option_con_extra_param(extra_params_key: $extra_params_key,
-                id_selected: $id_selected, options_html_: $options_html_, row: $row, row_id: $row_id);
+                id_selected: $id_selected, options_html_: $options_html_, row: $row, row_id: $row_id,
+                value_custom: '');
             if(errores::$error){
                 return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
             }
@@ -857,8 +863,8 @@ class html{
             return $this->error->error(mensaje: 'Error al validar input', data: $valida);
         }
 
-        $options_html = $this->options(id_selected: $id_selected,  values: $values, columns_ds: $columns_ds,
-            extra_params_key: $extra_params_key);
+        $options_html = $this->options(
+            columns_ds: $columns_ds, extra_params_key: $extra_params_key, id_selected: $id_selected, values: $values);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }

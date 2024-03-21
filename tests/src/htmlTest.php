@@ -553,7 +553,7 @@ class htmlTest extends test {
 
         $values = array();
         $values[1]['descripcion_select'] = 'x';
-        $resultado = $html->options(id_selected: $id_selected, values: $values);
+        $resultado = $html->options(columns_ds: array(), extra_params_key: array(), id_selected: $id_selected, values: $values);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value=''  >Selecciona una opcion</option><option value='1' selected >x</option>",$resultado);
@@ -572,7 +572,8 @@ class htmlTest extends test {
         $values = array();
         $values[0]['descripcion_select'] = 'x';
         $modelo = new adm_accion(link: $this->link);
-        $resultado = $html->options_html_data(id_selected: $id_selected, options_html: $options_html, values: $values);
+        $resultado = $html->options_html_data(columns_ds: array(), extra_params_key: array(),
+            id_selected: $id_selected, options_html: $options_html, values: $values);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value='0'  >x</option>",$resultado);

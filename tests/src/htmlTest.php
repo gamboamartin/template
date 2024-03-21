@@ -356,8 +356,6 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
-
-
     #[NoReturn] public function test_integra_options_html(): void
     {
         errores::$error = false;
@@ -517,6 +515,59 @@ class htmlTest extends test {
 
 
         errores::$error = false;
+    }
+
+    #[NoReturn] public function test_option_con_extra_param(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $options_html_ = "";
+        $id_selected = '';
+        $extra_params_key = array();
+        $row = array();
+        $row['descripcion_select'] = 'A';
+        $row_id = '';
+        $value_custom = '';
+
+        $resultado = $html->option_con_extra_param($extra_params_key, $id_selected, $options_html_, $row, $row_id, $value_custom);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value=''  >A</option>", $resultado);
+
+        errores::$error = false;
+
+        $options_html_ = "";
+        $id_selected = '';
+        $extra_params_key = array();
+        $row = array();
+        $row['descripcion_select'] = 'A';
+        $row_id = '1';
+        $value_custom = '';
+
+        $resultado = $html->option_con_extra_param($extra_params_key, $id_selected, $options_html_, $row, $row_id, $value_custom);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='1'  >A</option>", $resultado);
+
+        errores::$error = false;
+
+        $options_html_ = "";
+        $id_selected = '';
+        $extra_params_key = array();
+        $row = array();
+        $row['descripcion_select'] = 'A';
+        $row_id = '1';
+        $value_custom = 'C';
+
+        $resultado = $html->option_con_extra_param($extra_params_key, $id_selected, $options_html_, $row, $row_id, $value_custom);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='C'  >A</option>", $resultado);
+        errores::$error = false;
+
     }
 
     #[NoReturn] public function test_option_html(): void

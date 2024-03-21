@@ -591,8 +591,9 @@ class html{
         return "<option value='$value' $selected_html $extra_params_html>$descripcion</option>";
     }
 
-    private function option_con_extra_param(array $extra_params_key, int|null $id_selected,  string $options_html_,
-                                            array $row, mixed $row_id, string|int|float $value_custom){
+    private function option_con_extra_param(array $extra_params_key, int|null|string|float $id_selected,
+                                           string $options_html_, array $row, mixed $row_id,
+                                           string|int|float $value_custom){
         $keys = array('descripcion_select');
         $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
         if(errores::$error){

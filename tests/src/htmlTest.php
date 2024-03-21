@@ -367,13 +367,38 @@ class htmlTest extends test {
         $id_selected = 1;
         $value = "1";
         $options_html = "";
-        $modelo = new adm_accion(link: $this->link);
 
         $resultado = $html->integra_options_html(descripcion_select: $descripcion_select, id_selected: $id_selected,
             options_html: $options_html, value: $value);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value='1' selected >a</option>",$resultado);
+        errores::$error = false;
+
+        $descripcion_select = "a";
+        $id_selected = 'x';
+        $value = "1";
+        $options_html = "";
+
+        $resultado = $html->integra_options_html(descripcion_select: $descripcion_select, id_selected: $id_selected,
+            options_html: $options_html, value: $value);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='1'  >a</option>",$resultado);
+        errores::$error = false;
+
+        $descripcion_select = "a";
+        $id_selected = 'x';
+        $value = "x";
+        $options_html = "";
+
+        $resultado = $html->integra_options_html(descripcion_select: $descripcion_select, id_selected: $id_selected,
+            options_html: $options_html, value: $value);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='x' selected >a</option>",$resultado);
         errores::$error = false;
     }
 

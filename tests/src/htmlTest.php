@@ -581,7 +581,6 @@ class htmlTest extends test {
         $id_selected = -1;
         $value = "";
 
-        $modelo = new adm_accion(link: $this->link);
 
         $resultado = $html->option_html(descripcion_select: $descripcion_select, id_selected: $id_selected,
             value: $value);
@@ -590,6 +589,35 @@ class htmlTest extends test {
         $this->assertEquals("<option value='' selected >a</option>",$resultado);
 
         errores::$error = false;
+
+        $descripcion_select = "a";
+        $id_selected = 'x';
+        $value = "";
+
+
+        $resultado = $html->option_html(descripcion_select: $descripcion_select, id_selected: $id_selected,
+            value: $value);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value=''  >a</option>",$resultado);
+
+
+        errores::$error = false;
+
+        $descripcion_select = "a";
+        $id_selected = 'x';
+        $value = "x";
+
+
+        $resultado = $html->option_html(descripcion_select: $descripcion_select, id_selected: $id_selected,
+            value: $value);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='x' selected >a</option>",$resultado);
+        errores::$error = false;
+
     }
 
     #[NoReturn] public function test_options(): void

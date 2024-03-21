@@ -629,6 +629,35 @@ class htmlTest extends test {
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<option value='0'  >x</option>",$resultado);
         errores::$error = false;
+
+        $id_selected = 'a';
+        $options_html = "";
+        $values = array();
+        $values[1]['descripcion_select'] = 'x';
+        $key_value_custom = '';
+
+        $resultado = $html->options_html_data(columns_ds: array(), extra_params_key: array(),
+            id_selected: $id_selected, key_value_custom: $key_value_custom, options_html: $options_html, values: $values);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='1'  >x</option>",$resultado);
+        errores::$error = false;
+
+        $id_selected = 'a';
+        $options_html = "";
+        $values = array();
+        $values[1]['descripcion_select'] = 'x';
+        $values[1]['test'] = 'zzz';
+        $key_value_custom = 'test';
+
+        $resultado = $html->options_html_data(columns_ds: array(), extra_params_key: array(),
+            id_selected: $id_selected, key_value_custom: $key_value_custom, options_html: $options_html, values: $values);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='zzz'  >x</option>",$resultado);
+        errores::$error = false;
+
+
     }
 
     #[NoReturn] public function test_password(): void

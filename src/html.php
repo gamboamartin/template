@@ -694,7 +694,7 @@ class html{
      * @param array $values Valores para asignacion y generacion de options
      * @return array|string
      */
-    private function options_html_data(array $columns_ds, array $extra_params_key, mixed $id_selected,
+    private function options_html_data(array $columns_ds, array $extra_params_key, int|null|string|float $id_selected,
                                        string $key_value_custom, string $options_html, array $values): array|string
     {
 
@@ -730,6 +730,9 @@ class html{
             $key_value_custom = trim($key_value_custom);
             $value_custom = '';
             if($key_value_custom !== ''){
+                if(!isset($row[$key_value_custom])){
+                    return $this->error->error(mensaje: 'Error en row no existe '.$key_value_custom, data: $valida);
+                }
                 $value_custom = trim($row[$key_value_custom]);
             }
 

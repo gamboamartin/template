@@ -318,8 +318,12 @@ class html{
     {
         $extra_params = array();
         foreach ($extra_params_key as $key_extra_param){
+            $key_extra_param = trim($key_extra_param);
+            if($key_extra_param === ''){
+                return $this->error->error(mensaje: 'Error key_extra_param esta vacio', data: $key_extra_param);
+            }
             if(!isset($row[$key_extra_param])){
-                $row[$key_extra_param] = 'SON DATOS';
+                $row[$key_extra_param] = 'SIN DATOS';
             }
             $extra_params[$key_extra_param] = $row[$key_extra_param];
         }

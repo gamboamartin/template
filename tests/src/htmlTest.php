@@ -226,6 +226,37 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_extra_param_data(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $row = array();
+        $extra_params_key = array();
+        $extra_params_key[] = 'x';
+
+        $resultado = $html->extra_param_data($extra_params_key, $row);
+        $this->assertIsArray($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("SIN DATOS",$resultado['x']);
+
+        errores::$error = false;
+
+        $row = array();
+        $row['x'] = 'd';
+        $extra_params_key = array();
+        $extra_params_key[] = 'x';
+
+        $resultado = $html->extra_param_data($extra_params_key, $row);
+        $this->assertIsArray($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("d",$resultado['x']);
+        errores::$error = false;
+
+    }
+
     public function test_label(): void
     {
         errores::$error = false;

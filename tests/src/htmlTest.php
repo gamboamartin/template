@@ -593,6 +593,50 @@ class htmlTest extends test {
         $this->assertEquals("<option value='C'  >A</option>", $resultado);
         errores::$error = false;
 
+
+        $options_html_ = "";
+        $id_selected = null;
+        $extra_params_key = array();
+        $row = array();
+        $row['descripcion_select'] = 'A';
+        $row_id = '1';
+        $value_custom = 'C';
+
+        $resultado = $html->option_con_extra_param($extra_params_key, $id_selected, $options_html_, $row, $row_id, $value_custom);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='C'  >A</option>", $resultado);
+
+        errores::$error = false;
+
+        $options_html_ = "";
+        $id_selected = 'fd';
+        $extra_params_key = array();
+        $row = array();
+        $row['descripcion_select'] = 'A';
+        $row_id = '1';
+        $value_custom = 'C';
+
+        $resultado = $html->option_con_extra_param($extra_params_key, $id_selected, $options_html_, $row, $row_id, $value_custom);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='C'  >A</option>", $resultado);
+
+        errores::$error = false;
+
+        $options_html_ = "";
+        $id_selected = 'fd';
+        $extra_params_key = array();
+        $row = array();
+        $row['descripcion_select'] = 'A';
+        $row_id = '1';
+        $value_custom = 'fd';
+
+        $resultado = $html->option_con_extra_param($extra_params_key, $id_selected, $options_html_, $row, $row_id, $value_custom);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='fd' selected >A</option>", $resultado);
+        errores::$error = false;
     }
 
     #[NoReturn] public function test_option_html(): void

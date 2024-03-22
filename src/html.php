@@ -147,7 +147,17 @@ class html{
     {
         $descripcion_select = '';
         foreach ($columns_ds as $column){
-            $descripcion_select = $this->concat_descripcion_select(column: $column,descripcion_select:  $descripcion_select,row:  $row);
+            $column = trim($column);
+            if($column === ''){
+                return $this->error->error(mensaje: 'Error column esta vacia', data: $column);
+            }
+            $keys_val = array($column);
+            $valida = (new validacion())->valida_existencia_keys($keys_val, $row);
+            if(errores::$error){
+                return $this->error->error(mensaje: 'Error al validar row', data: $valida);
+            }
+            $descripcion_select = $this->concat_descripcion_select(column: $column,
+                descripcion_select:  $descripcion_select,row:  $row);
             if(errores::$error){
                 return $this->error->error(mensaje: 'Error al integrar descripcion select', data: $descripcion_select);
             }

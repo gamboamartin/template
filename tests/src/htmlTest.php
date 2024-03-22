@@ -107,6 +107,37 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_descripcion_select(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $columns_ds = array();
+        $row = array();
+        $row['a'] = 'q';
+        $columns_ds[] = 'a';
+        $resultado = $html->descripcion_select($columns_ds, $row);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("q", $resultado);
+        errores::$error = false;
+        $columns_ds = array();
+        $row = array();
+        $row['a'] = 'q';
+        $row['b'] = 'r';
+        $columns_ds[] = 'a';
+        $columns_ds[] = 'b';
+        $resultado = $html->descripcion_select($columns_ds, $row);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("q r", $resultado);
+
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_div_controls(): void
     {
         errores::$error = false;

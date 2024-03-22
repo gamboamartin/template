@@ -96,6 +96,66 @@ class html{
         return trim($class_html);
     }
 
+    private function concat_descripcion_select(string $column, string $descripcion_select, array $row)
+    {
+        $column = trim($column);
+        if($column === ''){
+            return $this->error->error(mensaje: 'Error column esta vacia', data: $column);
+        }
+        $keys_val = array($column);
+        $valida = (new validacion())->valida_existencia_keys($keys_val, $row);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar row', data: $valida);
+        }
+        $descripcion_select = trim($descripcion_select);
+        $espacio = '';
+        if($descripcion_select !== ''){
+            $espacio = ' ';
+        }
+        $descripcion_select .= $espacio.trim($row[$column]);
+        return trim($descripcion_select);
+
+    }
+
+    private function data_option(array $columns_ds, string $key_value_custom, array $row)
+    {
+        $row = $this->row_descripcion_select(columns_ds: $columns_ds,row:  $row);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar descripcion select', data: $row);
+        }
+
+
+        $keys = array('descripcion_select');
+        $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al validar row', data: $valida);
+        }
+
+        $value_custom = $this->value_custom(key_value_custom: $key_value_custom,row:  $row);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar value custom', data: $value_custom);
+        }
+
+        $data = new stdClass();
+        $data->row = $row;
+        $data->value_custom = $value_custom;
+
+        return $data;
+    }
+
+    private function descripcion_select(array $columns_ds, array $row)
+    {
+        $descripcion_select = '';
+        foreach ($columns_ds as $column){
+            $descripcion_select = $this->concat_descripcion_select(column: $column,descripcion_select:  $descripcion_select,row:  $row);
+            if(errores::$error){
+                return $this->error->error(mensaje: 'Error al integrar descripcion select', data: $descripcion_select);
+            }
+        }
+        return $descripcion_select;
+
+    }
+
     /**
      * Genera un div con un label dentro del div
      * @param int $cols Numero de columnas css
@@ -708,41 +768,14 @@ class html{
                 return $this->error->error(mensaje: 'Error el row debe ser un array', data: $row);
             }
 
-            /**
-             * REFACTORIZA
-             */
-            if(count($columns_ds) > 0){
-
-                $descripcion_select = '';
-                foreach ($columns_ds as $column){
-                    $keys_val = array($column);
-                    $valida = (new validacion())->valida_existencia_keys($keys_val, $row);
-                    if(errores::$error){
-                        return $this->error->error(mensaje: 'Error al validar row', data: $valida);
-                    }
-                    $descripcion_select .= $row[$column].' ';
-                }
-                $row['descripcion_select'] = trim($descripcion_select);
-            }
-
-
-            $keys = array('descripcion_select');
-            $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
+            $data_option = $this->data_option(columns_ds: $columns_ds,key_value_custom:  $key_value_custom,row:  $row);
             if(errores::$error){
-                return $this->error->error(mensaje: 'Error al validar row', data: $valida);
-            }
-            $key_value_custom = trim($key_value_custom);
-            $value_custom = '';
-            if($key_value_custom !== ''){
-                if(!isset($row[$key_value_custom])){
-                    return $this->error->error(mensaje: 'Error en row no existe '.$key_value_custom, data: $valida);
-                }
-                $value_custom = trim($row[$key_value_custom]);
+                return $this->error->error(mensaje: 'Error al integrar data option', data: $data_option);
             }
 
             $options_html_ = $this->option_con_extra_param(extra_params_key: $extra_params_key,
-                id_selected: $id_selected, options_html_: $options_html_, row: $row, row_id: $row_id,
-                value_custom: $value_custom);
+                id_selected: $id_selected, options_html_: $options_html_, row: $data_option->row, row_id: $row_id,
+                value_custom: $data_option->value_custom);
             if(errores::$error){
                 return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
             }
@@ -848,6 +881,19 @@ class html{
         $params->ids_css_html = $ids_css_html;
 
         return $params;
+    }
+
+    private function row_descripcion_select(array $columns_ds, array $row)
+    {
+        if(count($columns_ds) > 0){
+            $descripcion_select = $this->descripcion_select(columns_ds: $columns_ds,row:  $row);
+            if(errores::$error){
+                return $this->error->error(mensaje: 'Error al integrar descripcion select', data: $descripcion_select);
+            }
+            $row['descripcion_select'] = trim($descripcion_select);
+        }
+        return $row;
+
     }
 
     /**
@@ -1257,6 +1303,30 @@ class html{
             return $this->error->error(mensaje: 'Error $place_holder es necesario', data: $place_holder);
         }
         return true;
+
+    }
+
+    private function value_custom(string $key_value_custom, array $row)
+    {
+        $key_value_custom = trim($key_value_custom);
+
+        $value_custom = '';
+        if($key_value_custom !== ''){
+            $value_custom = $this->value_custom_row(key_value_custom: $key_value_custom,row:  $row);
+            if(errores::$error){
+                return $this->error->error(mensaje: 'Error al integrar value custom', data: $value_custom);
+            }
+        }
+        return $value_custom;
+
+    }
+
+    private function value_custom_row(string $key_value_custom, array $row): array|string
+    {
+        if(!isset($row[$key_value_custom])){
+            return $this->error->error(mensaje: 'Error en row no existe '.$key_value_custom, data: $row);
+        }
+        return trim($row[$key_value_custom]);
 
     }
 

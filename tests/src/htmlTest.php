@@ -78,6 +78,35 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_concat_descripcion_select(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $column = "z";
+        $descripcion_select = "";
+        $row = array();
+        $row['z'] = 'x';
+        $resultado = $html->concat_descripcion_select(column: $column,descripcion_select:  $descripcion_select,row:  $row);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("x", $resultado);
+        errores::$error = false;
+
+        $column = "z";
+        $descripcion_select = "q";
+        $row = array();
+        $row['z'] = 'x';
+        $resultado = $html->concat_descripcion_select(column: $column,descripcion_select:  $descripcion_select,row:  $row);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("q x", $resultado);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_div_controls(): void
     {
         errores::$error = false;

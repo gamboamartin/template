@@ -25,7 +25,7 @@ class html{
     {
         $mensaje = trim($mensaje);
         if($mensaje === ''){
-            return $this->error->error(mensaje: 'Error mensaje esta vacio', data: $mensaje);
+            return $this->error->error(mensaje: 'Error mensaje esta vacio', data: $mensaje, es_final: true);
         }
         return "<div class='alert alert-success' role='alert' ><strong>Muy bien!</strong> $mensaje.</div>";
     }

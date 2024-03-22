@@ -74,7 +74,7 @@ class directivas{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Genera un botón de formulario HTML.
      *
      * @param string $label La etiqueta visible para el botón.
@@ -103,7 +103,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Genera un botón contenido dentro de un div con las especificaciones propias asignadas.
      *
      * @param string $label Etiqueta del botón.
@@ -1666,7 +1666,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Método para validar si el nombre y el lugar de reserva proporcionados no están vacíos.
      *
      * @param string $name El nombre a validar. La cadena no debe ser vacía después de haber sido recortada.
@@ -1682,11 +1682,12 @@ class directivas{
 
         $name = trim($name);
         if($name === ''){
-            return $this->error->error(mensaje: 'Error $name debe tener info', data: $name);
+            return $this->error->error(mensaje: 'Error $name debe tener info', data: $name, es_final: true);
         }
         $place_holder = trim($place_holder);
         if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder);
+            return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder,
+                es_final: true);
         }
         return true;
     }

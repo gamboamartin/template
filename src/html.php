@@ -516,7 +516,7 @@ class html{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Genera una etiqueta HTML <label>.
      *
      * Esta función crea una etiqueta de 'label' para ser usada en formularios HTML. El valor de 'for' de la
@@ -538,18 +538,19 @@ class html{
     {
         $id_css = trim($id_css);
         if($id_css === ''){
-            return $this->error->error(mensaje: 'Error el $id_css esta vacio', data: $id_css);
+            return $this->error->error(mensaje: 'Error el $id_css esta vacio', data: $id_css, es_final: true);
         }
         $place_holder = trim($place_holder);
         if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
+            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder,
+                es_final: true);
         }
 
        return "";
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Limpiar la salida html
      * @param string $html dato a limpiar
      * @return array|string
@@ -1208,7 +1209,7 @@ class html{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Función que valida varias entradas de strings (accion, etiqueta, seccion, style).
      *
      * Esta función toma cuatro parámetros en formato de string, y verifica que cada uno de ellos no esté vacío
@@ -1243,19 +1244,19 @@ class html{
     {
         $seccion = trim($seccion);
         if($seccion === ''){
-            return $this->error->error(mensaje: 'Error la $seccion esta vacia', data: $seccion);
+            return $this->error->error(mensaje: 'Error la $seccion esta vacia', data: $seccion, es_final: true);
         }
         $accion = trim($accion);
         if($accion === ''){
-            return $this->error->error(mensaje: 'Error la $accion esta vacia', data: $accion);
+            return $this->error->error(mensaje: 'Error la $accion esta vacia', data: $accion, es_final: true);
         }
         $style = trim($style);
         if($style === ''){
-            return $this->error->error(mensaje: 'Error la $style esta vacia', data: $style);
+            return $this->error->error(mensaje: 'Error la $style esta vacia', data: $style, es_final: true);
         }
         $etiqueta = trim($etiqueta);
         if($etiqueta === ''){
-            return $this->error->error(mensaje: 'Error la $etiqueta esta vacia', data: $etiqueta);
+            return $this->error->error(mensaje: 'Error la $etiqueta esta vacia', data: $etiqueta, es_final: true);
         }
         return true;
     }

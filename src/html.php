@@ -96,7 +96,25 @@ class html{
         return trim($class_html);
     }
 
-    private function concat_descripcion_select(string $column, string $descripcion_select, array $row)
+    /**
+     * POR DOCUMENTAR EN WIKI
+     * Esta función toma una columna, una descripción_select y una fila (array) como parámetros.
+     * Verifica si la columna pasada está vacía, y de ser así, devuelve un error.
+     * A continuación, valida la existencia de la columna en la fila.
+     * Si la validación encuentra un error, devuelve un mensaje de error.
+     * Luego, si la descripción_select no está vacía, agrega un espacio a la misma.
+     * La descripción_select se concatena a continuación con el valor de la columna en la fila.
+     * Finalmente, devuelve la descripción_select después de eliminar los espacios en blanco.
+     *
+     * @param string $column La columna que se buscará en la fila.
+     * @param string $descripcion_select La cadena con la cual se concatenará el valor de la columna.
+     * @param array $row La fila (array) en la que se buscará la columna.
+     * @return string|array La descripción_select concatenada con el valor de la columna,
+     *                       o un error en caso de que la columna esté vacía o no se encuentre en la fila.
+     *
+     * @version 17.17.0
+     */
+    private function concat_descripcion_select(string $column, string $descripcion_select, array $row): array|string
     {
         $column = trim($column);
         if($column === ''){
@@ -1316,7 +1334,24 @@ class html{
 
     }
 
-    private function value_custom(string $key_value_custom, array $row)
+    /**
+     * POR DOCUMNETAR EN WIKI
+     * Esta función toma una clave y una fila (array) como parámetros.
+     * Luego verifica si la clave pasada no está vacía.
+     * Si la clave no está vacía, llama a la función `value_custom_row`
+     * para obtener el valor de esta clave en la fila.
+     * Además, verifica si ha ocurrido un error durante la llamada a `value_custom_row`.
+     * Si se ha producido un error, devuelve un mensaje de error.
+     * Finalmente, devuelve el valor obtenido de la fila para la clave dada.
+     *
+     * @param string $key_value_custom La clave que se buscará en la fila.
+     * @param array $row La fila (array) en la que se buscará la clave.
+     * @return array|string El valor de la clave obtenido de la fila,
+     *                o un mensaje de error si se ha producido un error.
+     *
+     * @version 17.17.0
+     */
+    private function value_custom(string $key_value_custom, array $row): array|string
     {
         $key_value_custom = trim($key_value_custom);
 
@@ -1331,6 +1366,21 @@ class html{
 
     }
 
+    /**
+     * POR DOCUMENTAR EN WIKI
+     * Esta función toma una clave y una fila (array) como parámetros.
+     * Luego verifica si la clave pasada está vacía o no está establecida en la fila.
+     * En caso de que la clave esté vacía, retornará un error.
+     * Si la clave no está establecida en la fila, establecerá su valor como string vacío.
+     * Finalmente, devuelve el valor de la clave en la fila después de eliminar los espacios en blanco.
+     *
+     * @param string $key_value_custom La clave que se buscará en la fila.
+     * @param array $row La fila (array) en la que se buscará la clave.
+     * @return array|string El valor de la clave después de aplicar trim,
+     *                      o un error si la clave está vacía.
+     *
+     * @version 17.17.0
+     */
     private function value_custom_row(string $key_value_custom, array $row): array|string
     {
         $key_value_custom = trim($key_value_custom);
@@ -1338,7 +1388,7 @@ class html{
             return $this->error->error(mensaje: 'Error key_value_custom esta vacio', data: $key_value_custom);
         }
         if(!isset($row[$key_value_custom])){
-            return $this->error->error(mensaje: 'Error en row no existe '.$key_value_custom, data: $row);
+            $row[$key_value_custom] = '';
         }
         return trim($row[$key_value_custom]);
 

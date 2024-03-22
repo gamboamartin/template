@@ -499,8 +499,9 @@ class html{
      * @fecha 2022-08-03 12:25
      * @author mgamboa
      */
-    private function integra_options_html(string $descripcion_select, mixed $id_selected, string $options_html,
-                                          mixed $value, array $extra_params = array()): array|string
+    private function integra_options_html(string $descripcion_select, int|null|string|float $id_selected,
+                                          string $options_html, int|null|string|float $value,
+                                          array $extra_params = array()): array|string
     {
 
         $option_html = $this->option_html(descripcion_select: $descripcion_select, id_selected: $id_selected,
@@ -684,7 +685,7 @@ class html{
     }
 
     private function option_con_extra_param(array $extra_params_key, int|null|string|float $id_selected,
-                                           string $options_html_, array $row, mixed $row_id,
+                                           string $options_html_, array $row, int|string|float|null $row_id,
                                            string|int|float $value_custom){
         $keys = array('descripcion_select');
         $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
@@ -721,8 +722,8 @@ class html{
      * @fecha 2022-08-03 12:03
      * @author mgamboa
      */
-    private function option_html(string $descripcion_select, mixed $id_selected, mixed $value,
-                                 array $extra_params = array()): array|string
+    private function option_html(string $descripcion_select, int|null|string|float $id_selected,
+                                 int|null|string|float $value, array $extra_params = array()): array|string
     {
         $descripcion_select = trim($descripcion_select);
         if($descripcion_select === ''){
@@ -759,7 +760,8 @@ class html{
      * @author mgamboa
      */
     private function options(
-        array $columns_ds, array $extra_params_key, mixed $id_selected, string $key_value_custom, array $values): array|string
+        array $columns_ds, array $extra_params_key, int|float|string|null $id_selected,
+        string $key_value_custom, array $values): array|string
     {
 
         $options_html = $this->option(descripcion: 'Selecciona una opcion',selected:  false, value: -1);
@@ -941,10 +943,10 @@ class html{
      * @return array|string
      * @author mgamboa
      */
-    final public function select(int $cols, int $id_selected, string $label, string $name, array $values,
-                                 array $class_css = array(), array $columns_ds = array(), bool $disabled = false,
-                                 array $extra_params_key = array(), string $id_css = '',string $key_value_custom = '',
-                                 bool $required = false): array|string
+    final public function select(int $cols, int|float|string|null $id_selected, string $label, string $name,
+                                 array $values, array $class_css = array(), array $columns_ds = array(),
+                                 bool $disabled = false, array $extra_params_key = array(), string $id_css = '',
+                                 string $key_value_custom = '', bool $required = false): array|string
     {
 
         $label = trim($label);
@@ -1017,7 +1019,7 @@ class html{
      * @param mixed $id_selected Id o valor a comparar origen de la base de valor
      * @return bool
      */
-    final protected function selected(mixed $value, mixed $id_selected): bool
+    final protected function selected(int|null|string|float $value, int|null|string|float $id_selected): bool
     {
         $selected = false;
         if((string)$value === (string)$id_selected){
@@ -1286,13 +1288,22 @@ class html{
     }
 
     /**
-     * Valida que los datos de un option sean validos
-     * @param string $descripcion Descripcion del option
-     * @param int|string $value Valor del option
-     * @return bool|array
-     * @version 0.89.4
+     * POR DOCUMENTAR EN WIKI
+     * Función para validar las opciones de una instancia.
+     *
+     * Esta función realiza la validación de las opciones dadas para
+     * una cierta acción. Las validaciones realizadas incluyen:
+     * - Se verifica si el valor no es vacío.
+     * - Se verifica si la descripción no es vacía.
+     *
+     * @param string $descripcion La descripción de la opción.
+     * @param int|string $value El valor de la opción.
+     *
+     * @return true|array Devuelve verdadero si las validaciones son exitosas.
+     * En caso de error, devuelve un arreglo con los detalles del error.
+     * @version 17.18.0
      */
-    protected function valida_option(string $descripcion,int|string $value ): bool|array
+    final protected function valida_option(string $descripcion,int|string $value ): true|array
     {
         $value = trim($value);
         if($value === ''){

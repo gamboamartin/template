@@ -15,7 +15,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI ERROR FINAL REV
      * Genera un botón HTML dinámicamente.
      *
      * @param array $ids_css        - Array de identificadores CSS que se asignarán al botón.
@@ -1586,7 +1586,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI ERROR FINAL REV
      * Valida los botones del siguiente.
      *
      * @param string $label Etiqueta del botón, también se valida en la base de datos.
@@ -1606,18 +1606,18 @@ class directivas{
 
         $style = trim($style);
         if($style === ''){
-            return $this->error->error(mensaje: 'Error $style esta vacio', data: $style);
+            return $this->error->error(mensaje: 'Error $style esta vacio', data: $style, es_final: true);
         }
         $type = trim($type);
         if($type === ''){
-            return $this->error->error(mensaje: 'Error $type esta vacio', data: $type);
+            return $this->error->error(mensaje: 'Error $type esta vacio', data: $type, es_final: true);
         }
 
         return true;
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI ERROR FINAL REV
      * Valida los datos de entrada para asegurarse de que la etiqueta y el valor no estén vacíos.
      *
      * @param string $label Etiqueta a comprobar.
@@ -1631,11 +1631,11 @@ class directivas{
     {
         $label = trim($label);
         if($label === ''){
-            return $this->error->error(mensaje: 'Error label esta vacio', data: $label);
+            return $this->error->error(mensaje: 'Error label esta vacio', data: $label, es_final: true);
         }
         $value = trim($value);
         if($value === ''){
-            return $this->error->error(mensaje: 'Error $value esta vacio', data: $value);
+            return $this->error->error(mensaje: 'Error $value esta vacio', data: $value, es_final: true);
         }
         return true;
     }
@@ -1643,7 +1643,7 @@ class directivas{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI ERROR FINAL REV
      * Valida el número de columnas proporcionado.
      *
      * Esta función valida que el número de columnas ($cols) este entre 1 y 12. Si el valor es menor
@@ -1657,10 +1657,10 @@ class directivas{
     final public function valida_cols(int $cols): true|array
     {
         if($cols<=0){
-            return $this->error->error(mensaje: 'Error cols debe ser mayor a 0', data: $cols);
+            return $this->error->error(mensaje: 'Error cols debe ser mayor a 0', data: $cols,es_final: true);
         }
         if($cols>=13){
-            return $this->error->error(mensaje: 'Error cols debe ser menor o igual a  12', data: $cols);
+            return $this->error->error(mensaje: 'Error cols debe ser menor o igual a  12', data: $cols,es_final: true);
         }
         return true;
     }

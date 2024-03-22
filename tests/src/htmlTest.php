@@ -138,6 +138,35 @@ class htmlTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_data_option(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $columns_ds = array();
+        $row = array();
+        $key_value_custom = '';
+        $row['descripcion_select'] = 'x';
+        $resultado = $html->data_option($columns_ds, $key_value_custom, $row);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("", $resultado->value_custom);
+        errores::$error = false;
+
+        $columns_ds = array();
+        $row = array();
+        $row['z'] = 'd';
+        $key_value_custom = 'z';
+        $row['descripcion_select'] = 'x';
+        $resultado = $html->data_option($columns_ds, $key_value_custom, $row);
+        $this->assertIsObject($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("d", $resultado->value_custom);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_div_controls(): void
     {
         errores::$error = false;
@@ -860,6 +889,28 @@ class htmlTest extends test {
         errores::$error = false;
 
 
+        errores::$error = false;
+
+        $id_selected = 'a';
+        $options_html = "";
+        $values = array();
+        $values[1]['descripcion_select'] = 'x';
+        $values[1]['test'] = 'zzz';
+        $values[1]['z'] = 'w';
+        $values[1]['t'] = 'y';
+        $key_value_custom = '';
+        $columns_ds[] = 'z';
+        $columns_ds[] = 't';
+
+
+        $resultado = $html->options_html_data(columns_ds: $columns_ds, extra_params_key: array(),
+            id_selected: $id_selected, key_value_custom: $key_value_custom, options_html: $options_html, values: $values);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<option value='1'  >w y</option>",$resultado);
+        errores::$error = false;
+
+
     }
 
     #[NoReturn] public function test_password(): void
@@ -879,6 +930,41 @@ class htmlTest extends test {
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
         $this->assertEquals("<input type='password' name='a' value='' class='form-control'   required id='c' placeholder='d' />",$resultado);
+
+        errores::$error = false;
+    }
+
+    #[NoReturn] public function test_row_descripcion_select(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $columns_ds = array();
+        $row = array();
+        $row['a'] = ' j  ';
+        $columns_ds[] = 'a';
+        $resultado = $html->row_descripcion_select($columns_ds, $row);
+        $this->assertIsArray($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals(" j  ",$resultado['a']);
+        $this->assertEquals("j",$resultado['descripcion_select']);
+
+        errores::$error = false;
+
+        $columns_ds = array();
+        $row = array();
+        $row['a'] = ' j  ';
+        $row['b'] = ' u  ';
+        $columns_ds[] = 'a';
+        $columns_ds[] = 'b';
+        $resultado = $html->row_descripcion_select($columns_ds, $row);
+        $this->assertIsArray($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals(" j  ",$resultado['a']);
+        $this->assertEquals(" u  ",$resultado['b']);
+        $this->assertEquals("j u",$resultado['descripcion_select']);
 
         errores::$error = false;
     }
@@ -1236,6 +1322,40 @@ class htmlTest extends test {
         $this->assertTrue($resultado);
         errores::$error = false;
 
+    }
+
+    #[NoReturn] public function test_value_custom(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $row = array();
+        $key_value_custom = 'z';
+        $row['z'] = 'rr';
+        $resultado = $html->value_custom($key_value_custom, $row);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("rr",$resultado);
+        errores::$error = false;
+    }
+
+    #[NoReturn] public function test_value_custom_row(): void
+    {
+        errores::$error = false;
+        $html = new html();
+        $html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $row = array();
+        $key_value_custom = 'a';
+        $row['a'] = 'x';
+        $resultado = $html->value_custom_row($key_value_custom, $row);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals('x',$resultado);
+        errores::$error = false;
     }
 
     #[NoReturn] public function test_value_select(): void

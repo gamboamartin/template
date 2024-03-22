@@ -1333,6 +1333,10 @@ class html{
 
     private function value_custom_row(string $key_value_custom, array $row): array|string
     {
+        $key_value_custom = trim($key_value_custom);
+        if($key_value_custom === ''){
+            return $this->error->error(mensaje: 'Error key_value_custom esta vacio', data: $key_value_custom);
+        }
         if(!isset($row[$key_value_custom])){
             return $this->error->error(mensaje: 'Error en row no existe '.$key_value_custom, data: $row);
         }

@@ -47,7 +47,7 @@ class html{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Funcion que genera un boton de tipo link con href
      * @param string $accion Accion a ejecutar
      * @param string $etiqueta Etiqueta de boton
@@ -70,7 +70,7 @@ class html{
         $session_id = (new generales())->session_id;
 
         if($session_id === ''){
-            return $this->error->error(mensaje: 'Error la $session_id esta vacia', data: $session_id);
+            return $this->error->error(mensaje: 'Error la $session_id esta vacia', data: $session_id, es_final: true);
         }
 
         $params_get = '';

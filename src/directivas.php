@@ -1238,7 +1238,7 @@ class directivas{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Genera una etiqueta HTML a partir del nombre y placeholder proporcionados.
      *
      * Este método valida primero los datos de entrada. Si hay un error, devolverá un mensaje de error.

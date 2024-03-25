@@ -1343,7 +1343,7 @@ class html{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Valida los parámetros que se pasan a la función.
      *
      * @param string $id_css es el identificador CSS para el elemento.
@@ -1357,15 +1357,16 @@ class html{
     {
         $name = trim($name);
         if($name === ''){
-            return $this->error->error(mensaje: 'Error name es necesario', data: $name);
+            return $this->error->error(mensaje: 'Error name es necesario', data: $name, es_final: true);
         }
         $id_css = trim($id_css);
         if($id_css === ''){
-            return $this->error->error(mensaje: 'Error $id_css es necesario', data: $id_css);
+            return $this->error->error(mensaje: 'Error $id_css es necesario', data: $id_css, es_final: true);
         }
         $place_holder = trim($place_holder);
         if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error $place_holder es necesario', data: $place_holder);
+            return $this->error->error(mensaje: 'Error $place_holder es necesario', data: $place_holder,
+                es_final: true);
         }
         return true;
 

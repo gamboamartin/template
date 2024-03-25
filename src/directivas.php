@@ -569,7 +569,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Esta función se encarga de inicializar la entrada de los campos.
      *
      * @param string $name Este parámetro recibe el nombre del campo de entrada.
@@ -1559,7 +1559,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Este método `row_upd_name` sirve para procesar y actualizar un nombre de fila.
      * @param string $name El nombre que se va a procesar.
      * @param bool $value_vacio Un indicador que determina si el valor de la fila $name debe ser vacío.
@@ -1572,7 +1572,7 @@ class directivas{
     {
         $name = trim($name);
         if($name === ''){
-            return $this->error->error(mensaje: 'Error name esta vacio', data: $name);
+            return $this->error->error(mensaje: 'Error name esta vacio', data: $name, es_final: true);
         }
         if($value_vacio){
             $row_upd = new stdClass();
@@ -1693,7 +1693,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
+     * POR DOCUMENTAR EN WIKI FINAL REV
      * Valida si los valores de 'name' y 'place_holder' existen y no están vacíos.
      *
      * Esta función toma dos parámetros 'name' y 'place_holder' como entrada y realiza
@@ -1718,11 +1718,12 @@ class directivas{
     {
         $name = trim($name);
         if($name === ''){
-            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
+            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name, es_final: true);
         }
         $place_holder = trim($place_holder);
         if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
+            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder
+                , es_final: true);
         }
         return true;
     }

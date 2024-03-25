@@ -15,11 +15,36 @@ class html{
     }
 
     /**
-     * Genera un alert html boostrap con un mensaje incluido
-     * @param string $mensaje Mensaje a mostrar
-     * @return string|array Resultado en un html
-     * @version 0.78.4
-     * @por_doc true
+     * POR DOCUMENTAR EN WIKI FINAL REV
+     * La función alert_success
+     *
+     * Esta es una función pública final que genera una alerta de éxito en formato HTML.
+     * El parámetro proporcionado se incorpora en la alerta que se genera.
+     *
+     * @param string $mensaje El mensaje que se mostrará en la alerta de éxito.
+     * Debe ser una cadena no vacía, de lo contrario, la función generará un error.
+     *
+     * @return string|array Devuelve un string que contiene la alerta de éxito en formato HTML.
+     * Si el mensaje está vacío, se devuelve un array con información de error.
+     *
+     * @throws errores si el mensaje está vacío.
+     *
+     * Ejemplo de uso:
+     *
+     * ```php
+     * $html = new Html();
+     * echo $html->alert_success('La operación se completó con éxito');
+     * ```
+     *
+     * Esto generará el siguiente HTML:
+     *
+     * ```html
+     * <div class='alert alert-success' role='alert'><strong>Muy bien!</strong> La operación se completó con éxito.</div>
+     * ```
+     *
+     * Antes de utilizar, asegurarse de tener Bootstrap cargado en el proyecto para que las alertas se muestren correctamente.
+     *
+     * @version 18.5.0
      */
     final public function alert_success(string $mensaje): string|array
     {

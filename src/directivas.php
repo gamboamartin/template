@@ -1384,9 +1384,12 @@ class directivas{
     }
 
     /**
-     * Genera un mensaje de exito
-     * @param string $mensaje_exito mensaje a mostrar
-     * @return array|string
+     * POR DOCUMENTAR EN WIKI FINAL REV
+     * Genera un mensaje de alerta de éxito o un mensaje de error.
+     *
+     * @param string $mensaje_exito El mensaje que se mostrará en la alerta de exito.
+     * @return array|string Retorna una alerta de éxito. Si se produce algún error, se retorna un mensaje de error.
+     * @version 18.7.0
      */
     final public function mensaje_exito(string $mensaje_exito): array|string
     {

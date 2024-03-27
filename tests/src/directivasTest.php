@@ -886,6 +886,32 @@ class directivasTest extends test {
         errores::$error = false;
     }
 
+    #[NoReturn] public function test_mensaje_exito(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $mensaje_exito = '';
+
+        $resultado = $html->mensaje_exito($mensaje_exito);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("", $resultado);
+        errores::$error = false;
+
+        $mensaje_exito = 'a';
+
+        $resultado = $html->mensaje_exito($mensaje_exito);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='alert alert-success' role='alert' ><strong>Muy bien!</strong> a.</div>", $resultado);
+        errores::$error = false;
+    }
+
     #[NoReturn] public function test_params_html(): void
     {
         errores::$error = false;

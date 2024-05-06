@@ -15,7 +15,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI ERROR FINAL REV
+     * @url https://github.com/gamboamartin/template/wiki/template-src-directivas#m%C3%A9todo-btn---clase-directivas
      * Genera un botón HTML dinámicamente.
      *
      * @param array $ids_css        - Array de identificadores CSS que se asignarán al botón.
@@ -34,7 +34,6 @@ class directivas{
      *                                Si hay algún error durante la validación,
      *                                devolverá un array de errores.
      *
-     * @version 16.6.0
      */
     final public function btn(array $ids_css, array $clases_css, array $extra_params, string $label, string $name,
                               string $value, int $cols = 6 , string $style = 'info',
@@ -1589,7 +1588,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI ERROR FINAL REV
+     * @url https://github.com/gamboamartin/template/wiki/template-src-directivas#m%C3%A9todo-valida_btn_next---clase-directivas
      * Valida los botones del siguiente.
      *
      * @param string $label Etiqueta del botón, también se valida en la base de datos.
@@ -1597,7 +1596,6 @@ class directivas{
      * @param string $type Tipo del botón, no puede estar vacío.
      * @param string $value Valor del botón, se valida en la base de datos.
      * @return true|array Devuelve verdadero si la validación es exitosa, de lo contrario, devuelve un array con los errores.
-     * @version 16.0.0
      */
     final public function valida_btn_next(string $label, string $style, string $type, string $value): true|array
     {
@@ -1620,7 +1618,7 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI ERROR FINAL REV
+     * @url https://github.com/gamboamartin/template/wiki/template-src-directivas#m%C3%A9todo-valida_data_base--clase-directivas
      * Valida los datos de entrada para asegurarse de que la etiqueta y el valor no estén vacíos.
      *
      * @param string $label Etiqueta a comprobar.
@@ -1628,7 +1626,6 @@ class directivas{
      * @return true|array Devuelve true si la etiqueta y el valor no están vacíos,
      *                    o devuelve un array con un mensaje de error en caso contrario.
      *
-     * @version 15.0.0
      */
     final public function valida_data_base(string $label, string $value): true|array
     {

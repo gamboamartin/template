@@ -170,7 +170,8 @@ class directivas{
 
         $place_holder = trim($place_holder);
         if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder);
+            return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder,
+                es_final: true);
         }
         $html= $this->html->button_href(accion: $accion,etiqueta:  $etiqueta, registro_id: $registro_id,
             seccion:  $seccion, style: $style);
@@ -201,11 +202,11 @@ class directivas{
 
         $seccion = trim($seccion);
         if($seccion === ''){
-            return $this->error->error(mensaje: 'Error la $seccion esta vacia', data: $seccion);
+            return $this->error->error(mensaje: 'Error la $seccion esta vacia', data: $seccion, es_final: true);
         }
         $status = trim($status);
         if($status === ''){
-            return $this->error->error(mensaje: 'Error el $status esta vacio', data: $status);
+            return $this->error->error(mensaje: 'Error el $status esta vacio', data: $status, es_final: true);
         }
         $valida = $this->valida_cols(cols: $cols);
         if(errores::$error){
@@ -1666,7 +1667,6 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
      * Método para validar si el nombre y el lugar de reserva proporcionados no están vacíos.
      *
      * @param string $name El nombre a validar. La cadena no debe ser vacía después de haber sido recortada.
@@ -1676,6 +1676,7 @@ class directivas{
      *
      * @final
      * @version 15.1.0
+     * @url https://github.com/gamboamartin/template/wiki/template-src-directivas#m%C3%A9todo-valida_data_label---clase-directivas
      */
     final public function valida_data_label(string $name, string $place_holder): true|array
     {

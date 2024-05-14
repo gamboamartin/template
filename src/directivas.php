@@ -1588,6 +1588,29 @@ class directivas{
         return $row_upd;
     }
 
+    public function textarea(bool $disabled, string $name, string $place_holder, bool $required,
+                                   stdClass $row_upd, bool $value_vacio, array $ids_css = array()): array|string
+    {
+        $row_upd_ = $this->init_input(name:$name,place_holder:  $place_holder,row_upd:  $row_upd,value_vacio:  $value_vacio);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar row upd', data: $row_upd_);
+        }
+
+        $html= $this->html->textarea(disabled: $disabled, id_css: $name, name: $name, place_holder: $place_holder,
+            required: $required, value: $row_upd_->$name, ids_css: $ids_css);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar textarea', data: $html);
+        }
+
+        $div = $this->div_label(html:$html, name: $name, place_holder: $place_holder);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al integrar div', data: $div);
+        }
+
+        return $div;
+
+    }
+
     /**
      * @url https://github.com/gamboamartin/template/wiki/template-src-directivas#m%C3%A9todo-valida_btn_next---clase-directivas
      * Valida los botones del siguiente.

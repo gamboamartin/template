@@ -1154,6 +1154,28 @@ class html{
         return $html_r;
     }
 
+    public function textarea(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
+                             mixed $value, array $ids_css = array()): string|array
+    {
+        $params = $this->params_txt(disabled: $disabled, id_css: $id_css, name: $name, place_holder: $place_holder,
+            required: $required, ids_css: $ids_css);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+        }
+
+        $html = "<textarea name='$params->name' |class| $params->disabled $params->required ";
+        $html.= $params->ids_css_html." placeholder='$params->place_holder'/>";
+        $html.= $value . "</textarea>";
+
+        $html_r = $this->limpia_salida(html: $html);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al limpiar html', data: $html_r);
+        }
+
+        return $html_r;
+    }
+
+
     final public function text_base(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                                     mixed $value, array $class_css = array(), array $ids_css = array(),
                                     string $regex = '', string $title = ''): string|array

@@ -1163,7 +1163,7 @@ class html{
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
         }
 
-        $html = "<textarea name='$params->name' |class| $params->disabled $params->required ";
+        $html = "<textarea name='$params->name' class='form-control' $params->disabled $params->required ";
         $html.= $params->ids_css_html." placeholder='$params->place_holder'/>";
         $html.= $value . "</textarea>";
 

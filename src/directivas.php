@@ -15,7 +15,7 @@ class directivas{
     }
 
     /**
-     * @url https://github.com/gamboamartin/template/wiki/template-src-directivas#m%C3%A9todo-btn---clase-directivas
+
      * Genera un botón HTML dinámicamente.
      *
      * @param array $ids_css        - Array de identificadores CSS que se asignarán al botón.
@@ -1612,7 +1612,7 @@ class directivas{
     }
 
     /**
-     * @url https://github.com/gamboamartin/template/wiki/template-src-directivas#m%C3%A9todo-valida_btn_next---clase-directivas
+
      * Valida los botones del siguiente.
      *
      * @param string $label Etiqueta del botón, también se valida en la base de datos.
@@ -1642,7 +1642,7 @@ class directivas{
     }
 
     /**
-     * @url https://github.com/gamboamartin/template/wiki/template-src-directivas#m%C3%A9todo-valida_data_base--clase-directivas
+
      * Valida los datos de entrada para asegurarse de que la etiqueta y el valor no estén vacíos.
      *
      * @param string $label Etiqueta a comprobar.
@@ -1699,7 +1699,6 @@ class directivas{
      *
      * @final
      * @version 15.1.0
-     * @url https://github.com/gamboamartin/template/wiki/template-src-directivas#m%C3%A9todo-valida_data_label---clase-directivas
      */
     final public function valida_data_label(string $name, string $place_holder): true|array
     {

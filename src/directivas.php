@@ -981,7 +981,7 @@ class directivas{
      * @return array|string
      */
     final public function input_file(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
-                               bool $value_vacio): array|string
+                               bool $value_vacio, bool $multiple = false): array|string
     {
 
         $valida = $this->valida_etiquetas(name: $name,place_holder:  $place_holder);
@@ -995,7 +995,7 @@ class directivas{
         }
 
         $html= $this->html->file(disabled:$disabled, id_css: $name, name: $name, place_holder: $place_holder,
-            required: $required, value: $row_upd_->$name);
+            required: $required, value: $row_upd_->$name,multiple: $multiple);
 
 
 

@@ -491,8 +491,8 @@ class html{
      * @param mixed $value value input
      * @return string|array
      */
-    final public function file(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
-                         mixed $value): string|array
+    final public function file(bool $disabled, string $id_css, string $name,
+                               string $place_holder, bool $required, mixed $value, bool $multiple = false): string|array
     {
 
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
@@ -501,13 +501,13 @@ class html{
         }
 
         $params = $this->params_txt(disabled: $disabled,id_css:  $id_css,name:  $name,place_holder:  $place_holder,
-            required:  $required);
+            required:  $required, multiple: $multiple);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
         }
 
         $html = "<input type='file' name='$params->name' value='$value' class = 'form-control' $params->disabled $params->required ";
-        $html.= "id='$id_css'/>";
+        $html.= "id='$id_css' $params->multiple />";
         return $html;
     }
 
@@ -885,8 +885,8 @@ class html{
      * @param string $title Title de input
      * @return array|stdClass
      */
-    private function params_txt(bool $disabled, string $id_css, string $name, string $place_holder,
-                                bool $required, array $class_css = array(), array $ids_css = array(),
+    private function params_txt(bool $disabled, string $id_css, string $name,string $place_holder,
+                                bool $required, array $class_css = array(),bool $multiple = false, array $ids_css = array(),
                                 string $regex = '', string $title = ''): array|stdClass
     {
 
@@ -903,6 +903,11 @@ class html{
         $required_html = (new params_inputs())->required_html(required: $required);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar $required_html', data: $required_html);
+        }
+
+        $multiple_html = (new params_inputs())->multiple_html(multiple: $multiple);
+        if(errores::$error){
+            return $this->error->error(mensaje: 'Error al generar $multiple_html', data: $multiple_html);
         }
 
         $regex_html = (new params_inputs())->regex_html(regex: $regex);
@@ -935,6 +940,7 @@ class html{
         $params->title = $title_html;
         $params->class = $class_html;
         $params->ids_css_html = $ids_css_html;
+        $params->multiple = $multiple_html;
 
         return $params;
     }

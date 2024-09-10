@@ -574,7 +574,7 @@ class directivasTest extends test {
         $resultado = $html->input_file($disabled, $name, $place_holder, $required, $row_upd, $value_vacio);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div |class|><input type='file' name='a' value='' class = 'form-control' required id='a'/></div>", $resultado);
+        $this->assertEquals("<div |class|><input type='file' name='a' value='' class = 'form-control' required id='a' /></div>", $resultado);
         errores::$error = false;
 
     }

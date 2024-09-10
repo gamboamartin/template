@@ -472,7 +472,7 @@ class htmlTest extends test {
         $resultado = $html->file($disabled, $id_css, $name, $place_holder, $required, $value);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<input type='file' name='a' value='' class = 'form-control'   id='b'/>",$resultado);
+        $this->assertEquals("<input type='file' name='a' value='' class = 'form-control'   id='b'  />",$resultado);
         errores::$error = false;
     }
 

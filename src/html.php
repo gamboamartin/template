@@ -15,45 +15,79 @@ class html{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * La función alert_success
+     * REG
+     * Genera una alerta de éxito en formato HTML.
      *
-     * Esta es una función pública final que genera una alerta de éxito en formato HTML.
-     * El parámetro proporcionado se incorpora en la alerta que se genera.
+     * Esta función toma un mensaje como parámetro y genera un bloque de código HTML con una alerta
+     * de Bootstrap de tipo éxito. Si el mensaje proporcionado está vacío, se devolverá un error.
+     * La alerta generada incluye un encabezado "Muy bien!" seguido del mensaje proporcionado.
      *
-     * @param string $mensaje El mensaje que se mostrará en la alerta de éxito.
-     * Debe ser una cadena no vacía, de lo contrario, la función generará un error.
+     * @param string $mensaje El mensaje que se mostrará en la alerta de éxito. Este debe ser una cadena
+     *                       no vacía. Si el mensaje está vacío o contiene solo espacios, se generará
+     *                       un error. El mensaje se mostrará dentro de una alerta de tipo `alert-success`
+     *                       de Bootstrap.
      *
-     * @return string|array Devuelve un string que contiene la alerta de éxito en formato HTML.
-     * Si el mensaje está vacío, se devuelve un array con información de error.
+     * @return string|array Retorna una cadena con el HTML de la alerta de éxito si el mensaje es válido.
+     *                      Si el mensaje está vacío, devuelve un arreglo con información sobre el error.
+     *                      El arreglo contiene el mensaje de error y los datos relacionados con el error.
      *
-     * @throws errores si el mensaje está vacío.
+     * @throws errores Si el mensaje está vacío, se lanza un error con el mensaje 'Error mensaje esta vacio'.
+     *                 Además, se retornará un objeto `errores` con la información del error generado.
      *
      * Ejemplo de uso:
      *
      * ```php
-     * $html = new Html();
+     * $html = new Html();  // Crear una instancia de la clase Html
      * echo $html->alert_success('La operación se completó con éxito');
      * ```
      *
-     * Esto generará el siguiente HTML:
+     * En el caso anterior, si el mensaje proporcionado es `'La operación se completó con éxito'`,
+     * se generará el siguiente HTML:
      *
      * ```html
-     * <div class='alert alert-success' role='alert'><strong>Muy bien!</strong> La operación se completó con éxito.</div>
+     * <div class='alert alert-success' role='alert'>
+     *     <strong>Muy bien!</strong> La operación se completó con éxito.
+     * </div>
      * ```
      *
-     * Antes de utilizar, asegurarse de tener Bootstrap cargado en el proyecto para que las alertas se muestren correctamente.
+     * Si el mensaje está vacío o solo contiene espacios, la función devolverá un error.
+     * Por ejemplo, con el siguiente código:
      *
-     * @version 18.5.0
+     * ```php
+     * echo $html->alert_success('   ');  // Mensaje vacío o solo espacios
+     * ```
+     *
+     * El resultado sería un error como el siguiente:
+     * ```php
+     * array(
+     *     'mensaje' => 'Error mensaje esta vacio',
+     *     'data' => '   ',
+     *     'es_final' => true
+     * )
+     * ```
+     *
+     * En este caso, el mensaje está vacío y no se genera el HTML de la alerta.
+     *
+     * @version 1.0.0
      */
     final public function alert_success(string $mensaje): string|array
     {
+        // Se eliminan los espacios en blanco al principio y al final del mensaje
         $mensaje = trim($mensaje);
-        if($mensaje === ''){
-            return $this->error->error(mensaje: 'Error mensaje esta vacio', data: $mensaje, es_final: true);
+
+        // Si el mensaje es vacío, se genera un error
+        if ($mensaje === '') {
+            return $this->error->error(
+                mensaje: 'Error mensaje esta vacio',  // Mensaje de error
+                data: $mensaje,                      // Datos relacionados con el error
+                es_final: true                        // Indicador de que es un error final
+            );
         }
-        return "<div class='alert alert-success' role='alert' ><strong>Muy bien!</strong> $mensaje.</div>";
+
+        // Si el mensaje no está vacío, se genera la alerta HTML
+        return "<div class='alert alert-success' role='alert'><strong>Muy bien!</strong> $mensaje.</div>";
     }
+
 
     /**
      * Genera un alert de tipo warning

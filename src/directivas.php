@@ -15,61 +15,107 @@ class directivas{
     }
 
     /**
-
-     * Genera un botón HTML dinámicamente.
+     * REG
+     * Genera un botón HTML dinámicamente con los parámetros proporcionados.
      *
-     * @param array $ids_css        - Array de identificadores CSS que se asignarán al botón.
-     * @param array $clases_css     - Array de clases CSS que se asignarán al botón.
-     * @param array $extra_params   - Array de atributos adicionales que se asignarán al botón.
-     * @param string $label         - Texto que se mostrará en el botón.
-     * @param string $name          - Nombre del botón.
-     * @param string $value         - Valor del botón.
-     * @param int $cols             - Columnas que ocupará el botón (Bootstrap Grid).
-     * @param string $style         - Estilo del botón (Bootstrap button style).
-     * @param string $type          - Tipo del botón ('button', 'submit', etc.).
-     *                                 El valor predeterminado es 'button'.
+     * Este método permite generar un botón en HTML con diversos atributos configurables, como el estilo, el tipo,
+     * los identificadores CSS, las clases CSS, los parámetros adicionales, etc.
+     * Además, realiza una validación de los datos de entrada para garantizar que los valores proporcionados sean válidos
+     * antes de generar el código HTML del botón.
      *
-     * @return array|string         - Devuelve una cadena que representa el código HTML del botón si
-     *                                no hay errores.
-     *                                Si hay algún error durante la validación,
-     *                                devolverá un array de errores.
+     * @param array $ids_css Un array de identificadores CSS que se asignarán al botón.
+     *                       Cada valor del array será agregado como un identificador del atributo `id`.
      *
+     * @param array $clases_css Un array de clases CSS que se aplicarán al botón.
+     *                           Cada valor del array se agregará como una clase CSS al botón.
+     *
+     * @param array $extra_params Un array de parámetros adicionales que se agregarán al botón como atributos `data-*`.
+     *                             El array debe contener claves como el nombre del atributo y sus respectivos valores.
+     *
+     * @param string $label El texto que se mostrará en el botón. Si está vacío, se usará el nombre del botón
+     *                      con un formato adecuado.
+     *
+     * @param string $name El nombre del botón. Este valor será usado como el atributo `name` del botón en HTML.
+     *
+     * @param string $value El valor que se asignará al botón. Este valor será utilizado como el atributo `value` del botón.
+     *
+     * @param int $cols (Opcional) El número de columnas que ocupará el botón en el sistema de grillas de Bootstrap.
+     *                  Por defecto, se asigna 6.
+     *
+     * @param string $style (Opcional) El estilo del botón según las clases de Bootstrap.
+     *                       Por defecto, se usa el estilo 'info'. Otros valores posibles incluyen 'primary', 'danger', etc.
+     *
+     * @param string $type (Opcional) El tipo del botón, como 'button', 'submit', etc.
+     *                       Por defecto, se usa el tipo 'button'.
+     *
+     * @return array|string Devuelve el código HTML del botón generado si la validación es exitosa.
+     *                      Si ocurre un error durante la validación, se devuelve un array con el mensaje de error.
+     *
+     * @throws errores Si la validación de los datos falla.
+     *
+     * @example
+     * // Ejemplo de uso del método para generar un botón con estilo 'primary', tipo 'submit', y con un ID específico.
+     * $ids_css = ['btn_submit'];
+     * $clases_css = ['extra-class'];
+     * $extra_params = ['onclick' => 'alert("Botón presionado")'];
+     * $label = 'Enviar';
+     * $name = 'submit_form';
+     * $value = 'submit';
+     * $cols = 4;
+     * $style = 'primary';
+     * $type = 'submit';
+     *
+     * $boton_html = $directiva->btn($ids_css, $clases_css, $extra_params, $label, $name, $value, $cols, $style, $type);
+     * echo $boton_html;
+     * // Salida esperada: <button type='submit' class='btn btn-primary btn-guarda col-md-4 extra-class' id='btn_submit' name='submit_form' value='submit' data-onclick='alert("Botón presionado")'>Enviar</button>
+     *
+     * @version 1.0.0
      */
     final public function btn(array $ids_css, array $clases_css, array $extra_params, string $label, string $name,
-                              string $value, int $cols = 6 , string $style = 'info',
-                              string $type='button'): array|string
+                              string $value, int $cols = 6 , string $style = 'info', string $type = 'button'): array|string
     {
-
+        // Se recortan los valores de los parámetros
         $label = trim($label);
         $name = trim($name);
+
+        // Si la etiqueta está vacía, se usa el nombre como etiqueta
         if($label === ''){
             $label = $name;
-            $label = str_replace('_', ' ', $label);
-            $label = ucwords($label);
+            $label = str_replace('_', ' ', $label); // Reemplaza guiones bajos por espacios
+            $label = ucwords($label); // Convierte la primera letra de cada palabra en mayúscula
         }
 
-        $valida = $this->valida_btn_next(label: $label,style:  $style,type:  $type,value:  $value);
+        // Validación de los datos antes de generar el HTML
+        $valida = $this->valida_btn_next(label: $label, style: $style, type: $type, value: $value);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
+
+        // Generación de los identificadores CSS
         $ids_css_html = '';
         foreach ($ids_css as $id_css){
-            $ids_css_html.=' '.$id_css;
-        }
-        $clases_css_html = '';
-        foreach ($clases_css as $class_css){
-            $clases_css_html.=' '.$class_css;
+            $ids_css_html .= ' ' . $id_css;
         }
 
+        // Generación de las clases CSS
+        $clases_css_html = '';
+        foreach ($clases_css as $class_css){
+            $clases_css_html .= ' ' . $class_css;
+        }
+
+        // Generación de los parámetros adicionales
         $extra_params_data = '';
-        foreach ($extra_params as $key=>$value_param){
+        foreach ($extra_params as $key => $value_param){
             $extra_params_data = " data-$key='$value_param' ";
         }
 
+        // Construcción del botón en HTML
         $btn = "<button type='$type' class='btn btn-$style btn-guarda col-md-$cols $clases_css_html' id='$ids_css_html' ";
         $btn .= "name='$name' value='$value' $extra_params_data>$label</button>";
-        return $btn;
+
+        return $btn; // Retorna el HTML del botón generado
     }
+
 
 
     /**
@@ -1384,25 +1430,56 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Genera un mensaje de alerta de éxito o un mensaje de error.
+     * REG
+     * Genera un mensaje de éxito en formato HTML usando una alerta de Bootstrap.
      *
-     * @param string $mensaje_exito El mensaje que se mostrará en la alerta de exito.
-     * @return array|string Retorna una alerta de éxito. Si se produce algún error, se retorna un mensaje de error.
-     * @version 18.7.0
+     * Este método recibe un mensaje de éxito y genera una alerta de éxito si el mensaje no está vacío.
+     * Si el mensaje está vacío, no se generará ninguna alerta. Si hay un error durante la creación
+     * de la alerta, se devolverá un mensaje de error con detalles.
+     *
+     * @param string $mensaje_exito El mensaje de éxito que se mostrará en la alerta. Este parámetro debe
+     *                              ser una cadena de texto que describa el éxito de una operación.
+     *
+     * @return array|string Si el mensaje no está vacío, devuelve una cadena de texto que contiene el HTML
+     *                      de una alerta de éxito. Si ocurre un error al generar la alerta, devuelve
+     *                      un array con un mensaje de error y los datos del error.
+     *
+     * @example
+     * // Caso exitoso: Generación de una alerta de éxito
+     * $mensaje = "La operación se completó exitosamente.";
+     * $alerta = $directiva->mensaje_exito($mensaje);
+     * echo $alerta;  // Resultado: <div class="alert alert-success" role="alert"><strong>Muy bien!</strong> La operación se completó exitosamente.</div>
+     *
+     * @example
+     * // Caso de error: Si ocurre un error al generar la alerta
+     * $mensaje = "";
+     * $alerta = $directiva->mensaje_exito($mensaje);
+     * if (is_array($alerta)) {
+     *     echo $alerta['mensaje'];  // Resultado: "Error al generar alerta"
+     * }
+     *
+     * @version 1.0.0
      */
     final public function mensaje_exito(string $mensaje_exito): array|string
     {
         $alert_exito = '';
-        if($mensaje_exito!==''){
+
+        // Comprobar si el mensaje de éxito no está vacío
+        if ($mensaje_exito !== '') {
+            // Generar la alerta de éxito utilizando el método alert_success de la clase html
             $alert_exito = $this->html->alert_success(mensaje: $mensaje_exito);
-            if(errores::$error){
+
+            // Verificar si hubo un error al generar la alerta
+            if (errores::$error) {
+                // Si hubo un error, devolver el mensaje de error
                 return $this->error->error(mensaje: 'Error al generar alerta', data: $alert_exito);
             }
-
         }
+
+        // Si todo está bien, devolver el HTML de la alerta de éxito
         return $alert_exito;
     }
+
 
     /**
      * Genera un mensaje de tipo warning
@@ -1612,57 +1689,148 @@ class directivas{
     }
 
     /**
-
-     * Valida los botones del siguiente.
+     * REG
+     * Valida los datos de entrada de un botón, incluyendo su etiqueta, estilo, tipo y valor.
      *
-     * @param string $label Etiqueta del botón, también se valida en la base de datos.
-     * @param string $style Estilo del botón, no puede estar vacío.
-     * @param string $type Tipo del botón, no puede estar vacío.
-     * @param string $value Valor del botón, se valida en la base de datos.
-     * @return true|array Devuelve verdadero si la validación es exitosa, de lo contrario, devuelve un array con los errores.
+     * Este método realiza una serie de validaciones para los parámetros `$label`, `$style`, `$type` y `$value`.
+     * Primero, valida que el valor y la etiqueta no estén vacíos utilizando la función `valida_data_base`.
+     * Luego verifica que los parámetros `$style` y `$type` no estén vacíos, ya que son cruciales para la correcta
+     * generación y comportamiento del botón.
+     *
+     * Si alguna de las validaciones falla, el método devolverá un error con detalles. Si todas las validaciones
+     * son exitosas, devolverá `true`.
+     *
+     * @param string $label La etiqueta que describe el botón. Esta etiqueta se utiliza para identificar el botón
+     *                      y también se muestra en la interfaz de usuario. No puede estar vacía.
+     *
+     * @param string $style El estilo del botón, que normalmente corresponde a una clase de Bootstrap u otra
+     *                      librería de estilos. Debe contener un valor válido (por ejemplo, 'primary', 'danger').
+     *                      No puede estar vacío.
+     *
+     * @param string $type El tipo de botón, como 'submit', 'button', etc. Este valor es esencial para determinar
+     *                     el comportamiento del botón. No debe estar vacío.
+     *
+     * @param string $value El valor que el botón enviará al servidor cuando sea presionado. No puede ser vacío.
+     *
+     * @return true|array Devuelve `true` si todas las validaciones son exitosas. Si alguna validación falla,
+     *                    devuelve un array con el mensaje de error correspondiente.
+     *
+     * @example
+     * // Caso exitoso: Todos los parámetros son válidos
+     * $label = "Guardar";
+     * $style = "primary";
+     * $type = "submit";
+     * $value = "save";
+     * $resultado = $directiva->valida_btn_next($label, $style, $type, $value);
+     * var_dump($resultado); // Resultado: true
+     *
+     * @example
+     * // Caso de error: El estilo está vacío
+     * $label = "Guardar";
+     * $style = "";
+     * $type = "submit";
+     * $value = "save";
+     * $resultado = $directiva->valida_btn_next($label, $style, $type, $value);
+     * var_dump($resultado); // Resultado: array('mensaje' => 'Error $style esta vacio', 'data' => '')
+     *
+     * @example
+     * // Caso de error: El tipo está vacío
+     * $label = "Guardar";
+     * $style = "primary";
+     * $type = "";
+     * $value = "save";
+     * $resultado = $directiva->valida_btn_next($label, $style, $type, $value);
+     * var_dump($resultado); // Resultado: array('mensaje' => 'Error $type esta vacio', 'data' => '')
+     *
+     * @version 1.0.0
      */
     final public function valida_btn_next(string $label, string $style, string $type, string $value): true|array
     {
-
-        $valida = $this->valida_data_base(label: $label,value:  $value);
-        if(errores::$error){
+        // Se valida que la etiqueta y el valor no estén vacíos
+        $valida = $this->valida_data_base(label: $label, value:  $value);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
 
+        // Se valida que el estilo no esté vacío
         $style = trim($style);
-        if($style === ''){
+        if ($style === '') {
             return $this->error->error(mensaje: 'Error $style esta vacio', data: $style, es_final: true);
         }
+
+        // Se valida que el tipo no esté vacío
         $type = trim($type);
-        if($type === ''){
+        if ($type === '') {
             return $this->error->error(mensaje: 'Error $type esta vacio', data: $type, es_final: true);
         }
 
+        // Si todas las validaciones son exitosas, se devuelve true
         return true;
     }
 
-    /**
 
-     * Valida los datos de entrada para asegurarse de que la etiqueta y el valor no estén vacíos.
+    /**
+     * REG
+     * Valida los datos de entrada asegurándose de que tanto la etiqueta como el valor no estén vacíos.
      *
-     * @param string $label Etiqueta a comprobar.
-     * @param string $value Valor a comprobar.
-     * @return true|array Devuelve true si la etiqueta y el valor no están vacíos,
-     *                    o devuelve un array con un mensaje de error en caso contrario.
+     * Este método realiza una validación básica de los parámetros `$label` y `$value`. Verifica que ambos parámetros
+     * sean cadenas de texto no vacías. Si alguno de ellos está vacío, devuelve un error detallado.
+     * Si ambos parámetros contienen datos válidos, devuelve `true` indicando que la validación fue exitosa.
      *
+     * @param string $label La etiqueta a validar. Este parámetro debe ser una cadena de texto no vacía.
+     *                      La etiqueta generalmente se usa para describir el campo o la acción que se está realizando.
+     *
+     * @param string $value El valor a validar. Este parámetro debe ser una cadena de texto no vacía.
+     *                      El valor representaría, por ejemplo, el contenido que un usuario ha ingresado.
+     *
+     * @return true|array Retorna `true` si ambos parámetros son válidos (no vacíos). Si algún parámetro está vacío,
+     *                    retorna un array con un mensaje de error y los datos que causaron el error.
+     *
+     * @example
+     * // Caso exitoso: Ambas entradas no están vacías
+     * $label = "Nombre";
+     * $value = "Juan";
+     * $resultado = $directiva->valida_data_base($label, $value);
+     * var_dump($resultado); // Resultado: true
+     *
+     * @example
+     * // Caso de error: La etiqueta está vacía
+     * $label = "";
+     * $value = "Juan";
+     * $resultado = $directiva->valida_data_base($label, $value);
+     * var_dump($resultado); // Resultado: array('mensaje' => 'Error label esta vacio', 'data' => '')
+     *
+     * @example
+     * // Caso de error: El valor está vacío
+     * $label = "Nombre";
+     * $value = "";
+     * $resultado = $directiva->valida_data_base($label, $value);
+     * var_dump($resultado); // Resultado: array('mensaje' => 'Error $value esta vacio', 'data' => '')
+     *
+     * @version 1.0.0
      */
     final public function valida_data_base(string $label, string $value): true|array
     {
+        // Eliminamos espacios en blanco al inicio y al final de la etiqueta
         $label = trim($label);
-        if($label === ''){
+
+        // Validamos si la etiqueta está vacía
+        if ($label === '') {
             return $this->error->error(mensaje: 'Error label esta vacio', data: $label, es_final: true);
         }
+
+        // Eliminamos espacios en blanco al inicio y al final del valor
         $value = trim($value);
-        if($value === ''){
+
+        // Validamos si el valor está vacío
+        if ($value === '') {
             return $this->error->error(mensaje: 'Error $value esta vacio', data: $value, es_final: true);
         }
+
+        // Si ambos parámetros son válidos, devolvemos true
         return true;
     }
+
 
 
 

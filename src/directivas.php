@@ -248,98 +248,232 @@ class directivas{
 
 
     /**
-     * Genera un boton tipo link
-     * @param string $accion Accion a ejecutar
-     * @param string $etiqueta Etiqueta de boton
-     * @param string $name Nombre para ser aplicado a for
-     * @param string $place_holder Etiqueta a mostrar
-     * @param int $registro_id Registro a mandar transaccion
-     * @param string $seccion Seccion a ejecutar
-     * @param string $style Estilo del boton info,danger,warning etc
-     * @return array|string
+     * REG
+     * Genera un enlace HTML (`<a>`) para un botón con una etiqueta y los parámetros proporcionados.
+     *
+     * Esta función recibe varios parámetros como la acción, etiqueta, nombre, marcador de posición, ID de registro, sección, estilo y otros,
+     * y genera un enlace HTML que funciona como un botón. Además, valida que todos los parámetros sean correctos. Si alguno de los parámetros es inválido,
+     * se devuelve un mensaje de error.
+     *
+     * **Pasos de procesamiento:**
+     * 1. Se valida que los parámetros `name` y `place_holder` no estén vacíos utilizando el método `valida_data_label`.
+     * 2. Se valida que los parámetros `accion`, `etiqueta`, `seccion`, y `style` no estén vacíos utilizando el método `valida_input`.
+     * 3. Si la validación es exitosa, se genera una etiqueta `label` utilizando `label_input`.
+     * 4. Se genera el HTML del enlace utilizando el método `button_href` de la clase `html`.
+     * 5. Se integra el HTML del enlace y la etiqueta en un `div` con el método `div_label`.
+     * 6. Si ocurre algún error en cualquiera de los pasos anteriores, se devuelve un mensaje de error.
+     * 7. Si todo es exitoso, se retorna el HTML generado para el `div` con el enlace y la etiqueta.
+     *
+     * **Parámetros:**
+     *
+     * @param string $accion La acción que se realizará cuando se haga clic en el botón.
+     * @param string $etiqueta El texto que se mostrará en el botón.
+     * @param string $name El nombre del campo que se utilizará para generar el identificador de la etiqueta.
+     * @param string $place_holder El texto que se muestra como marcador de posición en el campo asociado a la etiqueta.
+     * @param int $registro_id El ID del registro que se utilizará para la acción.
+     * @param string $seccion El nombre de la sección donde se encuentra el botón.
+     * @param string $style El estilo CSS del botón.
+     *
+     * **Retorno:**
+     * - Devuelve el HTML de un `div` que contiene un enlace `<a>` con la etiqueta asociada si todos los parámetros son válidos.
+     * - Si ocurre un error durante la validación o la generación del HTML, se devuelve un arreglo con el mensaje de error correspondiente.
+     *
+     * **Ejemplos:**
+     *
+     * **Ejemplo 1: Generación exitosa de un enlace**
+     * ```php
+     * $accion = "guardar";
+     * $etiqueta = "Guardar cambios";
+     * $name = "guardar_id";
+     * $place_holder = "Ingrese ID del usuario";
+     * $registro_id = 123;
+     * $seccion = "usuarios";
+     * $style = "btn-primary";
+     * $resultado = $this->button_href($accion, $etiqueta, $name, $place_holder, $registro_id, $seccion, $style);
+     * // Retorna un div con el HTML del enlace y la etiqueta.
+     * ```
+     *
+     * **Ejemplo 2: Error debido a un `place_holder` vacío**
+     * ```php
+     * $accion = "guardar";
+     * $etiqueta = "Guardar cambios";
+     * $name = "guardar_id";
+     * $place_holder = "";
+     * $registro_id = 123;
+     * $seccion = "usuarios";
+     * $style = "btn-primary";
+     * $resultado = $this->button_href($accion, $etiqueta, $name, $place_holder, $registro_id, $seccion, $style);
+     * // Retorna un mensaje de error: 'Error $place_holder debe tener info'.
+     * ```
+     *
+     * **Ejemplo 3: Error debido a un parámetro de entrada vacío**
+     * ```php
+     * $accion = "";
+     * $etiqueta = "Guardar cambios";
+     * $name = "guardar_id";
+     * $place_holder = "Ingrese ID del usuario";
+     * $registro_id = 123;
+     * $seccion = "usuarios";
+     * $style = "btn-primary";
+     * $resultado = $this->button_href($accion, $etiqueta, $name, $place_holder, $registro_id, $seccion, $style);
+     * // Retorna un mensaje de error: 'Error al validar datos'.
+     * ```
+     *
+     * **@version 1.0.0**
      */
-    final protected function button_href(string $accion, string $etiqueta, string $name, string $place_holder,
-                                         int $registro_id, string $seccion, string $style): array|string
+    public function button_href(string $accion, string $etiqueta, string $name, string $place_holder,
+                                int $registro_id, string $seccion, string $style): array|string
     {
-
-        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
+        // Validación de los parámetros name y place_holder
+        $valida = $this->valida_data_label(name: $name, place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
+        // Validación de los parámetros de entrada (accion, etiqueta, seccion, style)
         $valida = $this->html->valida_input(accion: $accion,etiqueta:  $etiqueta, seccion: $seccion,style:  $style);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
 
-        $label = $this->label_input(name: $name,place_holder: $place_holder);
+        // Generación de la etiqueta label
+        $label = $this->label_input(name: $name, place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label', data: $label);
         }
 
+        // Verificación de que el place_holder no esté vacío
         $place_holder = trim($place_holder);
         if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder,
-                es_final: true);
+            return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder, es_final: true);
         }
-        $html= $this->html->button_href(accion: $accion,etiqueta:  $etiqueta, registro_id: $registro_id,
+
+        // Generación del HTML para el botón
+        $html = $this->html->button_href(accion: $accion,etiqueta:  $etiqueta, registro_id: $registro_id,
             seccion:  $seccion, style: $style);
 
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar html', data: $html);
         }
 
-        $div = $this->html->div_label(html: $html,label:  $label);
+        // Integración de la etiqueta label con el HTML del botón en un div
+        $div = $this->html->div_label(html: $html, label: $label);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar div', data: $div);
         }
 
+        // Retornar el div generado
         return $div;
-
     }
 
-    /**
-     * Genera un boton de tipo link para transaccionar status
-     * @param int $cols Columnas en formato css de 1 a 12
-     * @param int $registro_id Registro id a mandar transaccion
-     * @param string $seccion Seccion a ejecutar
-     * @param string $status debe ser activo inactivo
-     * @return array|string
-     */
-    final public function button_href_status(int $cols, int $registro_id, string $seccion, string $status): array|string
-    {
 
+    /**
+     * REG
+     * Crea un botón de enlace (`<a>`) con un estado determinado y un estilo dinámico.
+     *
+     * Esta función genera un botón de enlace HTML con un estado determinado (activo o inactivo),
+     * y un estilo dinámico. El estilo del botón será `danger` si el estado es inactivo y `info`
+     * si el estado es activo. Además, valida que los parámetros proporcionados sean correctos
+     * y genera un contenedor `div` con el botón correspondiente.
+     *
+     * **Pasos de procesamiento:**
+     * 1. Se valida que el parámetro `$seccion` no esté vacío.
+     * 2. Se valida que el parámetro `$status` no esté vacío.
+     * 3. Se valida el número de columnas (`$cols`) usando el método `valida_cols`.
+     * 4. Si el estado es 'activo', el estilo se ajusta a `info`, de lo contrario, se establece como `danger`.
+     * 5. Se genera el enlace HTML utilizando el método `button_href` con los parámetros dados.
+     * 6. Se genera un contenedor `div` que contiene el botón de enlace.
+     * 7. Si ocurre un error en alguno de los pasos, se retorna un mensaje de error detallado.
+     * 8. Si todo es exitoso, se retorna el contenedor `div` con el botón de enlace.
+     *
+     * **Parámetros:**
+     *
+     * @param int $cols El número de columnas que se utilizarán en el contenedor `div`. Este parámetro es obligatorio.
+     * @param int $registro_id El ID del registro que se utilizará para la acción del botón.
+     * @param string $seccion El nombre de la sección donde se llevará a cabo la acción.
+     * @param string $status El estado del botón, que puede ser 'activo' o 'inactivo'.
+     *
+     * **Retorno:**
+     * - Devuelve el HTML de un `div` que contiene el botón de enlace si todo es válido.
+     * - Si ocurre un error durante la validación o la generación, se devuelve un arreglo con el mensaje de error correspondiente.
+     *
+     * **Ejemplos:**
+     *
+     * **Ejemplo 1: Generación de un botón de enlace válido**
+     * ```php
+     * $cols = 6;
+     * $registro_id = 123;
+     * $seccion = "usuarios";
+     * $status = "activo";
+     * $resultado = $this->button_href_status($cols, $registro_id, $seccion, $status);
+     * // Retorna el HTML de un div con un botón de enlace con estilo 'info'.
+     * ```
+     *
+     * **Ejemplo 2: Error por estado vacío**
+     * ```php
+     * $cols = 6;
+     * $registro_id = 123;
+     * $seccion = "usuarios";
+     * $status = "";
+     * $resultado = $this->button_href_status($cols, $registro_id, $seccion, $status);
+     * // Retorna un mensaje de error: 'Error el $status esta vacio'.
+     * ```
+     *
+     * **Ejemplo 3: Error por número de columnas inválido**
+     * ```php
+     * $cols = -1;
+     * $registro_id = 123;
+     * $seccion = "usuarios";
+     * $status = "activo";
+     * $resultado = $this->button_href_status($cols, $registro_id, $seccion, $status);
+     * // Retorna un mensaje de error: 'Error al validar cols'.
+     * ```
+     *
+     * **@version 1.0.0**
+     */
+    public function button_href_status(int $cols, int $registro_id, string $seccion, string $status): array|string
+    {
+        // Validación del parámetro 'seccion'
         $seccion = trim($seccion);
         if($seccion === ''){
             return $this->error->error(mensaje: 'Error la $seccion esta vacia', data: $seccion, es_final: true);
         }
+
+        // Validación del parámetro 'status'
         $status = trim($status);
         if($status === ''){
             return $this->error->error(mensaje: 'Error el $status esta vacio', data: $status, es_final: true);
         }
+
+        // Validación de las columnas
         $valida = $this->valida_cols(cols: $cols);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
         }
 
+        // Determinación del estilo en base al estado
         $style = 'danger';
         if($status === 'activo'){
             $style = 'info';
         }
 
+        // Generación del HTML para el enlace
         $html = $this->button_href(accion: 'status',etiqueta: $status,name: 'status',
             place_holder: 'Status',registro_id: $registro_id,seccion: $seccion, style: $style);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label', data: $html);
         }
 
+        // Generación del contenedor 'div' que contiene el enlace
         $div = $this->html->div_group(cols: $cols,html:  $html);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al integrar div', data: $div);
         }
 
+        // Retorno del contenedor 'div' generado
         return $div;
     }
+
 
     /**
      *
@@ -1347,35 +1481,74 @@ class directivas{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Genera una etiqueta HTML a partir del nombre y placeholder proporcionados.
+     * REG
+     * Genera una etiqueta (`label`) HTML basada en el nombre y el marcador de posición proporcionados.
      *
-     * Este método valida primero los datos de entrada. Si hay un error, devolverá un mensaje de error.
-     * Después genera una etiqueta HTML usando el nombre y el placeholder proporcionados.
-     * Si ocurre algún problema al generar la etiqueta, devolverá un mensaje de error.
+     * Esta función recibe un nombre y un marcador de posición (place holder) y genera una etiqueta HTML (`label`) utilizando
+     * esos valores. Antes de generar la etiqueta, la función valida que los datos proporcionados sean correctos. Si algún dato es
+     * inválido, se genera un error con un mensaje descriptivo. Si la validación es exitosa, se procede a generar el HTML de la etiqueta.
      *
-     * @param string $name El nombre que se usará en el atributo 'id' de la etiqueta.
-     * @param string $place_holder El texto que se mostrará en el interior de la etiqueta.
-     * @return array|string Devuelve la etiqueta generada si todo es correcto,
-     *                      de lo contrario retorna un mensaje de error y la data
-     *                      que causó el error.
+     * **Pasos de procesamiento:**
+     * 1. Se valida que los parámetros `$name` y `$place_holder` no estén vacíos.
+     * 2. Se genera una etiqueta `label` utilizando el método `label` de la clase `html`.
+     * 3. Si ocurre un error en cualquiera de estos pasos, se devuelve un mensaje de error con detalles sobre el problema.
+     * 4. Si todo es exitoso, se retorna el HTML de la etiqueta generada.
      *
-     * @throws errores En caso de algún error lor al generar la etiqueta HTML.
-     * @version 16.7.0
+     * **Parámetros:**
+     *
+     * @param string $name El nombre del campo. Este parámetro es obligatorio y se usa para generar el identificador CSS de la etiqueta.
+     * @param string $place_holder El texto que se mostrará como marcador de posición (place holder) en el campo asociado a la etiqueta.
+     *
+     * **Retorno:**
+     * - Devuelve el HTML de la etiqueta `label` si los parámetros son válidos.
+     * - Si ocurre un error durante la validación o generación, se devuelve un arreglo con el mensaje de error correspondiente.
+     *
+     * **Ejemplos:**
+     *
+     * **Ejemplo 1: Validación exitosa**
+     * ```php
+     * $name = "usuario_id";
+     * $place_holder = "Ingrese ID del usuario";
+     * $resultado = $this->label_input($name, $place_holder);
+     * // Retorna: "<label for='usuario_id'>Ingrese ID del usuario</label>"
+     * ```
+     *
+     * **Ejemplo 2: Error por parámetro vacío**
+     * ```php
+     * $name = "";
+     * $place_holder = "Ingrese ID del usuario";
+     * $resultado = $this->label_input($name, $place_holder);
+     * // Retorna un arreglo con el mensaje de error: 'Error $name debe tener info'.
+     * ```
+     *
+     * **Ejemplo 3: Error por parámetro vacío (place_holder)**
+     * ```php
+     * $name = "usuario_id";
+     * $place_holder = "";
+     * $resultado = $this->label_input($name, $place_holder);
+     * // Retorna un arreglo con el mensaje de error: 'Error $place_holder debe tener info'.
+     * ```
+     *
+     * **@version 1.0.0**
      */
     final protected function label_input(string $name, string $place_holder): array|string
     {
-        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
+        // Validación de los parámetros name y place_holder
+        $valida = $this->valida_data_label(name: $name, place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
+        // Generar la etiqueta label utilizando los valores proporcionados
         $label = $this->html->label(id_css: $name, place_holder: $place_holder);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al generar label', data: $label);
         }
+
+        // Retornar el HTML de la etiqueta generada
         return $label;
     }
+
 
     /**
      * Integra el label de un radio
@@ -1996,30 +2169,73 @@ class directivas{
 
 
     /**
-     * Método para validar si el nombre y el lugar de reserva proporcionados no están vacíos.
+     * REG
+     * Valida los datos de un nombre y un marcador de lugar (place_holder) para asegurarse de que ambos no estén vacíos.
      *
-     * @param string $name El nombre a validar. La cadena no debe ser vacía después de haber sido recortada.
-     * @param string $place_holder El marcador de posición a validar. La cadena no debe estar vacía después de haber sido recortada.
+     * Esta función verifica que los valores de los parámetros `$name` y `$place_holder` no estén vacíos, eliminando cualquier
+     * espacio en blanco al principio y al final de los valores antes de hacer la validación. Si alguno de los dos parámetros
+     * está vacío, se genera un error con un mensaje específico. Si ambos son válidos, la función devuelve `true`.
      *
-     * @return true|array True si ambas entradas son válidas, de lo contrario, se devuelve un conjunto de información de error.
+     * **Pasos de validación:**
+     * 1. Se elimina cualquier espacio en blanco al principio y al final de los valores `$name` y `$place_holder`.
+     * 2. Se valida que `$name` no esté vacío.
+     * 3. Se valida que `$place_holder` no esté vacío.
+     * 4. Si alguna de las validaciones falla, se genera un error con un mensaje descriptivo.
+     * 5. Si ambas validaciones pasan correctamente, se devuelve `true`.
      *
-     * @final
-     * @version 15.1.0
+     * **Parámetros:**
+     *
+     * @param string $name El nombre del campo de entrada. Este parámetro es obligatorio y no debe estar vacío.
+     *                     Representa el nombre del campo que se utilizará en el formulario.
+     * @param string $place_holder El texto que se muestra como marcador de posición en el campo de entrada.
+     *                             Este parámetro es obligatorio y no debe estar vacío.
+     *
+     * **Retorno:**
+     * - Devuelve `true` si ambos parámetros no están vacíos y son válidos.
+     * - Si alguno de los parámetros está vacío, devuelve un arreglo con el mensaje de error correspondiente.
+     *
+     * **Ejemplos:**
+     *
+     * **Ejemplo 1: Validación exitosa**
+     * ```php
+     * $name = "usuario_id";
+     * $place_holder = "Ingrese ID del usuario";
+     * $resultado = $this->valida_data_label($name, $place_holder);
+     * // Retorna true porque ambos parámetros son válidos.
+     * ```
+     *
+     * **Ejemplo 2: Error por $name vacío**
+     * ```php
+     * $name = "";
+     * $place_holder = "Ingrese ID del usuario";
+     * $resultado = $this->valida_data_label($name, $place_holder);
+     * // Retorna un arreglo con el mensaje de error: 'Error $name debe tener info'.
+     * ```
+     *
+     * **Ejemplo 3: Error por $place_holder vacío**
+     * ```php
+     * $name = "usuario_id";
+     * $place_holder = "";
+     * $resultado = $this->valida_data_label($name, $place_holder);
+     * // Retorna un arreglo con el mensaje de error: 'Error $place_holder debe tener info'.
+     * ```
+     *
+     * **@version 1.0.0**
      */
     final public function valida_data_label(string $name, string $place_holder): true|array
     {
-
+        // Eliminar espacios en blanco al principio y al final de los valores
         $name = trim($name);
         if($name === ''){
             return $this->error->error(mensaje: 'Error $name debe tener info', data: $name, es_final: true);
         }
         $place_holder = trim($place_holder);
         if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder,
-                es_final: true);
+            return $this->error->error(mensaje: 'Error $place_holder debe tener info', data: $place_holder, es_final: true);
         }
         return true;
     }
+
 
     /**
      * POR DOCUMENTAR EN WIKI FINAL REV

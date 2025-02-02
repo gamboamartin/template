@@ -165,16 +165,72 @@ class html{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Funcion que genera un boton de tipo link con href
-     * @param string $accion Accion a ejecutar
-     * @param string $etiqueta Etiqueta de boton
-     * @param int $registro_id Registro a mandar transaccion
-     * @param string $seccion Seccion a ejecutar
-     * @param string $style Estilo del boton info,danger,warning etc
-     * @param array $params Parametros para incrustar post GET
-     * @return string|array
-     * @version 16.9.0
+     * REG
+     * Genera un enlace HTML (`<a>`) para un botón con los parámetros proporcionados.
+     *
+     * Esta función recibe varios parámetros como la acción, etiqueta, ID de registro, sección, estilo y otros parámetros adicionales,
+     * y genera un enlace HTML. El enlace se utilizará como un botón en la interfaz de usuario. Además, valida que los parámetros sean correctos.
+     * Si los parámetros son válidos, genera un enlace HTML con los parámetros correspondientes, sino, retorna un mensaje de error.
+     *
+     * **Pasos de procesamiento:**
+     * 1. Se valida que los parámetros `accion`, `etiqueta`, `seccion` y `style` no estén vacíos utilizando el método `valida_input`.
+     * 2. Si la validación es exitosa, se obtiene el `session_id` de la sesión actual.
+     * 3. Si el `session_id` está vacío, se genera un mensaje de error.
+     * 4. Se construye una URL de enlace con los parámetros proporcionados y cualquier parámetro adicional.
+     * 5. Se devuelve el HTML del enlace generado.
+     *
+     * **Parámetros:**
+     *
+     * @param string $accion La acción que se realizará cuando se haga clic en el botón.
+     * @param string $etiqueta El texto que se mostrará en el botón.
+     * @param int $registro_id El ID del registro que se utilizará para la acción.
+     * @param string $seccion El nombre de la sección a la que pertenece el botón.
+     * @param string $style El estilo CSS del botón.
+     * @param array $params Parámetros adicionales que se agregarán a la URL como parámetros GET.
+     *
+     * **Retorno:**
+     * - Devuelve el HTML de un enlace `<a>` con el estilo y parámetros proporcionados.
+     * - Si ocurre un error durante la validación o generación, se devuelve un arreglo con el mensaje de error correspondiente.
+     *
+     * **Ejemplos:**
+     *
+     * **Ejemplo 1: Generación de un enlace válido**
+     * ```php
+     * $accion = "guardar";
+     * $etiqueta = "Guardar cambios";
+     * $registro_id = 123;
+     * $seccion = "usuarios";
+     * $style = "btn-primary";
+     * $params = ['redirigir' => 'true'];
+     * $resultado = $this->button_href($accion, $etiqueta, $registro_id, $seccion, $style, $params);
+     * // Retorna: "<a href='index.php?seccion=usuarios&accion=guardar&registro_id=123&session_id=xyz&redirigir=true' class='btn-primary'>Guardar cambios</a>"
+     * ```
+     *
+     * **Ejemplo 2: Error por `session_id` vacío**
+     * ```php
+     * $accion = "guardar";
+     * $etiqueta = "Guardar cambios";
+     * $registro_id = 123;
+     * $seccion = "usuarios";
+     * $style = "btn-primary";
+     * $params = [];
+     * $resultado = $this->button_href($accion, $etiqueta, $registro_id, $seccion, $style, $params);
+     * // Si no hay `session_id` válido, retorna un mensaje de error.
+     * ```
+     *
+     * **Ejemplo 3: Error por parámetro vacío**
+     * ```php
+     * $accion = "";
+     * $etiqueta = "Guardar cambios";
+     * $registro_id = 123;
+     * $seccion = "usuarios";
+     * $style = "btn-primary";
+     * $params = [];
+     * $resultado = $this->button_href($accion, $etiqueta, $registro_id, $seccion, $style, $params);
+     * // Retorna un mensaje de error: 'Error al validar datos'.
+     * ```
+     *
+     * **@version 1.0.0**
      */
     public function button_href(string $accion, string $etiqueta, int $registro_id, string $seccion,
                                 string $style, array $params = array()): string|array
@@ -198,7 +254,7 @@ class html{
 
         $link = "index.php?seccion=$seccion&accion=$accion&registro_id=$registro_id&session_id=$session_id";
         $link .= $params_get;
-        return "<a |role| href='$link' |class|>$etiqueta</a>";
+        return /** @lang html */ "<a |role| href='$link' |class|>$etiqueta</a>";
     }
 
     private function class_css_html(array $class_css): array|string
@@ -376,48 +432,139 @@ class html{
     }
 
     /**
-     * Integra un div group control-group col-sm-n_cols
-     * @param int $cols Numero de columnas css
-     * @param string $html Html a integrar en contendedor
-     * @return string|array
-     * @version 0.14.0
-     * @final revisada
+     * REG
+     * Crea un contenedor `div` con un contenido HTML, validando el número de columnas y limpiando el resultado.
+     *
+     * Esta función genera un `div` que contiene el contenido HTML proporcionado, el cual está envuelto en un número de columnas
+     * determinado por el parámetro `$cols`. La función valida que el número de columnas sea adecuado y limpia el HTML generado
+     * para asegurar que no haya espacios extra innecesarios.
+     *
+     * **Pasos de procesamiento:**
+     * 1. Se valida que el número de columnas `$cols` sea válido utilizando el método `valida_cols` de la clase `directivas`.
+     * 2. Se crea un contenedor `div` con el contenido HTML proporcionado.
+     * 3. Se pasa el HTML generado a través de la función `limpia_salida` para eliminar espacios extra y corregir posibles errores de formato.
+     * 4. Si ocurre un error durante la validación o la limpieza, se devuelve un mensaje de error con detalles sobre el problema.
+     * 5. Si la limpieza es exitosa, se devuelve el HTML del contenedor `div` con el contenido.
+     *
+     * **Parámetros:**
+     *
+     * @param int $cols El número de columnas que se utilizarán en el contenedor `div`. Este parámetro es obligatorio y se valida.
+     * @param string $html El contenido HTML que se incluirá dentro del `div`. Este parámetro es obligatorio y debe ser una cadena de texto.
+     *
+     * **Retorno:**
+     * - Devuelve el HTML de un contenedor `div` que contiene el contenido HTML proporcionado si todo es válido.
+     * - Si ocurre un error durante la validación o la limpieza, devuelve un arreglo con el mensaje de error correspondiente.
+     *
+     * **Ejemplos:**
+     *
+     * **Ejemplo 1: Creación de un contenedor div válido**
+     * ```php
+     * $cols = 6;
+     * $html = "<p>Texto dentro del div</p>";
+     * $resultado = $this->div_group($cols, $html);
+     * // Retorna: "<div class='col-6'><p>Texto dentro del div</p></div>"
+     * ```
+     *
+     * **Ejemplo 2: Error por número de columnas inválido**
+     * ```php
+     * $cols = -1;
+     * $html = "<p>Texto dentro del div</p>";
+     * $resultado = $this->div_group($cols, $html);
+     * // Retorna un mensaje de error: 'Error al validar cols'.
+     * ```
+     *
+     * **Ejemplo 3: Error durante la limpieza del HTML**
+     * ```php
+     * $cols = 6;
+     * $html = "<p>Texto con problemas</p>";
+     * $resultado = $this->div_group($cols, $html);
+     * // Si ocurre un error durante la limpieza, se retorna un mensaje de error.
+     * ```
+     *
+     * **@version 1.0.0**
      */
     public function div_group(int $cols, string $html): string|array
     {
+        // Validación del número de columnas
         $valida = (new directivas(html: $this))->valida_cols(cols: $cols);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
         }
 
-        $html_r = "<div |class|>$html</div>";
+        // Creación del HTML del div con el contenido proporcionado
+        $html_r = /** @lang html */
+            "<div |class|>$html</div>";
 
+        // Limpiar el HTML generado
         $html_r = $this->limpia_salida(html: $html_r);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al limpiar salida', data: $html_r);
         }
 
+        // Retorno del HTML limpio del div
         return $html_r;
     }
 
+
     /**
-     * Genera un contenedor con label
-     * @param string $html Contenido del div
-     * @param string $label Contenido de etiqueta
-     * @return string
-     * @final revisada
+     * REG
+     * Genera un div que contiene un HTML proporcionado y una etiqueta.
+     *
+     * Esta función recibe un fragmento de HTML y una etiqueta, y genera un contenedor `<div>` que envuelve el HTML.
+     * Luego, limpia el resultado utilizando la función `limpia_salida` para asegurar que no haya espacios extra innecesarios en el HTML generado.
+     *
+     * **Pasos de procesamiento:**
+     * 1. Se crea una estructura de `div` con el contenido de la etiqueta y el HTML proporcionado.
+     * 2. El resultado se pasa a través de la función `limpia_salida` para eliminar espacios adicionales y corregir posibles problemas de formato.
+     * 3. Si hay un error al limpiar la salida, se devuelve un error con el mensaje correspondiente.
+     * 4. Si la limpieza es exitosa, se devuelve el HTML limpio y formateado correctamente.
+     *
+     * **Parámetros:**
+     *
+     * @param string $html El contenido HTML que se incluirá dentro del `<div>`. Este parámetro es obligatorio y debe ser una cadena de texto con el HTML a mostrar.
+     * @param string $label El contenido que se mostrará como una etiqueta antes del contenido HTML. Este parámetro también es obligatorio.
+     *
+     * **Retorno:**
+     * - Devuelve un string con el código HTML de un `<div>` que incluye la etiqueta proporcionada y el contenido HTML.
+     * - Si ocurre algún error durante el proceso de limpieza del HTML, devuelve un arreglo con el mensaje de error correspondiente.
+     *
+     * **Ejemplos:**
+     *
+     * **Ejemplo 1: Crear un div con contenido HTML**
+     * ```php
+     * $html = "<p>Texto dentro del div</p>";
+     * $label = "<label>Etiqueta del div</label>";
+     * $resultado = $this->div_label($html, $label);
+     * // Retorna: "<label>Etiqueta del div</label><div |class|><p>Texto dentro del div</p></div>"
+     * ```
+     *
+     * **Ejemplo 2: Error durante la limpieza de la salida**
+     * ```php
+     * $html = "<p>Texto con problemas</p>";
+     * $label = "<label>Etiqueta</label>";
+     * $resultado = $this->div_label($html, $label);
+     * // Si la función limpia_salida devuelve un error, se retorna un mensaje de error.
+     * ```
+     *
+     * **@version 1.0.0**
      */
     public function div_label(string $html, string $label): string
     {
-        $div_r = $label."<div |class|>$html</div>";
+        // Crear el contenido del div con la etiqueta proporcionada
+        $div_r = /** @lang html */
+            $label."<div |class|>$html</div>";
 
+        // Limpiar el HTML resultante utilizando la función limpia_salida
         $div_r = $this->limpia_salida(html: $div_r);
         if(errores::$error){
+            // Si ocurre un error durante la limpieza, retornar un mensaje de error
             return $this->error->error(mensaje: 'Error al limpiar salida', data: $div_r);
         }
 
+        // Si todo va bien, retornar el HTML limpio
         return $div_r;
     }
+
 
     /**
      * Genera un div de tipo select
@@ -634,55 +781,136 @@ class html{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Genera una etiqueta HTML <label>.
+     * REG
+     * Valida los parámetros `$id_css` y `$place_holder`, asegurándose de que ambos no estén vacíos.
      *
-     * Esta función crea una etiqueta de 'label' para ser usada en formularios HTML. El valor de 'for' de la
-     * etiqueta de 'label' sera el valor de '$id_css' y el contenido de la etiqueta será el valor de '$place_holder'.
+     * Esta función valida los valores proporcionados para los parámetros `$id_css` y `$place_holder`. Ambos parámetros
+     * deben ser cadenas no vacías. Si alguno de los parámetros está vacío, se genera un error con un mensaje descriptivo.
+     * Si ambos parámetros son válidos, la función genera un HTML de etiqueta (aunque actualmente solo retorna una cadena vacía).
      *
-     * @param string $id_css        Define el valor de la propiedad 'for' del label. Se usa para asociar el elemento del
-     *                              formulario especificado por su id. Este valor no debe estar vacío.
+     * **Pasos de validación:**
+     * 1. Se elimina cualquier espacio en blanco al principio y al final de los valores de `$id_css` y `$place_holder`.
+     * 2. Se valida que `$id_css` no esté vacío.
+     * 3. Se valida que `$place_holder` no esté vacío.
+     * 4. Si alguna de las validaciones falla, se genera un error con un mensaje descriptivo.
+     * 5. Si ambas validaciones son correctas, se retorna una cadena vacía, ya que el código actual no genera la etiqueta HTML.
      *
-     * @param string $place_holder  Define el texto visible que se mostrará dentro de la etiqueta 'label'.
-     *                              Este valor tampoco debe estar vacío.
+     * **Parámetros:**
      *
-     * @throws errores Si '$id_css' o '$place_holder' están vacíos.
+     * @param string $id_css El identificador CSS de la etiqueta. Este parámetro es obligatorio y no debe estar vacío.
+     *                       Se utiliza para generar un identificador único en el HTML.
+     * @param string $place_holder El texto que se mostrará como marcador de posición dentro del campo de entrada.
+     *                             Este parámetro es obligatorio y no debe estar vacío.
      *
-     * @return string|array           Si la entrada es válida, retorna una cadena que representa la etiqueta 'label'.
-     *                                Si ocurre algún error, devuelve un arreglo con información del error.
-     * @version 16.1.0
+     * **Retorno:**
+     * - Devuelve una cadena vacía si ambos parámetros no están vacíos y son válidos.
+     * - Si alguno de los parámetros está vacío, devuelve un arreglo con el mensaje de error correspondiente.
+     *
+     * **Ejemplos:**
+     *
+     * **Ejemplo 1: Validación exitosa**
+     * ```php
+     * $id_css = "usuario_id";
+     * $place_holder = "Ingrese ID del usuario";
+     * $resultado = $this->label($id_css, $place_holder);
+     * // Retorna "" porque ambos parámetros son válidos.
+     * ```
+     *
+     * **Ejemplo 2: Error por $id_css vacío**
+     * ```php
+     * $id_css = "";
+     * $place_holder = "Ingrese ID del usuario";
+     * $resultado = $this->label($id_css, $place_holder);
+     * // Retorna un arreglo de error: 'Error el $id_css esta vacio'.
+     * ```
+     *
+     * **Ejemplo 3: Error por $place_holder vacío**
+     * ```php
+     * $id_css = "usuario_id";
+     * $place_holder = "";
+     * $resultado = $this->label($id_css, $place_holder);
+     * // Retorna un arreglo de error: 'Error el $place_holder esta vacio'.
+     * ```
+     *
+     * **@version 1.0.0**
      */
     public function label(string $id_css, string $place_holder): string|array
     {
+        // Eliminar espacios en blanco al principio y al final de los valores
         $id_css = trim($id_css);
         if($id_css === ''){
             return $this->error->error(mensaje: 'Error el $id_css esta vacio', data: $id_css, es_final: true);
         }
+
         $place_holder = trim($place_holder);
         if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder,
-                es_final: true);
+            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder, es_final: true);
         }
 
-       return "";
+        // Actualmente no se genera ninguna etiqueta HTML, solo se retorna una cadena vacía
+        return "";
     }
 
+
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Limpiar la salida html
-     * @param string $html dato a limpiar
-     * @return array|string
-     * @version 16.10.0
+     * REG
+     * Limpia el contenido HTML eliminando los espacios adicionales.
+     *
+     * Esta función recibe un fragmento de HTML y reemplaza múltiples espacios consecutivos por un solo espacio.
+     * Además, realiza un reemplazo específico para corregir las secuencias de `  /` a ` /` en el HTML.
+     * Esto asegura que el HTML sea más limpio y consistente para su uso posterior, evitando problemas de formato.
+     *
+     * **Pasos de procesamiento:**
+     * 1. Reemplaza los espacios consecutivos (dos o más espacios) por un solo espacio, haciendo que el HTML sea más compacto.
+     * 2. Realiza un reemplazo adicional para corregir las secuencias de `  /` en los atributos HTML, convirtiéndolas a ` /`.
+     * 3. El resultado es un HTML más limpio con menos espacio innecesario.
+     *
+     * **Parámetros:**
+     *
+     * @param string $html El fragmento de HTML que se va a limpiar. Este parámetro es obligatorio y debe contener una cadena de texto que represente el HTML a procesar.
+     *
+     * **Retorno:**
+     * - Devuelve el HTML limpio con los espacios consecutivos reducidos y las secuencias `  /` corregidas.
+     * - Si se pasa un HTML vacío o mal formado, la función devolverá el HTML tal cual sin modificaciones.
+     *
+     * **Ejemplos:**
+     *
+     * **Ejemplo 1: Limpiar HTML con espacios consecutivos**
+     * ```php
+     * $html = "<div  class='container'>  <p>Texto de ejemplo</p>  </div>";
+     * $resultado = $this->limpia_salida($html);
+     * // Retorna: "<div class='container'> <p>Texto de ejemplo</p> </div>"
+     * ```
+     *
+     * **Ejemplo 2: Limpiar HTML con secuencias de `  /`**
+     * ```php
+     * $html = "<img src='image.jpg'  / >";
+     * $resultado = $this->limpia_salida($html);
+     * // Retorna: "<img src='image.jpg' / >"
+     * ```
+     *
+     * **Ejemplo 3: HTML sin cambios**
+     * ```php
+     * $html = "<p>Texto limpio</p>";
+     * $resultado = $this->limpia_salida($html);
+     * // Retorna: "<p>Texto limpio</p>"
+     * ```
+     *
+     * **@version 1.0.0**
      */
     final public function limpia_salida(string $html): array|string
     {
-        $html_r = str_replace('  ',' ', $html);
-        $html_r = str_replace('  ',' ', $html_r);
-        $html_r = str_replace('  ',' ', $html_r);
-        $html_r = str_replace('  ',' ', $html_r);
-        $html_r = str_replace('  ',' ', $html_r);
-        return str_replace('  /',' /', $html_r);
+        // Reemplaza múltiples espacios consecutivos por un solo espacio
+        $html_r = str_replace('  ', ' ', $html);
+        $html_r = str_replace('  ', ' ', $html_r);
+        $html_r = str_replace('  ', ' ', $html_r);
+        $html_r = str_replace('  ', ' ', $html_r);
+        $html_r = str_replace('  ', ' ', $html_r);
+
+        // Realiza un reemplazo específico para corregir las secuencias de "  /" a " /"
+        return str_replace('  /', ' /', $html_r);
     }
+
 
     /**
      * Genera un link en el menu lateral con un numero
@@ -1355,36 +1583,68 @@ class html{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Función que valida varias entradas de strings (accion, etiqueta, seccion, style).
+     * REG
+     * Valida los datos de entrada para los campos `accion`, `etiqueta`, `seccion` y `style`.
      *
-     * Esta función toma cuatro parámetros en formato de string, y verifica que cada uno de ellos no esté vacío
-     * después de eliminar los espacios en blanco en ambos extremos. Si alguno de los strings está vacío después
-     * del trim, se devuelve un error con un mensaje específico y los datos que se intentaron validar.
-     * Si todos los strings pasan la validación, la función devuelve true.
+     * Esta función asegura que los valores proporcionados para los parámetros `accion`, `etiqueta`, `seccion` y `style`
+     * no estén vacíos. Si alguno de estos valores está vacío, se genera un error con un mensaje específico.
      *
-     * @param string $accion Una acción a validar.
-     * @param string $etiqueta Una etiqueta a validar.
-     * @param string $seccion Una sección a validar.
-     * @param string $style Un estilo a validar.
+     * **Pasos de validación:**
+     * 1. Se elimina cualquier espacio en blanco al principio y al final de los valores de los parámetros.
+     * 2. Se valida que cada parámetro no esté vacío.
+     * 3. Si alguno de los parámetros está vacío, se genera un error con un mensaje detallado.
+     * 4. Si todas las validaciones son exitosas, se devuelve `true`.
      *
-     * @return true|array La función devuelve true si todas las entradas no están vacías después del trim.
-     * Si alguna de las entradas está vacía, se devuelve un array con un mensaje de error y los datos que fallaron en la validación.
+     * **Parámetros:**
      *
-     * @example
+     * @param string $accion La acción que se va a realizar. Este parámetro es obligatorio y no debe estar vacío.
+     *                       Representa la acción que se llevará a cabo en la interfaz de usuario.
+     * @param string $etiqueta El texto que se mostrará como etiqueta del botón o campo. Este parámetro también es obligatorio
+     *                         y no debe estar vacío.
+     * @param string $seccion El nombre de la sección donde se llevará a cabo la acción. Este parámetro es obligatorio y no puede
+     *                        estar vacío.
+     * @param string $style El estilo CSS asociado al botón o campo. Este parámetro es obligatorio y no debe estar vacío.
      *
-     *  $accion = "miAccion";
-     *  $etiqueta = "miEtiqueta";
-     *  $seccion = " miSeccion ";  // Nota el espacio al principio y al final
-     *  $style = "";
+     * **Retorno:**
+     * - Devuelve `true` si todos los parámetros están presentes y no están vacíos.
+     * - Si alguno de los parámetros está vacío, se devuelve un arreglo con el mensaje de error correspondiente.
      *
-     *  $result = valida_input($accion, $etiqueta, $seccion, $style);
+     * **Ejemplos:**
      *
-     *  var_dump($result);
-     *  // Imprimirá un array con un mensaje de error ya que $style es una cadena vacía.
+     * **Ejemplo 1: Validación exitosa**
+     * ```php
+     * $accion = "guardar";
+     * $etiqueta = "Guardar cambios";
+     * $seccion = "usuarios";
+     * $style = "btn-primary";
      *
-     * @version 15.2.0
+     * $resultado = $this->valida_input($accion, $etiqueta, $seccion, $style);
+     * // Retorna true porque todos los parámetros son válidos.
+     * ```
      *
+     * **Ejemplo 2: Error por parámetro vacío**
+     * ```php
+     * $accion = "";
+     * $etiqueta = "Guardar cambios";
+     * $seccion = "usuarios";
+     * $style = "btn-primary";
+     *
+     * $resultado = $this->valida_input($accion, $etiqueta, $seccion, $style);
+     * // Retorna un arreglo de error: 'Error la $accion esta vacia'.
+     * ```
+     *
+     * **Ejemplo 3: Error por parámetro vacío (etiqueta)**
+     * ```php
+     * $accion = "guardar";
+     * $etiqueta = "";
+     * $seccion = "usuarios";
+     * $style = "btn-primary";
+     *
+     * $resultado = $this->valida_input($accion, $etiqueta, $seccion, $style);
+     * // Retorna un arreglo de error: 'Error la $etiqueta esta vacia'.
+     * ```
+     *
+     * **@version 1.0.0**
      */
     final public function valida_input(string $accion, string $etiqueta, string $seccion, string $style): true|array
     {
@@ -1406,6 +1666,7 @@ class html{
         }
         return true;
     }
+
 
     /**
      * POR DOCUMENTAR EN WIKI

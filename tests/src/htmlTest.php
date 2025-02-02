@@ -35,7 +35,7 @@ class htmlTest extends test {
         $resultado = $html->alert_success($mensaje);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div class='alert alert-success' role='alert' ><strong>Muy bien!</strong> a.</div>", $resultado);
+        $this->assertEquals("<div class='alert alert-success' role='alert'><strong>Muy bien!</strong> a.</div>", $resultado);
         errores::$error = false;
     }
 
@@ -50,7 +50,7 @@ class htmlTest extends test {
         $resultado = $html->alert_warning($mensaje);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div class='alert alert-warning' role='alert' ><strong>Advertencia!</strong> a.</div>", $resultado);
+        $this->assertEquals("<div class='alert alert-warning' role='alert'><strong>Advertencia!</strong> a.</div>", $resultado);
         errores::$error = false;
     }
 
@@ -586,7 +586,7 @@ class htmlTest extends test {
         $resultado = $html->number_menu_lateral($number);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<img src='http://localhost/cat_sat/assets/img/numeros/a.svg' class='numero'>", $resultado);
+        $this->assertEquals("<img src='https://localhost/facturacion/vendor/gamboa.martin/template_1/assets/img/numeros/a.svg' class='numero'>", $resultado);
         errores::$error = false;
     }
 

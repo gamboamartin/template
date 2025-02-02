@@ -908,7 +908,33 @@ class directivasTest extends test {
         $resultado = $html->mensaje_exito($mensaje_exito);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<div class='alert alert-success' role='alert' ><strong>Muy bien!</strong> a.</div>", $resultado);
+        $this->assertEquals("<div class='alert alert-success' role='alert'><strong>Muy bien!</strong> a.</div>", $resultado);
+        errores::$error = false;
+    }
+
+    public function test_mensaje_warning(): void
+    {
+        errores::$error = false;
+        $html_ = new html();
+        $html = new directivas($html_);
+        //$html = new liberator($html);
+        $_GET['session_id'] = 1;
+
+        $mensaje_exito = '';
+
+        $resultado = $html->mensaje_warning($mensaje_exito);
+
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("", $resultado);
+        errores::$error = false;
+
+        $mensaje_exito = 'a';
+
+        $resultado = $html->mensaje_warning($mensaje_exito);
+        $this->assertIsString($resultado);
+        $this->assertNotTrue(errores::$error);
+        $this->assertEquals("<div class='alert alert-warning' role='alert'><strong>Advertencia!</strong> a.</div>", $resultado);
         errores::$error = false;
     }
 
@@ -1090,7 +1116,7 @@ class directivasTest extends test {
         $resultado = $html->valida_cols($cols);
         $this->assertIsArray($resultado);
         $this->assertTrue(errores::$error);
-        $this->assertStringContainsStringIgnoringCase('Error cols debe ser menor o igual a  12', $resultado['mensaje']);
+        $this->assertStringContainsStringIgnoringCase('Error cols debe ser menor o igual a 12', $resultado['mensaje']);
 
         errores::$error = false;
 

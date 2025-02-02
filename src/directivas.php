@@ -119,70 +119,133 @@ class directivas{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Genera un botón de formulario HTML.
+     * REG
+     * Genera un botón HTML de acción con los parámetros proporcionados.
      *
-     * @param string $label La etiqueta visible para el botón.
-     * @param string $value El valor que se envía cuando se hace clic en el botón.
-     * @param string $style Estilo css del botón, predeterminado a 'info'.
-     * @param string $type El tipo de botón, por defecto 'submit'.
-     * @return string|array Devuelve una cadena que representa el marcado html para el botón.
-     *                      Si ocurre un error durante la validación, devuelve un array que contiene
-     *                      información sobre el error.
+     * Este método genera un botón en HTML, con diversos atributos configurables como el estilo, tipo,
+     * valor y etiqueta. Utiliza el método `valida_btn_next` para validar los datos de entrada antes de
+     * generar el código HTML. Si alguna validación falla, se devuelve un mensaje de error con detalles.
      *
-     * @throws errores Si la validación de los datos falla.
-     * @version 16.4.0
+     * @param string $label La etiqueta del botón. Este texto es lo que aparecerá dentro del botón en la interfaz de usuario.
+     *                      No puede estar vacío.
+     * @param string $value El valor del botón, que se asigna al atributo `value` del botón HTML. Este valor será enviado
+     *                      al servidor cuando el botón sea presionado.
+     * @param string $style El estilo del botón. Especifica la clase CSS de Bootstrap que se aplicará al botón.
+     *                      El valor por defecto es `'info'`. Otros posibles valores son `'primary'`, `'danger'`, etc.
+     * @param string $type El tipo de botón. Puede ser `'submit'`, `'button'`, entre otros. El valor por defecto es `'submit'`.
+     *
+     * @return string|array Devuelve el HTML del botón generado si las validaciones son exitosas. Si ocurre un error
+     *                      durante la validación, devuelve un array con el mensaje de error y los detalles de la causa del error.
+     *
+     * @throws errores Si la validación de los datos falla, se lanzará un error.
+     *
+     * @example
+     * // Caso exitoso: Generación de un botón de tipo submit con estilo 'primary' y valor 'submit'.
+     * $label = "Enviar";
+     * $value = "submit";
+     * $style = "primary";
+     * $type = "submit";
+     * $boton_html = $directiva->btn_action_next($label, $value, $style, $type);
+     * echo $boton_html;  // Resultado esperado: <button type='submit' class='btn btn-primary btn-guarda col-md-12' name='btn_action_next' value='submit'>Enviar</button>
+     *
+     * @example
+     * // Caso de error: Si ocurre un error al validar los datos.
+     * $label = "";
+     * $value = "submit";
+     * $boton_html = $directiva->btn_action_next($label, $value);
+     * if (is_array($boton_html)) {
+     *     echo $boton_html['mensaje'];  // Resultado: "Error al validar datos"
+     * }
+     *
+     * @version 1.0.0
      */
-    private function btn_action_next(string $label,string $value, string $style = 'info',
-                                     string $type='submit'): string|array
+    private function btn_action_next(
+        string $label, string $value, string $style = 'info', string $type = 'submit'): string|array
     {
-        $valida = $this->valida_btn_next(label: $label,style:  $style,type:  $type,value:  $value);
-        if(errores::$error){
+        // Validación de los datos antes de generar el HTML
+        $valida = $this->valida_btn_next(label: $label, style: $style, type: $type, value: $value);
+        if (errores::$error) {
+            // Si hay un error en la validación, se devuelve el error
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
 
-
+        // Generación del HTML del botón
         $btn = "<button type='$type' class='btn btn-$style btn-guarda col-md-12' ";
         $btn .= "name='btn_action_next' value='$value'>$label</button>";
+
+        // Retorna el HTML del botón generado
         return $btn;
     }
 
+
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Genera un botón contenido dentro de un div con las especificaciones propias asignadas.
+     * REG
+     * Genera un botón dentro de un contenedor `div` con un número de columnas especificado.
      *
-     * @param string $label Etiqueta del botón.
-     * @param string $value Valor del botón. Se usa como atributo value en el código HTML.
-     * @param int $cols Número de columnas que ocupará el botón en un diseño con Bootstrap. Valor por defecto es 6.
-     * @param string $style Estilo de color del botón. Configura la clase de botón en Bootstrap. Valor por defecto es 'info'.
-     * @param string $type Tipo del botón. Configura el atributo 'type' en el botón HTML. Valor por defecto es 'submit'.
+     * Este método crea un botón HTML utilizando la función `btn_action_next` y lo envuelve dentro de un contenedor `div`
+     * con la clase Bootstrap correspondiente al número de columnas (`$cols`) especificado. Primero valida los parámetros
+     * proporcionados, incluyendo el estilo, tipo, valor y número de columnas. Si alguna validación falla, devuelve un mensaje de error.
+     * Si todo es válido, genera el botón y lo envuelve en un `div` con la clase `col-md-` correspondiente al número de columnas.
      *
-     * @return array|string Devuelve un error si las validaciones en los datos de entrada o en las operaciones internas fallan.
-     *                      En caso contrario, devuelve una cadena con el código HTML del botón dentro de un elemento div.
+     * @param string $label El texto que se mostrará en el botón. Este es el texto que aparece en el botón HTML.
+     * @param string $value El valor que se asignará al botón como atributo `value` en HTML.
+     * @param int $cols El número de columnas que el `div` ocupará en el sistema de grillas de Bootstrap. Por defecto, es 6.
+     * @param string $style El estilo del botón, que se corresponde con las clases de Bootstrap (por ejemplo, 'info', 'primary').
+     *                      Por defecto, es 'info'.
+     * @param string $type El tipo del botón (por ejemplo, 'submit', 'button'). Por defecto, es 'submit'.
      *
-     * @final
-     * @version 16.5.0
+     * @return array|string Devuelve el código HTML del `div` con el botón dentro si la validación es exitosa. Si ocurre un error,
+     *                      devuelve un array con el mensaje de error correspondiente.
+     *
+     * @throws errores Si alguna de las validaciones de los parámetros falla, se lanza un error.
+     *
+     * @example
+     * // Caso exitoso: Se genera un botón con estilo 'primary', tipo 'submit', y un número de columnas 4.
+     * $label = "Enviar";
+     * $value = "submit";
+     * $cols = 4;
+     * $style = 'primary';
+     * $type = 'submit';
+     * $resultado = $directiva->btn_action_next_div($label, $value, $cols, $style, $type);
+     * echo $resultado;  // Resultado esperado: <div class='col-md-4'><button type='submit' class='btn btn-primary btn-guarda col-md-12' name='btn_action_next' value='submit'>Enviar</button></div>
+     *
+     * @example
+     * // Caso de error: Se pasa un número de columnas inválido (por ejemplo, 13).
+     * $label = "Enviar";
+     * $value = "submit";
+     * $cols = 13;  // Este valor es inválido ya que debe estar entre 1 y 12.
+     * $resultado = $directiva->btn_action_next_div($label, $value, $cols);
+     * if (is_array($resultado)) {
+     *     echo $resultado['mensaje'];  // Resultado: "Error al validar columnas"
+     * }
+     *
+     * @version 1.0.0
      */
-    final public function btn_action_next_div(string $label,string $value, int $cols = 6, string $style = 'info',
-                                        string $type='submit'): array|string
+    final public function btn_action_next_div(string $label, string $value, int $cols = 6, string $style = 'info',
+                                              string $type = 'submit'): array|string
     {
-        $valida = $this->valida_btn_next(label: $label,style:  $style,type:  $type,value:  $value);
-        if(errores::$error){
+        // Validación de los parámetros del botón
+        $valida = $this->valida_btn_next(label: $label, style:  $style, type:  $type, value:  $value);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al validar datos', data: $valida);
         }
 
+        // Validación del número de columnas
         $valida = $this->valida_cols(cols: $cols);
-        if(errores::$error){
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al validar columnas', data: $valida);
         }
 
-        $btn = $this->btn_action_next(label: $label,value:  $value, style: $style, type: $type);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al generar btn datos ', data: $btn);
+        // Generación del botón
+        $btn = $this->btn_action_next(label: $label, value:  $value, style: $style, type: $type);
+        if (errores::$error) {
+            return $this->error->error(mensaje: 'Error al generar btn datos', data: $btn);
         }
 
+        // Retorna el HTML con el botón envuelto en un div con el número de columnas especificado
         return "<div class='col-md-$cols'>$btn</div>";
     }
+
 
     /**
      * Genera un boton tipo link
@@ -1482,22 +1545,63 @@ class directivas{
 
 
     /**
-     * Genera un mensaje de tipo warning
-     * @param string $mensaje_warning mensaje a mostrar
-     * @return array|string
-
+     * REG
+     * Genera un mensaje de advertencia en formato HTML utilizando una alerta de Bootstrap.
+     *
+     * Este método recibe un mensaje de advertencia y genera una alerta de advertencia en formato HTML
+     * utilizando el método `alert_warning` de la clase `html`. Si el mensaje no está vacío, se genera
+     * la alerta. Si ocurre algún error al generar la alerta, se devuelve un mensaje de error con detalles.
+     * Si no hay error, se devuelve el código HTML de la alerta generada.
+     *
+     * @param string $mensaje_warning El mensaje de advertencia que se mostrará en la alerta.
+     *                                Este parámetro debe ser una cadena de texto que describa el
+     *                                problema o la advertencia que se está notificando.
+     *
+     * @return array|string Devuelve el HTML de la alerta de advertencia generada si el mensaje no está vacío.
+     *                      Si ocurre un error durante la generación de la alerta, devuelve un array con
+     *                      un mensaje de error y los detalles de la causa del error.
+     *
+     * @throws errores Si ocurre un error durante la generación del mensaje de advertencia.
+     *
+     * @example
+     * // Ejemplo de uso exitoso:
+     * $mensaje_warning = "Advertencia: El formulario no se ha enviado correctamente.";
+     * $alerta = $directiva->mensaje_warning($mensaje_warning);
+     * echo $alerta;
+     * // Salida esperada: <div class="alert alert-warning" role="alert">
+     * //                   <strong>Advertencia!</strong> El formulario no se ha enviado correctamente.
+     * //                   </div>
+     *
+     * @example
+     * // Ejemplo de error: Si ocurre un error al generar la alerta:
+     * $mensaje_warning = "";
+     * $alerta = $directiva->mensaje_warning($mensaje_warning);
+     * if (is_array($alerta)) {
+     *     echo $alerta['mensaje'];  // Resultado: "Error al generar alerta"
+     * }
+     *
+     * @version 1.0.0
      */
     final public function mensaje_warning( string $mensaje_warning): array|string
     {
         $alert_warning = '';
-        if($mensaje_warning!==''){
+
+        // Comprobar si el mensaje de advertencia no está vacío
+        if ($mensaje_warning !== '') {
+            // Generar la alerta de advertencia utilizando el método alert_warning de la clase html
             $alert_warning = $this->html->alert_warning(mensaje: $mensaje_warning);
-            if(errores::$error){
+
+            // Verificar si hubo un error al generar la alerta
+            if (errores::$error) {
+                // Si hubo un error, devolver el mensaje de error
                 return $this->error->error(mensaje: 'Error al generar alerta', data: $alert_warning);
             }
         }
+
+        // Si todo está bien, devolver el HTML de la alerta de advertencia
         return $alert_warning;
     }
+
 
     /**
      * Genera un numero para menu lateral
@@ -1835,27 +1939,61 @@ class directivas{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI ERROR FINAL REV
-     * Valida el número de columnas proporcionado.
+     * REG
+     * Valida el número de columnas proporcionado asegurando que esté dentro de un rango válido.
      *
-     * Esta función valida que el número de columnas ($cols) este entre 1 y 12. Si el valor es menor
-     * o igual a cero, o mayor o igual a trece, la función retorna un error.
+     * Este método valida que el número de columnas (`$cols`) sea un valor entero dentro del rango permitido
+     * de 1 a 12. Si el valor proporcionado es menor o igual a 0 o mayor o igual a 13, el método devuelve un error
+     * indicando que el valor de las columnas no es válido. Si el valor es válido, devuelve `true`.
      *
-     * @param int $cols El número de columnas a validar.
-     * @return bool|array Devuelve true si el número de columnas esta dentro del rango aceptable,
-     * o un array con información de error en caso contrario.
-     * @version 16.2.0
+     * @param int $cols El número de columnas a validar. Debe ser un valor entero entre 1 y 12 (inclusive).
+     *
+     * @return true|array Devuelve `true` si el número de columnas está dentro del rango aceptado (de 1 a 12).
+     *                    Si el valor no es válido (menor o igual a 0 o mayor o igual a 13), se devuelve un array
+     *                    con el mensaje de error y los detalles de la causa del error.
+     *
+     * @throws errores Si el número de columnas no está dentro del rango válido, se lanzará un error.
+     *
+     * @example
+     * // Caso exitoso: El número de columnas es válido (por ejemplo, 6)
+     * $cols = 6;
+     * $resultado = $directiva->valida_cols($cols);
+     * var_dump($resultado); // Resultado: true
+     *
+     * @example
+     * // Caso de error: El número de columnas es inválido (por ejemplo, 0)
+     * $cols = 0;
+     * $resultado = $directiva->valida_cols($cols);
+     * if (is_array($resultado)) {
+     *     echo $resultado['mensaje'];  // Resultado: "Error cols debe ser mayor a 0"
+     * }
+     *
+     * @example
+     * // Caso de error: El número de columnas es demasiado grande (por ejemplo, 15)
+     * $cols = 15;
+     * $resultado = $directiva->valida_cols($cols);
+     * if (is_array($resultado)) {
+     *     echo $resultado['mensaje'];  // Resultado: "Error cols debe ser menor o igual a 12"
+     * }
+     *
+     * @version 1.0.0
      */
     final public function valida_cols(int $cols): true|array
     {
-        if($cols<=0){
-            return $this->error->error(mensaje: 'Error cols debe ser mayor a 0', data: $cols,es_final: true);
+        // Si el número de columnas es menor o igual a 0, se genera un error
+        if ($cols <= 0) {
+            return $this->error->error(mensaje: 'Error cols debe ser mayor a 0', data: $cols, es_final: true);
         }
-        if($cols>=13){
-            return $this->error->error(mensaje: 'Error cols debe ser menor o igual a  12', data: $cols,es_final: true);
+
+        // Si el número de columnas es mayor o igual a 13, se genera un error
+        if ($cols >= 13) {
+            return $this->error->error(mensaje: 'Error cols debe ser menor o igual a 12', data: $cols, es_final: true);
         }
+
+        // Si todo es válido, se devuelve true
         return true;
     }
+
 
     /**
      * Método para validar si el nombre y el lugar de reserva proporcionados no están vacíos.

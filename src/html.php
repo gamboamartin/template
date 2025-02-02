@@ -90,20 +90,79 @@ class html{
 
 
     /**
-     * Genera un alert de tipo warning
-     * @param string $mensaje Mensaje a mostrar en el warning
-     * @return string|array
-     * @version 0.89.4
-     * @por_doc true
+     * REG
+     * Genera una alerta de advertencia en formato HTML.
+     *
+     * Esta función recibe un mensaje de advertencia y genera un bloque de código HTML
+     * que representa una alerta de tipo 'alert-warning' utilizando Bootstrap. El mensaje
+     * se presenta dentro de una alerta con el texto "Advertencia!" seguido del mensaje
+     * proporcionado. Si el mensaje está vacío, la función devuelve un error.
+     *
+     * @param string $mensaje El mensaje de advertencia que se mostrará en la alerta.
+     *                        Este parámetro debe ser una cadena no vacía.
+     *                        Si el mensaje está vacío o contiene solo espacios, se generará un error.
+     *
+     * @return string|array Retorna una cadena con el HTML de la alerta si el mensaje es válido.
+     *                      Si el mensaje está vacío, devuelve un arreglo con información sobre el error.
+     *                      El arreglo contiene el mensaje de error y los datos relacionados con el error.
+     *
+     * @throws errores Si el mensaje está vacío, se lanza un error con el mensaje 'Error mensaje esta vacio'.
+     *                 Además, se retornará un objeto `errores` con la información del error generado.
+     *
+     * Ejemplo de uso:
+     *
+     * ```php
+     * $html = new Html();  // Crear una instancia de la clase Html
+     * echo $html->alert_warning('Se ha producido un error en el proceso');
+     * ```
+     *
+     * En el ejemplo anterior, si el mensaje proporcionado es `'Se ha producido un error en el proceso'`,
+     * se generará el siguiente HTML:
+     *
+     * ```html
+     * <div class='alert alert-warning' role='alert'>
+     *     <strong>Advertencia!</strong> Se ha producido un error en el proceso.
+     * </div>
+     * ```
+     *
+     * Si el mensaje está vacío o solo contiene espacios, la función devolverá un error.
+     * Por ejemplo, con el siguiente código:
+     *
+     * ```php
+     * echo $html->alert_warning('   ');  // Mensaje vacío o solo espacios
+     * ```
+     *
+     * El resultado sería un error como el siguiente:
+     * ```php
+     * array(
+     *     'mensaje' => 'Error mensaje esta vacio',
+     *     'data' => '   ',
+     *     'es_final' => true
+     * )
+     * ```
+     *
+     * En este caso, el mensaje está vacío y no se genera el HTML de la alerta.
+     *
+     * @version 1.0.0
      */
     final public function alert_warning(string $mensaje): string|array
     {
+        // Se eliminan los espacios en blanco al principio y al final del mensaje
         $mensaje = trim($mensaje);
-        if($mensaje === ''){
-            return $this->error->error(mensaje: 'Error mensaje esta vacio', data: $mensaje);
+
+        // Si el mensaje es vacío, se genera un error
+        if ($mensaje === '') {
+            return $this->error->error(
+                mensaje: 'Error mensaje esta vacio',  // Mensaje de error
+                data: $mensaje,                      // Datos relacionados con el error
+                es_final: true                        // Indicador de que es un error final
+            );
         }
-        return "<div class='alert alert-warning' role='alert' ><strong>Advertencia!</strong> $mensaje.</div>";
+
+        // Si el mensaje no está vacío, se genera la alerta HTML
+        return "<div class='alert alert-warning' role='alert'><strong>Advertencia!</strong> $mensaje.</div>";
     }
+
 
     /**
      * POR DOCUMENTAR EN WIKI FINAL REV

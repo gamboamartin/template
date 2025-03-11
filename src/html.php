@@ -359,60 +359,189 @@ class html{
     }
 
     /**
-     * Genera un div con un label dentro del div
-     * @param int $cols Numero de columnas css
-     * @param string $contenido Contenido a integrar dentro del div
-     * @return string|array
-     * @version 0.50.1
+     * REG
+     * Genera un contenedor `<div>` con una clase `control-group col-sm-{cols}` que encapsula el contenido proporcionado.
+     *
+     * Esta función valida que el número de columnas sea válido y luego construye un `div` con la clase `control-group` y
+     * `col-sm-{cols}`, integrando el contenido especificado dentro del contenedor.
+     *
+     * ### Validaciones realizadas:
+     * - Se valida que `$cols` sea un número válido de columnas (usando `valida_cols`).
+     * - Se elimina cualquier espacio en blanco del contenido.
+     *
+     * ### Parámetros:
+     * @param int $cols Número de columnas a utilizar en el `div`. Debe ser un número entero positivo (por ejemplo, 1 a 12 en Bootstrap).
+     * @param string $contenido El contenido HTML que se insertará dentro del `div`. Puede ser texto, imágenes u otros elementos HTML.
+     *
+     * ### Retorno:
+     * - Devuelve una cadena con la estructura del `div` si los parámetros son válidos.
+     * - Si hay un error en la validación, devuelve un array con el mensaje de error correspondiente.
+     *
+     * ---
+     * ### Ejemplo de uso:
+     * #### Ejemplo 1: Generación exitosa de un `div`
+     * ```php
+     * $cols = 6;
+     * $contenido = "<p>Contenido del div</p>";
+     * $resultado = $this->div_control_group_cols($cols, $contenido);
+     * // Salida esperada:
+     * // "<div class='control-group col-sm-6'><p>Contenido del div</p></div>"
+     * ```
+     *
+     * #### Ejemplo 2: Error por `$cols` inválido
+     * ```php
+     * $cols = -1;  // Número de columnas inválido
+     * $contenido = "<p>Contenido</p>";
+     * $resultado = $this->div_control_group_cols($cols, $contenido);
+     * // Salida esperada:
+     * // array(
+     * //     "mensaje" => "Error al validar cols",
+     * //     "data" => [detalles del error]
+     * // )
+     * ```
+     *
+     * #### Ejemplo 3: Contenido con espacios innecesarios
+     * ```php
+     * $cols = 4;
+     * $contenido = "   <p>Texto con espacios extra</p>   ";
+     * $resultado = $this->div_control_group_cols($cols, $contenido);
+     * // Salida esperada:
+     * // "<div class='control-group col-sm-4'><p>Texto con espacios extra</p></div>"
+     * ```
+     *
+     * @version 1.0.0
      */
     final protected function div_control_group_cols(int $cols, string $contenido): string|array
     {
+        // Validar que el número de columnas sea correcto
         $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
-        if(errores::$error){
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
         }
+
+        // Limpiar espacios innecesarios en el contenido
         $contenido = trim($contenido);
 
+        // Construcción del div con clases Bootstrap
         $div_contenedor_ini = "<div class='control-group col-sm-$cols'>";
         $div_contenedor_fin = "</div>";
 
-        return $div_contenedor_ini.$contenido.$div_contenedor_fin;
+        return $div_contenedor_ini . $contenido . $div_contenedor_fin;
     }
 
-    /**
-     * Genera un div con una etiqueta
-     * @param int $cols Numero de columnas css
-     * @param string $contenido Contenido a integrar dentro del div
-     * @param string $label Etiqueta a mostrar
-     * @param string $name Name a utilizar como label
-     * @return string|array
-     * @version 0.69.4
-     * @verfuncion 0.1.0
-     * @fecha 2022-08-03 15:21
-     * @author mgamboa
-     */
-    private function div_control_group_cols_label(int $cols, string $contenido, string $label, string $name): string|array
-    {
 
+    /**
+     * REG
+     * Genera un contenedor `<div>` con una clase `control-group col-sm-{cols}` que encapsula un label y el contenido proporcionado.
+     *
+     * Esta función crea un `div` con una etiqueta (`label`) y contenido asociado dentro de una estructura de `control-group`.
+     * Primero, valida los parámetros proporcionados, luego genera el `label` y, finalmente, construye el `div` con la estructura HTML.
+     *
+     * ---
+     * ### Validaciones realizadas:
+     * - Se valida que `$cols` sea un número válido de columnas (usando `valida_input_select`).
+     * - Se asegura que `$label` y `$name` no estén vacíos.
+     * - Se genera la etiqueta HTML (`label`) correspondiente.
+     * - Se encapsula el `label` y el contenido en un `div`.
+     *
+     * ---
+     * ### Parámetros:
+     * @param int $cols Número de columnas a utilizar en el `div`. Debe ser un número entero positivo (generalmente entre 1 y 12 en Bootstrap).
+     * @param string $contenido El contenido HTML que se insertará dentro del `div`. Puede ser texto, inputs, imágenes u otros elementos HTML.
+     * @param string $label Texto que se mostrará en la etiqueta asociada al contenido dentro del `div`.
+     * @param string $name Nombre del input asociado con la etiqueta, también se usa como `id` en el `label`.
+     *
+     * ---
+     * ### Retorno:
+     * - Devuelve una cadena con la estructura del `div` si los parámetros son válidos.
+     * - Si hay un error en la validación, devuelve un array con el mensaje de error correspondiente.
+     *
+     * ---
+     * ### Ejemplo de uso:
+     * #### Ejemplo 1: Generación exitosa de un `div` con `label` y contenido
+     * ```php
+     * $cols = 6;
+     * $contenido = "<input type='text' name='usuario' />";
+     * $label = "Nombre de Usuario";
+     * $name = "usuario";
+     *
+     * $resultado = $this->div_control_group_cols_label($cols, $contenido, $label, $name);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <div class='control-group col-sm-6'>
+     *     <label for='usuario'>Nombre de Usuario</label>
+     *     <input type='text' name='usuario' />
+     * </div>
+     * ```
+     *
+     * ---
+     * #### Ejemplo 2: Error por `$cols` inválido
+     * ```php
+     * $cols = -1;  // Número de columnas inválido
+     * $contenido = "<input type='text' name='usuario' />";
+     * $label = "Nombre de Usuario";
+     * $name = "usuario";
+     *
+     * $resultado = $this->div_control_group_cols_label($cols, $contenido, $label, $name);
+     * ```
+     * **Salida esperada (error):**
+     * ```php
+     * array(
+     *     "mensaje" => "Error al validar input",
+     *     "data" => [detalles del error]
+     * )
+     * ```
+     *
+     * ---
+     * #### Ejemplo 3: Error por `$label` vacío
+     * ```php
+     * $cols = 4;
+     * $contenido = "<input type='password' name='clave' />";
+     * $label = "";
+     * $name = "clave";
+     *
+     * $resultado = $this->div_control_group_cols_label($cols, $contenido, $label, $name);
+     * ```
+     * **Salida esperada (error):**
+     * ```php
+     * array(
+     *     "mensaje" => "Error al validar input",
+     *     "data" => [detalles del error]
+     * )
+     * ```
+     *
+     * ---
+     * @version 1.0.0
+     */
+    private function div_control_group_cols_label(
+        int $cols, string $contenido, string $label, string $name): string|array
+    {
+        // Limpiar los valores de $label y $name
         $label = trim($label);
         $name = trim($name);
+
+        // Validar los parámetros de entrada
         $valida = $this->valida_input_select(cols: $cols, label: $label, name: $name);
-        if(errores::$error){
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al validar input', data: $valida);
         }
 
-        $label_html = $this->label(id_css:$name,place_holder: $label);
-        if(errores::$error){
+        // Generar la etiqueta HTML para el input
+        $label_html = $this->label(id_css: $name, place_holder: $label);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar label', data: $label_html);
         }
 
-        $html = $this->div_control_group_cols(cols: $cols,contenido: $label_html.$contenido);
-        if(errores::$error){
+        // Construcción del div con la etiqueta y el contenido
+        $html = $this->div_control_group_cols(cols: $cols, contenido: $label_html . $contenido);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar contenedor', data: $html);
         }
 
         return $html;
     }
+
 
     /**
      * Integra el contenido de divs de tipo input
@@ -1669,31 +1798,95 @@ class html{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI
-     * Valida los parámetros de entrada para un elemento select en desarrollador de formularios HTML.
+     * REG
+     * Valida los parámetros de entrada para un elemento `<select>` en un formulario HTML.
      *
-     * @param int $cols El número de columnas para el elemento select.
-     * @param string $label La etiqueta para el elemento select.
-     * @param string $name El nombre para el elemento select.
-     * @return true|array Devuelve verdadero en caso de éxito. En caso de error, devuelve un array con el detalle del error.
-     * @version 17.2.0
+     * Esta función se encarga de validar los parámetros que se utilizarán para la generación de un
+     * elemento `<select>` en HTML. Se aseguran las siguientes condiciones:
+     * - Que el número de columnas `$cols` sea un valor válido.
+     * - Que la etiqueta `$label` no esté vacía.
+     * - Que el nombre `$name` no esté vacío.
+     *
+     * Si alguno de los valores no es válido, la función devolverá un arreglo con el mensaje de error
+     * correspondiente. En caso de éxito, retorna `true`.
+     *
+     * @param int $cols Número de columnas que ocupará el `select` en un formulario (valores esperados: 1 a 12).
+     * @param string $label La etiqueta que se mostrará para el `select` (por ejemplo, "Selecciona una opción").
+     * @param string $name El atributo `name` del `select`, que se utilizará en el formulario para la captura de datos.
+     *
+     * @return true|array Devuelve `true` si todos los parámetros son válidos.
+     *                    Si hay algún error, devuelve un arreglo con un mensaje de error y los datos inválidos.
+     *
+     * @example Ejemplo 1: Validación exitosa
+     * ```php
+     * $cols = 6;
+     * $label = "Categoría";
+     * $name = "categoria_id";
+     * $resultado = $this->valida_input_select($cols, $label, $name);
+     * // Salida esperada: true
+     * ```
+     *
+     * @example Ejemplo 2: Error por `$label` vacío
+     * ```php
+     * $cols = 6;
+     * $label = "";
+     * $name = "categoria_id";
+     * $resultado = $this->valida_input_select($cols, $label, $name);
+     * // Salida esperada:
+     * // array(
+     * //     "mensaje" => "Error el label está vacío",
+     * //     "data" => "",
+     * // )
+     * ```
+     *
+     * @example Ejemplo 3: Error por `$name` vacío
+     * ```php
+     * $cols = 6;
+     * $label = "Categoría";
+     * $name = "";
+     * $resultado = $this->valida_input_select($cols, $label, $name);
+     * // Salida esperada:
+     * // array(
+     * //     "mensaje" => "Error el name está vacío",
+     * //     "data" => "",
+     * // )
+     * ```
+     *
+     * @example Ejemplo 4: Error en la validación de columnas
+     * ```php
+     * $cols = -2;  // Número de columnas inválido
+     * $label = "Categoría";
+     * $name = "categoria_id";
+     * $resultado = $this->valida_input_select($cols, $label, $name);
+     * // Salida esperada:
+     * // array(
+     * //     "mensaje" => "Error al validar cols",
+     * //     "data" => [detalles del error en la validación de columnas]
+     * // )
+     * ```
      */
     final protected function valida_input_select(int $cols, string $label, string $name): true|array
     {
+        // Eliminar espacios en blanco en los extremos de los valores
         $label = trim($label);
-        if($label === ''){
-            return $this->error->error(mensaje: 'Error el $label esta vacio', data: $label);
+        if ($label === '') {
+            return $this->error->error(mensaje: "Error el label $label está vacío", data: $label, es_final: true);
         }
+
         $name = trim($name);
-        if($name === ''){
-            return $this->error->error(mensaje: 'Error el $name esta vacio', data: $name);
+        if ($name === '') {
+            return $this->error->error(mensaje: "Error el name $name está vacío", data: $name, es_final: true);
         }
-        $valida = (new directivas(html:$this))->valida_cols(cols:$cols);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al validar cols', data: $valida);
+
+        // Validar el número de columnas
+        $valida = (new directivas(html: $this))->valida_cols(cols: $cols);
+        if (errores::$error) {
+            return $this->error->error(mensaje: "Error al validar cols", data: $valida);
         }
+
         return true;
     }
+
 
     /**
      * POR DOCUMENTAR EN WIKI

@@ -1244,7 +1244,7 @@ class htmlTest extends test {
         $resultado = $html->valida_input_select($cols, $label, $name);
         $this->assertIsArray($resultado);
         $this->assertTrue(errores::$error);
-        $this->assertStringContainsStringIgnoringCase('Error el $label esta vacio', $resultado['mensaje']);
+        $this->assertStringContainsStringIgnoringCase('Error el label  está vacío', $resultado['mensaje']);
 
         errores::$error = false;
 
@@ -1255,7 +1255,7 @@ class htmlTest extends test {
         $resultado = $html->valida_input_select($cols, $label, $name);
         $this->assertIsArray($resultado);
         $this->assertTrue(errores::$error);
-        $this->assertStringContainsStringIgnoringCase('Error el $name esta vacio', $resultado['mensaje']);
+        $this->assertStringContainsStringIgnoringCase('Error el name  está vacío', $resultado['mensaje']);
 
         errores::$error = false;
 

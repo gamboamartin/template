@@ -271,63 +271,260 @@ class html{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI
-     * Esta función toma una columna, una descripción_select y una fila (array) como parámetros.
-     * Verifica si la columna pasada está vacía, y de ser así, devuelve un error.
-     * A continuación, valida la existencia de la columna en la fila.
-     * Si la validación encuentra un error, devuelve un mensaje de error.
-     * Luego, si la descripción_select no está vacía, agrega un espacio a la misma.
-     * La descripción_select se concatena a continuación con el valor de la columna en la fila.
-     * Finalmente, devuelve la descripción_select después de eliminar los espacios en blanco.
+     * REG
+     * Concatena el valor de una columna específica con la descripción existente.
      *
-     * @param string $column La columna que se buscará en la fila.
-     * @param string $descripcion_select La cadena con la cual se concatenará el valor de la columna.
-     * @param array $row La fila (array) en la que se buscará la columna.
-     * @return string|array La descripción_select concatenada con el valor de la columna,
-     *                       o un error en caso de que la columna esté vacía o no se encuentre en la fila.
+     * ---
+     * ### **Descripción**
+     * Esta función permite agregar el contenido de una columna específica de `$row` a una cadena de texto `$descripcion_select`.
+     * - Primero, valida que `$column` no esté vacío.
+     * - Luego, verifica que `$row` contenga la clave `$column`.
+     * - Si `$descripcion_select` tiene contenido, se añade un espacio antes de concatenar.
+     * - Finalmente, devuelve la nueva descripción con la concatenación.
      *
-     * @version 17.17.0
+     * ---
+     * ### **Parámetros**
+     * @param string $column
+     *     - Nombre de la columna de `$row` cuyo valor será concatenado.
+     *     - Debe existir en `$row`.
+     *
+     * @param string $descripcion_select
+     *     - Texto base al que se concatenará el valor de `$column`.
+     *     - Si no está vacío, se añade un espacio antes de la concatenación.
+     *
+     * @param array $row
+     *     - Datos de la fila actual.
+     *     - Debe contener la clave `$column`.
+     *
+     * ---
+     * ### **Retorno**
+     * - **string**: Devuelve la descripción concatenada en caso de éxito.
+     * - **array**: Devuelve un array con información de error si ocurre algún problema.
+     *
+     * ---
+     * ### **Ejemplos de uso**
+     *
+     * #### **Ejemplo 1: Concatenar un valor a la descripción existente**
+     * ```php
+     * $column = 'nombre';
+     * $descripcion_select = 'Cliente';
+     * $row = ['nombre' => 'Juan Pérez'];
+     *
+     * $resultado = $this->concat_descripcion_select($column, $descripcion_select, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * "Cliente Juan Pérez"
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Concatenar cuando la descripción está vacía**
+     * ```php
+     * $column = 'nombre';
+     * $descripcion_select = '';
+     * $row = ['nombre' => 'María González'];
+     *
+     * $resultado = $this->concat_descripcion_select($column, $descripcion_select, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * "María González"
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: Manejo de errores si la columna está vacía**
+     * ```php
+     * $column = '';
+     * $descripcion_select = 'Cliente';
+     * $row = ['nombre' => 'Pedro López'];
+     *
+     * $resultado = $this->concat_descripcion_select($column, $descripcion_select, $row);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error column esta vacia',
+     *     'data' => ''
+     * ]
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 4: Manejo de errores si `$row` no contiene `$column`**
+     * ```php
+     * $column = 'apellido';
+     * $descripcion_select = 'Cliente';
+     * $row = ['nombre' => 'Carlos Ramírez'];
+     *
+     * $resultado = $this->concat_descripcion_select($column, $descripcion_select, $row);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error al validar row',
+     *     'data' => [...]
+     * ]
+     * ```
+     *
+     * ---
+     * @throws array Devuelve un array con un mensaje de error si ocurre algún problema en la validación.
+     *
+     * @version 1.0.0
      */
     private function concat_descripcion_select(string $column, string $descripcion_select, array $row): array|string
     {
+        // Validar que `$column` no esté vacío
         $column = trim($column);
-        if($column === ''){
+        if ($column === '') {
             return $this->error->error(mensaje: 'Error column esta vacia', data: $column);
         }
-        $keys_val = array($column);
+
+        // Validar que `$row` contenga la clave `$column`
+        $keys_val = [$column];
         $valida = (new validacion())->valida_existencia_keys($keys_val, $row);
-        if(errores::$error){
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al validar row', data: $valida);
         }
+
+        // Limpieza de `$descripcion_select`
         $descripcion_select = trim($descripcion_select);
+
+        // Agregar espacio si `$descripcion_select` ya tiene contenido
         $espacio = '';
-        if($descripcion_select !== ''){
+        if ($descripcion_select !== '') {
             $espacio = ' ';
         }
-        $descripcion_select .= $espacio.trim($row[$column]);
-        return trim($descripcion_select);
 
+        // Concatenar el valor de `$column` en `$row`
+        $descripcion_select .= $espacio . trim($row[$column]);
+
+        return trim($descripcion_select);
     }
 
+
+    /**
+     * REG
+     * Procesa un conjunto de datos de una fila y genera una estructura de salida con una descripción y un valor personalizado.
+     *
+     * ---
+     * ### **Descripción**
+     * - La función toma un conjunto de columnas (`$columns_ds`), una clave personalizada (`$key_value_custom`) y una fila de datos (`$row`).
+     * - Se encarga de generar una descripción compuesta a partir de las columnas de `$columns_ds`.
+     * - Verifica la existencia de la clave `descripcion_select` en `$row`.
+     * - Obtiene el valor asociado a `$key_value_custom` en `$row`.
+     * - Devuelve un objeto con `row` (fila procesada) y `value_custom` (valor extraído).
+     *
+     * ---
+     * ### **Parámetros**
+     * @param array $columns_ds
+     *     - Arreglo de nombres de columnas que se utilizarán para construir `descripcion_select`.
+     *     - Debe contener al menos una columna válida.
+     *
+     * @param string $key_value_custom
+     *     - Clave dentro de `$row` de la cual se extraerá un valor personalizado.
+     *     - Si está vacía, se devuelve una cadena vacía (`''`).
+     *
+     * @param array $row
+     *     - Fila de datos de la cual se generará la `descripcion_select` y se extraerá el valor de `$key_value_custom`.
+     *     - Debe contener las claves especificadas en `$columns_ds` y `descripcion_select`.
+     *
+     * ---
+     * ### **Retorno**
+     * - **stdClass**:
+     *     - **row (array)**: Fila procesada con `descripcion_select`.
+     *     - **value_custom (string)**: Valor extraído de `$row` con la clave `$key_value_custom`.
+     * - **array**: Devuelve un mensaje de error si alguna validación falla.
+     *
+     * ---
+     * ### **Ejemplos de uso**
+     *
+     * #### **Ejemplo 1: Procesar fila con descripción compuesta y clave personalizada**
+     * ```php
+     * $columns_ds = ['nombre', 'apellido'];
+     * $key_value_custom = 'codigo';
+     * $row = ['nombre' => 'Juan', 'apellido' => 'Pérez', 'codigo' => 'JP123'];
+     *
+     * $resultado = $this->data_option($columns_ds, $key_value_custom, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * stdClass Object (
+     *     [row] => Array (
+     *         [nombre] => Juan
+     *         [apellido] => Pérez
+     *         [codigo] => JP123
+     *         [descripcion_select] => Juan Pérez
+     *     )
+     *     [value_custom] => JP123
+     * )
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Fila sin `descripcion_select` (Error)**
+     * ```php
+     * $columns_ds = ['nombre', 'apellido'];
+     * $key_value_custom = 'codigo';
+     * $row = ['nombre' => 'Juan', 'codigo' => 'JP123'];
+     *
+     * $resultado = $this->data_option($columns_ds, $key_value_custom, $row);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error al validar row',
+     *     'data' => ['descripcion_select' => null]
+     * ]
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: `$key_value_custom` no existe en `$row`**
+     * ```php
+     * $columns_ds = ['nombre', 'apellido'];
+     * $key_value_custom = 'id_producto';
+     * $row = ['nombre' => 'Ana', 'apellido' => 'Gómez'];
+     *
+     * $resultado = $this->data_option($columns_ds, $key_value_custom, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * stdClass Object (
+     *     [row] => Array (
+     *         [nombre] => Ana
+     *         [apellido] => Gómez
+     *         [descripcion_select] => Ana Gómez
+     *     )
+     *     [value_custom] => ''
+     * )
+     * ```
+     *
+     * ---
+     * @throws array Devuelve un array con mensaje de error si:
+     *  - `descripcion_select` no está presente en `$row`.
+     *  - `$key_value_custom` está vacío o no se encuentra en `$row`.
+     *
+     * @version 1.0.0
+     */
     private function data_option(array $columns_ds, string $key_value_custom, array $row)
     {
-        $row = $this->row_descripcion_select(columns_ds: $columns_ds,row:  $row);
-        if(errores::$error){
+        // Genera la descripción compuesta y actualiza `$row`
+        $row = $this->row_descripcion_select(columns_ds: $columns_ds, row: $row);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al integrar descripcion select', data: $row);
         }
 
-
+        // Verifica que `descripcion_select` exista en `$row`
         $keys = array('descripcion_select');
-        $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
-        if(errores::$error){
+        $valida = (new validacion())->valida_existencia_keys(keys: $keys, registro: $row);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al validar row', data: $valida);
         }
 
-        $value_custom = $this->value_custom(key_value_custom: $key_value_custom,row:  $row);
-        if(errores::$error){
+        // Obtiene el valor personalizado
+        $value_custom = $this->value_custom(key_value_custom: $key_value_custom, row: $row);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al integrar value custom', data: $value_custom);
         }
 
+        // Retorna el objeto con la fila procesada y el valor personalizado
         $data = new stdClass();
         $data->row = $row;
         $data->value_custom = $value_custom;
@@ -335,28 +532,122 @@ class html{
         return $data;
     }
 
-    private function descripcion_select(array $columns_ds, array $row)
+
+    /**
+     * REG
+     * Genera una descripción concatenada a partir de múltiples columnas de un array de datos.
+     *
+     * ---
+     * ### **Descripción**
+     * Esta función recorre un conjunto de columnas definidas en `$columns_ds`, extrae sus valores de `$row`,
+     * y los concatena en una sola cadena `$descripcion_select`.
+     * - Si una columna está vacía, devuelve un error.
+     * - Si una columna no existe en `$row`, devuelve un error.
+     * - Usa la función `concat_descripcion_select` para estructurar la descripción.
+     * - Retorna una cadena concatenada con los valores de las columnas.
+     *
+     * ---
+     * ### **Parámetros**
+     * @param array $columns_ds
+     *     - Lista de nombres de columnas que se concatenarán.
+     *     - Cada columna debe existir en `$row`.
+     *
+     * @param array $row
+     *     - Datos de la fila de donde se extraerán los valores de las columnas.
+     *     - Debe contener todas las claves especificadas en `$columns_ds`.
+     *
+     * ---
+     * ### **Retorno**
+     * - **string**: Devuelve la descripción concatenada en caso de éxito.
+     * - **array**: Devuelve un array con información de error si ocurre algún problema.
+     *
+     * ---
+     * ### **Ejemplos de uso**
+     *
+     * #### **Ejemplo 1: Concatenar varias columnas**
+     * ```php
+     * $columns_ds = ['nombre', 'apellido', 'edad'];
+     * $row = ['nombre' => 'Juan', 'apellido' => 'Pérez', 'edad' => '30'];
+     *
+     * $resultado = $this->descripcion_select($columns_ds, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * "Juan Pérez 30"
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Manejo de error si una columna está vacía**
+     * ```php
+     * $columns_ds = ['', 'apellido'];
+     * $row = ['nombre' => 'Carlos', 'apellido' => 'Ramírez'];
+     *
+     * $resultado = $this->descripcion_select($columns_ds, $row);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error column esta vacia',
+     *     'data' => ''
+     * ]
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: Manejo de error si `$row` no contiene una clave de `$columns_ds`**
+     * ```php
+     * $columns_ds = ['nombre', 'apellido', 'direccion'];
+     * $row = ['nombre' => 'Lucía', 'apellido' => 'Gómez'];
+     *
+     * $resultado = $this->descripcion_select($columns_ds, $row);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error al validar row',
+     *     'data' => [...]
+     * ]
+     * ```
+     *
+     * ---
+     * @throws array Devuelve un array con un mensaje de error si ocurre un problema en la validación.
+     *
+     * @version 1.0.0
+     */
+    private function descripcion_select(array $columns_ds, array $row): string|array
     {
+        // Inicializar la cadena de descripción
         $descripcion_select = '';
-        foreach ($columns_ds as $column){
+
+        // Recorrer las columnas definidas en `$columns_ds`
+        foreach ($columns_ds as $column) {
+            // Limpiar espacios en blanco en la columna
             $column = trim($column);
-            if($column === ''){
-                return $this->error->error(mensaje: 'Error column esta vacia', data: $column);
+
+            // Validar que `$column` no esté vacío
+            if ($column === '') {
+                return $this->error->error(mensaje: 'Error column esta vacia', data: $column, es_final: true);
             }
-            $keys_val = array($column);
+
+            // Validar que `$row` contenga la clave `$column`
+            $keys_val = [$column];
             $valida = (new validacion())->valida_existencia_keys($keys_val, $row);
-            if(errores::$error){
+            if (errores::$error) {
                 return $this->error->error(mensaje: 'Error al validar row', data: $valida);
             }
+
+            // Concatenar el valor de la columna en la descripción
             $descripcion_select = $this->concat_descripcion_select(column: $column,
-                descripcion_select:  $descripcion_select,row:  $row);
-            if(errores::$error){
+                descripcion_select: $descripcion_select, row: $row);
+
+            // Verificar errores en la concatenación
+            if (errores::$error) {
                 return $this->error->error(mensaje: 'Error al integrar descripcion select', data: $descripcion_select);
             }
         }
-        return $descripcion_select;
 
+        return $descripcion_select;
     }
+
 
     /**
      * REG
@@ -775,42 +1066,209 @@ class html{
     }
 
     /**
-     * Genera extra params para integrar con html
-     * @param array $extra_params Conjunto de extra params key = data value = valor
-     * @return array|string
-     * @version 0.61.4
-     * @verfuncion 0.1.0
-     * @fecha 2022-08-03 09:59
-     * @author mgamboa
+     * REG
+     * Genera una cadena de atributos `data-*` en HTML a partir de un array de parámetros adicionales.
+     *
+     * Esta función recibe un array asociativo donde las claves representan los nombres de los atributos
+     * `data-*` en HTML y los valores representan el contenido de esos atributos.
+     * Si alguna clave del array es un número, se devuelve un error, ya que los nombres de atributos deben ser strings válidos.
+     *
+     * ---
+     * ### Validaciones realizadas:
+     * - Se verifica que todas las claves del array `$extra_params` sean cadenas de texto y no números.
+     * - Se construye una cadena con los atributos `data-*` en formato HTML.
+     *
+     * ---
+     * ### Parámetros:
+     * @param array $extra_params Un array asociativo donde:
+     *   - La clave representa el nombre del atributo `data-*`.
+     *   - El valor representa el contenido del atributo.
+     *
+     * ---
+     * ### Retorno:
+     * - Devuelve una cadena con los atributos `data-*` formateados correctamente si los datos son válidos.
+     * - Si alguna clave es un número, devuelve un array con un mensaje de error.
+     *
+     * ---
+     * ### Ejemplo de uso:
+     * #### Ejemplo 1: Generación exitosa de atributos `data-*`
+     * ```php
+     * $extra_params = [
+     *     'id' => '123',
+     *     'name' => 'producto',
+     *     'categoria' => 'electrónica'
+     * ];
+     *
+     * $resultado = $this->extra_params($extra_params);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * " data-id = '123' data-name = 'producto' data-categoria = 'electrónica'"
+     * ```
+     *
+     * ---
+     * #### Ejemplo 2: Error por clave numérica en `$extra_params`
+     * ```php
+     * $extra_params = [
+     *     0 => 'valor_invalido',
+     *     'tipo' => 'general'
+     * ];
+     *
+     * $resultado = $this->extra_params($extra_params);
+     * ```
+     * **Salida esperada (error):**
+     * ```php
+     * array(
+     *     "mensaje" => "Error $data bede ser un texto valido",
+     *     "data" => [
+     *         0 => "valor_invalido",
+     *         "tipo" => "general"
+     *     ],
+     *     "es_final" => true
+     * )
+     * ```
+     *
+     * ---
+     * @version 1.0.0
      */
     private function extra_params(array $extra_params): array|string
     {
         $extra_params_html = '';
-        foreach ($extra_params as $data=>$val){
-            if(is_numeric($data)){
-                return $this->error->error(mensaje: 'Error $data bede ser un texto valido', data: $extra_params);
+
+        foreach ($extra_params as $data => $val) {
+            // Verifica si la clave es numérica
+            if (is_numeric($data)) {
+                return $this->error->error(
+                    mensaje: 'Error $data bede ser un texto valido',
+                    data: $extra_params,
+                    es_final: true
+                );
             }
 
-            $extra_params_html.= " data-$data = '$val'";
+            // Construye la cadena de atributos HTML
+            $extra_params_html .= " data-$data = '$val'";
         }
+
         return $extra_params_html;
     }
 
+
+    /**
+     * REG
+     * Genera un conjunto de parámetros adicionales a partir de claves proporcionadas y un registro (fila de datos).
+     *
+     * Esta función toma un array de claves (`$extra_params_key`) y un array de datos (`$row`).
+     * Luego, busca cada clave en `$row` y genera un nuevo array con los valores encontrados.
+     * Si alguna clave no está presente en `$row`, se asigna el valor `"SIN DATOS"` por defecto.
+     *
+     * ---
+     * ### **Validaciones realizadas**:
+     * 1. Se recorre `$extra_params_key` y se validan las claves:
+     *    - Si una clave está vacía, se devuelve un error.
+     * 2. Se verifica si la clave existe en `$row`:
+     *    - Si no existe, se asigna `"SIN DATOS"`.
+     * 3. Se retorna el array `$extra_params` con los valores obtenidos.
+     *
+     * ---
+     * ### **Parámetros**:
+     * @param array $extra_params_key Array de claves que se buscarán dentro de `$row`.
+     *                                Cada clave representa un índice del array `$row`.
+     * @param array $row Array asociativo que contiene los datos de entrada.
+     *                   Puede ser un resultado de una consulta a la base de datos u otro conjunto de datos.
+     *
+     * ---
+     * ### **Retorno**:
+     * - **array**: Un array con las claves proporcionadas y sus respectivos valores extraídos de `$row`.
+     * - **array (error)**: Si una clave en `$extra_params_key` está vacía, se devuelve un array con el mensaje de error.
+     *
+     * ---
+     * ### **Ejemplos de uso**:
+     *
+     * #### **Ejemplo 1: Obtener valores de claves existentes**
+     * ```php
+     * $extra_params_key = ['nombre', 'apellido', 'email'];
+     * $row = [
+     *     'nombre' => 'Juan',
+     *     'apellido' => 'Pérez',
+     *     'email' => 'juan@example.com'
+     * ];
+     * $resultado = $this->extra_param_data($extra_params_key, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * [
+     *     'nombre' => 'Juan',
+     *     'apellido' => 'Pérez',
+     *     'email' => 'juan@example.com'
+     * ]
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Claves no existentes en `$row`**
+     * ```php
+     * $extra_params_key = ['telefono', 'direccion'];
+     * $row = [
+     *     'nombre' => 'Juan',
+     *     'email' => 'juan@example.com'
+     * ];
+     * $resultado = $this->extra_param_data($extra_params_key, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * [
+     *     'telefono' => 'SIN DATOS',
+     *     'direccion' => 'SIN DATOS'
+     * ]
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: Error por clave vacía en `$extra_params_key`**
+     * ```php
+     * $extra_params_key = ['nombre', '', 'email'];
+     * $row = [
+     *     'nombre' => 'Juan',
+     *     'email' => 'juan@example.com'
+     * ];
+     * $resultado = $this->extra_param_data($extra_params_key, $row);
+     * ```
+     * **Salida esperada (error):**
+     * ```php
+     * array(
+     *     'mensaje' => 'Error key_extra_param esta vacio',
+     *     'data' => '',
+     *     'es_final' => true
+     * )
+     * ```
+     *
+     * ---
+     * @version 1.0.0
+     */
     private function extra_param_data(array $extra_params_key, array $row): array
     {
         $extra_params = array();
-        foreach ($extra_params_key as $key_extra_param){
+
+        // Recorre las claves proporcionadas en $extra_params_key
+        foreach ($extra_params_key as $key_extra_param) {
             $key_extra_param = trim($key_extra_param);
-            if($key_extra_param === ''){
-                return $this->error->error(mensaje: 'Error key_extra_param esta vacio', data: $key_extra_param);
+
+            // Si la clave está vacía, retorna un error
+            if ($key_extra_param === '') {
+                return $this->error->error(mensaje: 'Error key_extra_param esta vacio',
+                    data: $key_extra_param, es_final: true);
             }
-            if(!isset($row[$key_extra_param])){
+
+            // Si la clave no existe en $row, se asigna "SIN DATOS"
+            if (!isset($row[$key_extra_param])) {
                 $row[$key_extra_param] = 'SIN DATOS';
             }
+
+            // Se almacena el valor correspondiente en el array final
             $extra_params[$key_extra_param] = $row[$key_extra_param];
         }
+
         return $extra_params;
     }
+
 
     /**
      * Obtiene el html de una fecha
@@ -881,33 +1339,120 @@ class html{
     }
 
     /**
-     * Integra los options en forma de html
-     * @param string $descripcion_select Descripcion del option
-     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @param string $options_html Options previamente generados en html
-     * @param mixed $value Valor a asignar en option
-     * @param array $extra_params Conjunto de datos para extra params
-     * @return array|string
-     * @version 0.65.4
-     * @verfuncion 0.1.0
-     * @fecha 2022-08-03 12:25
-     * @author mgamboa
+     * REG
+     * Integra una nueva opción `<option>` dentro del conjunto de opciones de un `<select>`.
+     *
+     * Esta función genera un nuevo `<option>` a partir de la descripción, valor y atributos adicionales,
+     * y lo concatena a un string de opciones existentes (`$options_html`).
+     *
+     * ---
+     * ### **Validaciones realizadas**:
+     * - Se llama a `option_html()` para validar los datos de entrada y generar el nuevo `<option>`.
+     * - Si `option_html()` devuelve un error, se propaga el error.
+     * - Si la generación es exitosa, el nuevo `<option>` se concatena a `$options_html`.
+     *
+     * ---
+     * ### **Parámetros**:
+     * @param string $descripcion_select Texto que se mostrará dentro del `<option>`.
+     * @param int|null|string|float $id_selected Valor actualmente seleccionado en el `<select>`, usado para marcar el `<option>` como `selected`.
+     * @param string $options_html String con las opciones ya generadas, al cual se añadirá el nuevo `<option>`.
+     * @param int|null|string|float $value Valor del `<option>`, el cual se enviará al servidor cuando el usuario lo seleccione.
+     * @param array $extra_params Atributos adicionales para el `<option>`, en formato `clave => valor` (Ejemplo: `['data-id' => '123']`).
+     *
+     * ---
+     * ### **Retorno**:
+     * - **string**: Si todo es correcto, devuelve un string con `$options_html` incluyendo la nueva opción agregada.
+     * - **array**: Si ocurre un error, devuelve un array con el mensaje de error correspondiente.
+     *
+     * ---
+     * ### **Ejemplos de uso**:
+     *
+     * #### **Ejemplo 1: Agregar una opción a un select vacío**
+     * ```php
+     * $descripcion_select = "Opción 1";
+     * $id_selected = null;
+     * $options_html = "";
+     * $value = 1;
+     *
+     * $resultado = $this->integra_options_html($descripcion_select, $id_selected, $options_html, $value);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value="1">Opción 1</option>
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Agregar una opción a un conjunto de opciones existente**
+     * ```php
+     * $descripcion_select = "Opción 2";
+     * $id_selected = 2;
+     * $options_html = "<option value='1'>Opción 1</option>";
+     * $value = 2;
+     *
+     * $resultado = $this->integra_options_html($descripcion_select, $id_selected, $options_html, $value);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value="1">Opción 1</option><option value="2" selected>Opción 2</option>
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: Agregar una opción con atributos adicionales**
+     * ```php
+     * $descripcion_select = "Opción con datos";
+     * $id_selected = 3;
+     * $options_html = "<option value='1'>Opción 1</option><option value='2'>Opción 2</option>";
+     * $value = 3;
+     * $extra_params = ['data-extra' => 'info'];
+     *
+     * $resultado = $this->integra_options_html($descripcion_select, $id_selected, $options_html, $value, $extra_params);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value="1">Opción 1</option><option value="2">Opción 2</option>
+     * <option value="3" selected data-extra="info">Opción con datos</option>
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 4: Error por descripción vacía**
+     * ```php
+     * $descripcion_select = "";
+     * $id_selected = 1;
+     * $options_html = "<option value='1'>Opción 1</option>";
+     * $value = 2;
+     *
+     * $resultado = $this->integra_options_html($descripcion_select, $id_selected, $options_html, $value);
+     * ```
+     * **Salida esperada (error):**
+     * ```php
+     * array(
+     *     'mensaje' => 'Error $descripcion_select no puede venir vacio',
+     *     'data' => ''
+     * )
+     * ```
+     *
+     * ---
+     * @version 1.0.0
      */
     private function integra_options_html(string $descripcion_select, int|null|string|float $id_selected,
                                           string $options_html, int|null|string|float $value,
                                           array $extra_params = array()): array|string
     {
-
+        // Generar la opción utilizando `option_html`
         $option_html = $this->option_html(descripcion_select: $descripcion_select, id_selected: $id_selected,
             value: $value, extra_params: $extra_params);
-        if(errores::$error){
+
+        // Si hubo un error, retornarlo
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar option', data: $option_html);
         }
 
-        $options_html.=$option_html;
+        // Concatenar la opción generada al conjunto de opciones existentes
+        $options_html .= $option_html;
 
         return $options_html;
     }
+
 
     /**
      * REG
@@ -1125,169 +1670,630 @@ class html{
     }
 
     /**
-     * Genera un option para un select
-     * @param string $descripcion descripcion del option
-     * @param bool $selected Si selected se anexa selected a option
-     * @param mixed $value Value del option
-     * @param array $extra_params Arreglo con datos para integrar un extra param
-     * @return string|array
-     * @version 0.62.4
-     * @verfuncion 0.1.0
-     * @fecha 2022-08-03 10:59
-     * @author mgamboa
+     * REG
+     * Genera una etiqueta `<option>` en HTML para un elemento `<select>`, permitiendo atributos adicionales.
+     *
+     * Esta función recibe una descripción, un estado de selección (`selected`), un valor (`value`) y un array
+     * de parámetros adicionales (`extra_params`). Si los datos son válidos, genera un `<option>` en formato HTML.
+     *
+     * ---
+     * ### Validaciones realizadas:
+     * - Se verifica que `descripcion` no esté vacío.
+     * - Se valida que `value` no esté vacío o mal formado.
+     * - Se genera el atributo `selected` si la opción está marcada como seleccionada.
+     * - Se procesan parámetros adicionales como atributos `data-*` en HTML.
+     *
+     * ---
+     * ### Parámetros:
+     * @param string $descripcion La descripción que aparecerá dentro de la etiqueta `<option>`. Debe ser un string no vacío.
+     * @param bool $selected Si es `true`, la opción se marcará como seleccionada (`selected`).
+     * @param int|string $value El valor del atributo `value` del `<option>`. Si es `-1`, se convierte en un valor vacío.
+     * @param array $extra_params Un array asociativo con atributos adicionales en formato `data-*`.
+     *                            La clave representa el nombre del atributo y el valor su contenido.
+     *
+     * ---
+     * ### Retorno:
+     * - Devuelve un string con la etiqueta `<option>` correctamente generada.
+     * - Si hay un error, devuelve un array con detalles del error.
+     *
+     * ---
+     * ### Ejemplo de uso:
+     *
+     * #### Ejemplo 1: Generación exitosa de una opción seleccionada
+     * ```php
+     * $descripcion = "Opción 1";
+     * $selected = true;
+     * $value = 10;
+     * $extra_params = ["categoria" => "electronica", "tipo" => "premium"];
+     *
+     * $resultado = $this->option($descripcion, $selected, $value, $extra_params);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value='10' selected data-categoria='electronica' data-tipo='premium'>Opción 1</option>
+     * ```
+     *
+     * ---
+     * #### Ejemplo 2: Generación de opción sin atributos adicionales
+     * ```php
+     * $descripcion = "Opción 2";
+     * $selected = false;
+     * $value = 5;
+     *
+     * $resultado = $this->option($descripcion, $selected, $value);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value='5'>Opción 2</option>
+     * ```
+     *
+     * ---
+     * #### Ejemplo 3: Opción con `value=-1` (se convierte en vacío)
+     * ```php
+     * $descripcion = "Opción Vacía";
+     * $selected = false;
+     * $value = -1;
+     *
+     * $resultado = $this->option($descripcion, $selected, $value);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value=''>Opción Vacía</option>
+     * ```
+     *
+     * ---
+     * #### Ejemplo 4: Error por descripción vacía
+     * ```php
+     * $descripcion = "";
+     * $selected = false;
+     * $value = 10;
+     *
+     * $resultado = $this->option($descripcion, $selected, $value);
+     * ```
+     * **Salida esperada (error):**
+     * ```php
+     * array(
+     *     "mensaje" => "Error $descripcion no puede venir vacio",
+     *     "data" => ""
+     * )
+     * ```
+     *
+     * ---
+     * @version 1.0.0
      */
-    private function option(string $descripcion, bool $selected, int|string $value, array $extra_params = array()): string|array
+    private function option(
+        string $descripcion, bool $selected, int|string $value, array $extra_params = array()
+    ): string|array
     {
-
+        // Validar que la descripción y el valor sean correctos
         $valida = $this->valida_option(descripcion: $descripcion, value: $value);
-        if(errores::$error){
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al validar option', data: $valida);
         }
 
-        $selected_html = '';
-        if($selected){
-            $selected_html = 'selected';
-        }
+        // Determinar si la opción debe estar seleccionada
+        $selected_html = $selected ? 'selected' : '';
 
+        // Generar los atributos `data-*` adicionales
         $extra_params_html = $this->extra_params(extra_params: $extra_params);
-        if(errores::$error){
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar extra params', data: $extra_params_html);
         }
 
-        if((int)$value === -1){
+        // Si el valor es `-1`, lo convertimos en una cadena vacía
+        if ((int)$value === -1) {
             $value = '';
         }
+
+        // Retornar el `<option>` generado
         return "<option value='$value' $selected_html $extra_params_html>$descripcion</option>";
     }
 
+
+    /**
+     * REG
+     * Genera una opción (`<option>`) para un elemento `<select>` con atributos adicionales personalizados.
+     *
+     * ---
+     * ### **Descripción**
+     * Esta función construye dinámicamente una opción (`<option>`) con datos provenientes de `$row`.
+     * - Primero, valida que `$row` contenga la clave `'descripcion_select'`.
+     * - Luego, obtiene parámetros extra (`$extra_params_key`) del array `$row`.
+     * - Se determina el valor final de la opción (`$value`) con `value_select()`.
+     * - Finalmente, se integra la opción dentro del conjunto `$options_html_` mediante `integra_options_html()`.
+     *
+     * ---
+     * ### **Parámetros**
+     * @param array $extra_params_key
+     *     - Claves de `$row` que se usarán como atributos `data-*` en la opción.
+     *     - Cada clave extra será convertida en `data-clave='valor'`.
+     *
+     * @param int|string|float|null $id_selected
+     *     - Valor que debe coincidir con `$value` para marcar la opción como `selected`.
+     *     - Si `$value` coincide con este parámetro, la opción tendrá `selected`.
+     *
+     * @param string $options_html_
+     *     - Contenido HTML previo de opciones `<option>`.
+     *     - Se le agregará la nueva opción generada.
+     *
+     * @param array $row
+     *     - Datos de la fila actual.
+     *     - Debe contener la clave `'descripcion_select'`.
+     *
+     * @param int|string|float|null $row_id
+     *     - Identificador de la fila (puede ser `null` si no hay ID).
+     *     - Se usará a menos que `$value_custom` tenga un valor válido.
+     *
+     * @param string|int|float $value_custom
+     *     - Valor personalizado para la opción.
+     *     - Si no está vacío, reemplaza a `$row_id` como valor del `<option>`.
+     *
+     * ---
+     * ### **Retorno**
+     * - **string**: Devuelve el HTML actualizado con la nueva opción.
+     * - **array**: Devuelve un array con información de error si ocurre algún problema.
+     *
+     * ---
+     * ### **Ejemplos de uso**
+     *
+     * #### **Ejemplo 1: Generar una opción sin parámetros extra**
+     * ```php
+     * $extra_params_key = [];
+     * $id_selected = 2;
+     * $options_html_ = "";
+     * $row = ['descripcion_select' => 'Opción 1'];
+     * $row_id = 1;
+     * $value_custom = '';
+     *
+     * $resultado = $this->option_con_extra_param($extra_params_key, $id_selected, $options_html_, $row, $row_id, $value_custom);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * "<option value='1'>Opción 1</option>"
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Generar una opción con atributos extra**
+     * ```php
+     * $extra_params_key = ['data-category', 'data-type'];
+     * $id_selected = 2;
+     * $options_html_ = "";
+     * $row = [
+     *     'descripcion_select' => 'Producto A',
+     *     'data-category' => 'Electrónica',
+     *     'data-type' => 'Accesorios'
+     * ];
+     * $row_id = 3;
+     * $value_custom = '';
+     *
+     * $resultado = $this->option_con_extra_param($extra_params_key, $id_selected, $options_html_, $row, $row_id, $value_custom);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * "<option value='3' data-category='Electrónica' data-type='Accesorios'>Producto A</option>"
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: Opción con `selected` activado**
+     * ```php
+     * $extra_params_key = [];
+     * $id_selected = 5;
+     * $options_html_ = "";
+     * $row = ['descripcion_select' => 'Seleccionado'];
+     * $row_id = 5;
+     * $value_custom = '';
+     *
+     * $resultado = $this->option_con_extra_param($extra_params_key, $id_selected, $options_html_, $row, $row_id, $value_custom);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * "<option value='5' selected>Seleccionado</option>"
+     * ```
+     *
+     * ---
+     * @throws array Devuelve un array con un mensaje de error si ocurre algún problema en la validación.
+     *
+     * @version 1.0.0
+     */
     private function option_con_extra_param(array $extra_params_key, int|null|string|float $id_selected,
-                                           string $options_html_, array $row, int|string|float|null $row_id,
-                                           string|int|float $value_custom){
-        $keys = array('descripcion_select');
-        $valida = (new validacion())->valida_existencia_keys(keys: $keys,registro:  $row);
-        if(errores::$error){
-            return $this->error->error(mensaje: 'Error al validar row', data: $valida);
+                                            string $options_html_, array $row, int|string|float|null $row_id,
+                                            string|int|float $value_custom): string|array
+    {
+        // Validar que el array `$row` contenga la clave necesaria
+        $keys = ['descripcion_select'];
+        $valida = (new validacion())->valida_existencia_keys(keys: $keys, registro: $row);
+        if (errores::$error) {
+            return $this->error->error(mensaje: 'Error al validar row', data: $valida, es_final: true);
         }
 
-        $extra_params = $this->extra_param_data(extra_params_key: $extra_params_key,row:  $row);
-        if(errores::$error){
+        // Generar los atributos extra desde `$extra_params_key`
+        $extra_params = $this->extra_param_data(extra_params_key: $extra_params_key, row: $row);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar extra params', data: $extra_params);
         }
-        $value = $this->value_select(row_id: $row_id,value_custom:  $value_custom);
-        if(errores::$error){
+
+        // Determinar el valor final (`row_id` o `value_custom`)
+        $value = $this->value_select(row_id: $row_id, value_custom: $value_custom);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar value', data: $value);
         }
 
-        $options_html_ = $this->integra_options_html(descripcion_select: $row['descripcion_select'],
-             id_selected: $id_selected, options_html: $options_html_, value: $value, extra_params: $extra_params);
-        if(errores::$error){
+        // Construir la opción y añadirla a `$options_html_`
+        $options_html_ = $this->integra_options_html(
+            descripcion_select: $row['descripcion_select'],
+            id_selected: $id_selected,
+            options_html: $options_html_,
+            value: $value,
+            extra_params: $extra_params
+        );
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
         }
+
         return $options_html_;
     }
 
+
     /**
-     * Genera un option en forma de html
-     * @param string $descripcion_select Descripcion a mostrar en option
-     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @param mixed $value Valor de asignacion a option
-     * @param array $extra_params Conjunto de datos para integrar un extra param en un option
-     * @return array|string
-     * @version 0.63.4
-     * @verfuncion 0.1.0
-     * @fecha 2022-08-03 12:03
-     * @author mgamboa
+     * REG
+     * Genera un elemento `<option>` en formato HTML para un `<select>`, con validaciones de entrada y atributos adicionales.
+     *
+     * Esta función toma una descripción (`$descripcion_select`), un valor (`$value`), y el valor seleccionado (`$id_selected`),
+     * y genera un `<option>` en HTML. También permite incluir atributos adicionales en el `<option>` a través del array `$extra_params`.
+     *
+     * ---
+     * ### **Validaciones realizadas**:
+     * - Se verifica que `$descripcion_select` no esté vacío.
+     * - Se limpia el valor `$value` y se asigna `-1` si está vacío.
+     * - Se determina si la opción debe estar seleccionada (`selected`).
+     * - Se genera el HTML del `<option>`, incluyendo los atributos extra proporcionados.
+     *
+     * ---
+     * ### **Parámetros**:
+     * @param string $descripcion_select Texto que se mostrará dentro del `<option>`.
+     * @param int|null|string|float $id_selected Valor actualmente seleccionado en el `<select>`, usado para marcar el `<option>` como `selected`.
+     * @param int|null|string|float $value Valor del `<option>`, el cual se enviará al servidor cuando el usuario lo seleccione.
+     * @param array $extra_params Atributos adicionales para el `<option>`, en formato `clave => valor` (Ejemplo: `['data-id' => '123']`).
+     *
+     * ---
+     * ### **Retorno**:
+     * - Retorna un **string** con el HTML del `<option>` si la operación es exitosa.
+     * - Retorna un **array** con un mensaje de error si ocurre alguna falla en la validación.
+     *
+     * ---
+     * ### **Ejemplos de uso**:
+     *
+     * #### **Ejemplo 1: Generar un `<option>` sin atributos adicionales**
+     * ```php
+     * $descripcion_select = "Opción 1";
+     * $id_selected = 2;
+     * $value = 1;
+     *
+     * $resultado = $this->option_html($descripcion_select, $id_selected, $value);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value="1">Opción 1</option>
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Generar un `<option>` con `selected`**
+     * ```php
+     * $descripcion_select = "Seleccionado";
+     * $id_selected = 3;
+     * $value = 3;
+     *
+     * $resultado = $this->option_html($descripcion_select, $id_selected, $value);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value="3" selected>Seleccionado</option>
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: Generar un `<option>` con atributos adicionales**
+     * ```php
+     * $descripcion_select = "Con Atributos";
+     * $id_selected = 5;
+     * $value = 5;
+     * $extra_params = ['data-extra' => 'valor-extra', 'data-another' => 'otro-valor'];
+     *
+     * $resultado = $this->option_html($descripcion_select, $id_selected, $value, $extra_params);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value="5" selected data-extra="valor-extra" data-another="otro-valor">Con Atributos</option>
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 4: Error por descripción vacía**
+     * ```php
+     * $descripcion_select = "";
+     * $id_selected = 1;
+     * $value = 1;
+     *
+     * $resultado = $this->option_html($descripcion_select, $id_selected, $value);
+     * ```
+     * **Salida esperada (error):**
+     * ```php
+     * array(
+     *     'mensaje' => 'Error $descripcion_select no puede venir vacio',
+     *     'data' => ''
+     * )
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 5: Si el `$value` está vacío, se asigna `-1`**
+     * ```php
+     * $descripcion_select = "Sin valor";
+     * $id_selected = 2;
+     * $value = "";
+     *
+     * $resultado = $this->option_html($descripcion_select, $id_selected, $value);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value="-1">Sin valor</option>
+     * ```
+     *
+     * ---
+     * @version 1.0.0
      */
     private function option_html(string $descripcion_select, int|null|string|float $id_selected,
                                  int|null|string|float $value, array $extra_params = array()): array|string
     {
+        // Validación: `descripcion_select` no puede estar vacío
         $descripcion_select = trim($descripcion_select);
-        if($descripcion_select === ''){
+        if ($descripcion_select === '') {
             return $this->error->error(mensaje: 'Error $descripcion_select no puede venir vacio',
                 data: $descripcion_select);
         }
+
+        // Si `$value` está vacío, se asigna `-1`
         $value = trim($value);
-        if($value === ''){
+        if ($value === '') {
             $value = -1;
         }
 
-        $value = trim($value);
-        $selected = $this->selected(value: $value,id_selected: $id_selected);
-        if(errores::$error){
+        // Determinar si la opción debe estar marcada como `selected`
+        $selected = $this->selected(value: $value, id_selected: $id_selected);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al verificar selected', data: $selected);
         }
 
-        $option_html = $this->option(descripcion: $descripcion_select,selected:  $selected, value: $value,
+        // Generar el HTML del `<option>`
+        $option_html = $this->option(descripcion: $descripcion_select, selected: $selected, value: $value,
             extra_params: $extra_params);
-        if(errores::$error){
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar option', data: $option_html);
         }
+
         return $option_html;
     }
 
+
     /**
-     * Integra todos los options de un html select
-     * @param array $columns_ds Columnas a integrar a descripcion de option
-     * @param array $extra_params_key keys de extra params para integrar valor
-     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * REG
+     * Genera el HTML de un conjunto de opciones `<option>` para un `<select>`, incluyendo una opción predeterminada.
+     *
+     * ---
+     * ### **Descripción**
+     * - Agrega una opción inicial por defecto con el valor `-1` y la descripción `"Selecciona una opcion"`.
+     * - Genera opciones adicionales basadas en los valores proporcionados en `$values`.
+     * - Usa `$columns_ds` para construir la descripción de cada opción.
+     * - Integra atributos `data-*` usando `$extra_params_key`.
+     * - Resalta la opción seleccionada con `$id_selected`.
+     *
+     * ---
+     * ### **Parámetros**
+     * @param array $columns_ds
+     *     - Lista de nombres de columnas utilizadas para construir la `descripcion_select`.
+     *     - Debe contener al menos un campo válido.
+     *
+     * @param array $extra_params_key
+     *     - Lista de claves que se agregarán como atributos `data-*` en cada opción generada.
+     *     - Cada clave debe existir en `$values` para evitar errores.
+     *
+     * @param int|float|string|null $id_selected
+     *     - Valor de la opción que debe marcarse como `selected` en el `<select>`.
+     *
      * @param string $key_value_custom
-     * @param array $values Valores para options
-     * @return array|string
-     * @author mgamboa
+     *     - Clave dentro de `$values` que se usará para obtener un valor personalizado en cada opción.
+     *
+     * @param array $values
+     *     - Conjunto de filas de datos de las cuales se generarán las opciones.
+     *     - Cada fila (`$row`) debe ser un array asociativo con las claves necesarias.
+     *
+     * ---
+     * ### **Retorno**
+     * - **string**: Devuelve el HTML generado con las opciones `<option>` para un `<select>`.
+     * - **array**: Devuelve un mensaje de error si alguna validación falla.
+     *
+     * ---
+     * ### **Ejemplos de uso**
+     *
+     * #### **Ejemplo 1: Generación de `<option>` a partir de datos de usuarios**
+     * ```php
+     * $columns_ds = ['nombre', 'apellido'];
+     * $extra_params_key = ['email', 'telefono'];
+     * $id_selected = 2;
+     * $key_value_custom = 'id_usuario';
+     * $values = [
+     *     1 => ['nombre' => 'Juan', 'apellido' => 'Pérez', 'id_usuario' => 1, 'email' => 'juan@example.com', 'telefono' => '555-1234'],
+     *     2 => ['nombre' => 'Ana', 'apellido' => 'Gómez', 'id_usuario' => 2, 'email' => 'ana@example.com', 'telefono' => '555-5678']
+     * ];
+     *
+     * $resultado = $this->options($columns_ds, $extra_params_key, $id_selected, $key_value_custom, $values);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value="-1">Selecciona una opcion</option>
+     * <option value="1" data-email="juan@example.com" data-telefono="555-1234">Juan Pérez</option>
+     * <option value="2" selected data-email="ana@example.com" data-telefono="555-5678">Ana Gómez</option>
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Datos incompletos en `$values`**
+     * ```php
+     * $values = [
+     *     1 => ['nombre' => 'Carlos', 'id_usuario' => 1] // Falta 'apellido'
+     * ];
+     * $resultado = $this->options($columns_ds, $extra_params_key, $id_selected, $key_value_custom, $values);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error al validar row',
+     *     'data' => ['descripcion_select' => null]
+     * ]
+     * ```
+     *
+     * ---
+     * @throws array Devuelve un array con mensaje de error si:
+     *  - `$values` no es un array válido.
+     *  - `descripcion_select` no está presente en `$row`.
+     *  - Alguna clave de `$extra_params_key` está vacía o no existe en `$row`.
+     *
+     * @version 1.0.0
      */
     private function options(
         array $columns_ds, array $extra_params_key, int|float|string|null $id_selected,
         string $key_value_custom, array $values): array|string
     {
-
-        $options_html = $this->option(descripcion: 'Selecciona una opcion',selected:  false, value: -1);
-        if(errores::$error){
+        // Genera la opción predeterminada
+        $options_html = $this->option(descripcion: 'Selecciona una opcion', selected: false, value: -1);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar option', data: $options_html);
         }
+
+        // Genera el resto de las opciones basadas en `$values`
         $options_html = $this->options_html_data(columns_ds: $columns_ds, extra_params_key: $extra_params_key,
             id_selected: $id_selected, key_value_custom: $key_value_custom, options_html: $options_html,
             values: $values);
-        if(errores::$error){
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar options', data: $options_html);
         }
+
         return $options_html;
     }
 
+
     /**
-     * Integra el html de un conjunto de options
-     * @param array $columns_ds Columnas a integrar a descripcion de option
-     * @param array $extra_params_key Conjunto de keys para asignar el valor e integrar un extra param basado en el
-     * valor puesto
-     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
+     * REG
+     * Genera el HTML de opciones `<option>` para un `<select>` a partir de un conjunto de valores.
+     *
+     * ---
+     * ### **Descripción**
+     * - La función itera sobre un conjunto de valores (`$values`), procesando cada fila (`$row`).
+     * - Genera la `descripcion_select` combinando valores de `$columns_ds`.
+     * - Obtiene un valor personalizado (`value_custom`) usando la clave `$key_value_custom`.
+     * - Integra parámetros adicionales (`$extra_params_key`).
+     * - Retorna el HTML completo de las opciones `<option>`.
+     *
+     * ---
+     * ### **Parámetros**
+     * @param array $columns_ds
+     *     - Lista de nombres de columnas utilizadas para construir la `descripcion_select`.
+     *     - Debe contener al menos un campo válido.
+     *
+     * @param array $extra_params_key
+     *     - Lista de claves que se agregarán como atributos `data-*` en cada opción generada.
+     *     - Cada clave se validará antes de agregarse a los `extra_params`.
+     *
+     * @param int|string|float|null $id_selected
+     *     - Valor de la opción que debe marcarse como `selected` en el `<select>`.
+     *
      * @param string $key_value_custom
-     * @param string $options_html Options previos en html
-     * @param array $values Valores para asignacion y generacion de options
-     * @return array|string
+     *     - Clave dentro de `$row` que se usará para obtener un valor personalizado en cada opción.
+     *
+     * @param string $options_html
+     *     - HTML acumulado de opciones `<option>` previo a la ejecución de la función.
+     *
+     * @param array $values
+     *     - Conjunto de filas de datos de las cuales se generarán las opciones.
+     *     - Cada fila (`$row`) debe ser un array asociativo con las claves necesarias.
+     *
+     * ---
+     * ### **Retorno**
+     * - **string**: Devuelve el HTML generado con las opciones `<option>` para un `<select>`.
+     * - **array**: Devuelve un mensaje de error si alguna validación falla.
+     *
+     * ---
+     * ### **Ejemplos de uso**
+     *
+     * #### **Ejemplo 1: Generación de `<option>` a partir de datos de usuarios**
+     * ```php
+     * $columns_ds = ['nombre', 'apellido'];
+     * $extra_params_key = ['email', 'telefono'];
+     * $id_selected = 2;
+     * $key_value_custom = 'id_usuario';
+     * $options_html = '';
+     * $values = [
+     *     1 => ['nombre' => 'Juan', 'apellido' => 'Pérez', 'id_usuario' => 1, 'email' => 'juan@example.com', 'telefono' => '555-1234'],
+     *     2 => ['nombre' => 'Ana', 'apellido' => 'Gómez', 'id_usuario' => 2, 'email' => 'ana@example.com', 'telefono' => '555-5678']
+     * ];
+     *
+     * $resultado = $this->options_html_data($columns_ds, $extra_params_key, $id_selected, $key_value_custom, $options_html, $values);
+     * ```
+     * **Salida esperada:**
+     * ```html
+     * <option value="1" data-email="juan@example.com" data-telefono="555-1234">Juan Pérez</option>
+     * <option value="2" selected data-email="ana@example.com" data-telefono="555-5678">Ana Gómez</option>
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Datos incompletos en `$values`**
+     * ```php
+     * $values = [
+     *     1 => ['nombre' => 'Carlos', 'id_usuario' => 1], // Falta 'apellido'
+     * ];
+     * $resultado = $this->options_html_data($columns_ds, $extra_params_key, $id_selected, $key_value_custom, $options_html, $values);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error al validar row',
+     *     'data' => ['descripcion_select' => null]
+     * ]
+     * ```
+     *
+     * ---
+     * @throws array Devuelve un array con mensaje de error si:
+     *  - `$row` no es un array válido.
+     *  - `descripcion_select` no está presente en `$row`.
+     *  - Alguna clave de `$extra_params_key` está vacía o no existe en `$row`.
+     *
+     * @version 1.0.0
      */
     private function options_html_data(array $columns_ds, array $extra_params_key, int|null|string|float $id_selected,
                                        string $key_value_custom, string $options_html, array $values): array|string
     {
-
         $options_html_ = $options_html;
-        foreach ($values as $row_id=>$row){
-            if(!is_array($row)){
+
+        foreach ($values as $row_id => $row) {
+            // Validación: Cada fila debe ser un array asociativo
+            if (!is_array($row)) {
                 return $this->error->error(mensaje: 'Error el row debe ser un array', data: $row);
             }
 
-            $data_option = $this->data_option(columns_ds: $columns_ds,key_value_custom:  $key_value_custom,row:  $row);
-            if(errores::$error){
+            // Genera `descripcion_select` y `value_custom`
+            $data_option = $this->data_option(columns_ds: $columns_ds, key_value_custom: $key_value_custom, row: $row);
+            if (errores::$error) {
                 return $this->error->error(mensaje: 'Error al integrar data option', data: $data_option);
             }
 
+            // Genera las opciones `<option>` con parámetros extra
             $options_html_ = $this->option_con_extra_param(extra_params_key: $extra_params_key,
                 id_selected: $id_selected, options_html_: $options_html_, row: $data_option->row, row_id: $row_id,
                 value_custom: $data_option->value_custom);
-            if(errores::$error){
+            if (errores::$error) {
                 return $this->error->error(mensaje: 'Error al generar option', data: $options_html_);
             }
         }
+
         return $options_html_;
     }
+
 
     /**
      * Genera in input de tipo password
@@ -1395,18 +2401,109 @@ class html{
         return $params;
     }
 
-    private function row_descripcion_select(array $columns_ds, array $row)
+    /**
+     * REG
+     * Agrega una clave `descripcion_select` a `$row` concatenando valores de columnas definidas en `$columns_ds`.
+     *
+     * ---
+     * ### **Descripción**
+     * - La función toma un array de nombres de columnas `$columns_ds` y un array de datos `$row`.
+     * - Si `$columns_ds` contiene columnas, genera una descripción concatenada a partir de los valores en `$row`.
+     * - Utiliza la función `descripcion_select()` para construir la cadena.
+     * - Agrega la clave `'descripcion_select'` a `$row` con el valor generado.
+     * - Si `$columns_ds` está vacío, retorna `$row` sin modificaciones.
+     *
+     * ---
+     * ### **Parámetros**
+     * @param array $columns_ds
+     *     - Lista de nombres de columnas a concatenar.
+     *     - Cada columna debe existir en `$row`.
+     *
+     * @param array $row
+     *     - Datos de la fila de donde se extraerán los valores de `$columns_ds`.
+     *     - Se espera que contenga todas las claves mencionadas en `$columns_ds`.
+     *
+     * ---
+     * ### **Retorno**
+     * - **array**: Devuelve `$row` con la nueva clave `'descripcion_select'` si `$columns_ds` tiene datos.
+     * - **array**: Devuelve un array con información de error si ocurre un problema.
+     *
+     * ---
+     * ### **Ejemplos de uso**
+     *
+     * #### **Ejemplo 1: Agregar `descripcion_select` concatenando varias columnas**
+     * ```php
+     * $columns_ds = ['nombre', 'apellido', 'edad'];
+     * $row = ['nombre' => 'Juan', 'apellido' => 'Pérez', 'edad' => '30'];
+     *
+     * $resultado = $this->row_descripcion_select($columns_ds, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * [
+     *     'nombre' => 'Juan',
+     *     'apellido' => 'Pérez',
+     *     'edad' => '30',
+     *     'descripcion_select' => 'Juan Pérez 30'
+     * ]
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Sin columnas en `$columns_ds`**
+     * ```php
+     * $columns_ds = [];
+     * $row = ['nombre' => 'Carlos', 'apellido' => 'Ramírez'];
+     *
+     * $resultado = $this->row_descripcion_select($columns_ds, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * [
+     *     'nombre' => 'Carlos',
+     *     'apellido' => 'Ramírez'
+     * ]
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: Manejo de error si `$row` no contiene una clave de `$columns_ds`**
+     * ```php
+     * $columns_ds = ['nombre', 'apellido', 'direccion'];
+     * $row = ['nombre' => 'Lucía', 'apellido' => 'Gómez'];
+     *
+     * $resultado = $this->row_descripcion_select($columns_ds, $row);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error al integrar descripcion select',
+     *     'data' => [...]
+     * ]
+     * ```
+     *
+     * ---
+     * @throws array Devuelve un array con un mensaje de error si ocurre un problema en la validación.
+     *
+     * @version 1.0.0
+     */
+    private function row_descripcion_select(array $columns_ds, array $row): array|string
     {
-        if(count($columns_ds) > 0){
-            $descripcion_select = $this->descripcion_select(columns_ds: $columns_ds,row:  $row);
-            if(errores::$error){
+        // Verifica si hay columnas para generar la descripción
+        if (count($columns_ds) > 0) {
+            // Genera la descripción concatenada
+            $descripcion_select = $this->descripcion_select(columns_ds: $columns_ds, row: $row);
+
+            // Verifica errores en la concatenación
+            if (errores::$error) {
                 return $this->error->error(mensaje: 'Error al integrar descripcion select', data: $descripcion_select);
             }
+
+            // Agrega la descripción generada al array `$row`
             $row['descripcion_select'] = trim($descripcion_select);
         }
-        return $row;
 
+        return $row;
     }
+
 
     /**
      * Genera un input de tipo select
@@ -1496,19 +2593,99 @@ class html{
         return $select;
     }
     /**
-     * Verifica si el elemento debe ser selected o no
-     * @param mixed $value valor del item del select
-     * @param mixed $id_selected Id o valor a comparar origen de la base de valor
-     * @return bool
+     * REG
+     * Verifica si un valor debe estar marcado como seleccionado en un elemento `<select>`.
+     *
+     * Esta función compara dos valores (`value` e `id_selected`) y determina si deben considerarse iguales.
+     * Si los valores coinciden (convertidos a `string`), la función retorna `true`, indicando que la opción
+     * debe estar marcada como `selected`. Si los valores no coinciden, devuelve `false`.
+     *
+     * ---
+     * ### Validaciones realizadas:
+     * - Convierte ambos valores a `string` antes de compararlos para evitar problemas de tipo.
+     * - Retorna `true` si los valores coinciden y `false` en caso contrario.
+     *
+     * ---
+     * ### Parámetros:
+     * @param int|null|string|float $value El valor de la opción en el `<option>`. Puede ser de tipo `int`, `string`, `float` o `null`.
+     * @param int|null|string|float $id_selected El valor seleccionado en el `<select>`, que se compara con `$value`.
+     *
+     * ---
+     * ### Retorno:
+     * - Retorna `true` si `$value` e `$id_selected` son iguales tras la conversión a `string`.
+     * - Retorna `false` si los valores no coinciden.
+     *
+     * ---
+     * ### Ejemplo de uso:
+     *
+     * #### Ejemplo 1: Coincidencia exacta entre valores enteros
+     * ```php
+     * $value = 5;
+     * $id_selected = 5;
+     * $resultado = $this->selected($value, $id_selected);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * true
+     * ```
+     *
+     * ---
+     * #### Ejemplo 2: Comparación entre `string` y `int` (coincidencia)
+     * ```php
+     * $value = "10";
+     * $id_selected = 10;
+     * $resultado = $this->selected($value, $id_selected);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * true
+     * ```
+     *
+     * ---
+     * #### Ejemplo 3: Diferentes valores numéricos (no coinciden)
+     * ```php
+     * $value = 3;
+     * $id_selected = 8;
+     * $resultado = $this->selected($value, $id_selected);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * false
+     * ```
+     *
+     * ---
+     * #### Ejemplo 4: `null` contra un valor numérico (no coinciden)
+     * ```php
+     * $value = null;
+     * $id_selected = 7;
+     * $resultado = $this->selected($value, $id_selected);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * false
+     * ```
+     *
+     * ---
+     * #### Ejemplo 5: Ambos valores son `null` (coincidencia)
+     * ```php
+     * $value = null;
+     * $id_selected = null;
+     * $resultado = $this->selected($value, $id_selected);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * true
+     * ```
+     *
+     * ---
+     * @version 1.0.0
      */
     final protected function selected(int|null|string|float $value, int|null|string|float $id_selected): bool
     {
-        $selected = false;
-        if((string)$value === (string)$id_selected){
-            $selected = true;
-        }
-        return $selected;
+        // Comparación convertida a string para asegurar coincidencias en diferentes tipos de datos
+        return (string)$value === (string)$id_selected;
     }
+
 
     final public function submit(string $css, string $label): string|array
     {
@@ -1889,33 +3066,94 @@ class html{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI
-     * Función para validar las opciones de una instancia.
+     * REG
+     * Valida los valores de una opción antes de ser utilizada en un `select` o una lista desplegable.
      *
-     * Esta función realiza la validación de las opciones dadas para
-     * una cierta acción. Las validaciones realizadas incluyen:
-     * - Se verifica si el valor no es vacío.
-     * - Se verifica si la descripción no es vacía.
+     * Esta función valida que los parámetros `$descripcion` y `$value` no estén vacíos.
+     * Asegura que `$value` sea un valor válido y que `$descripcion` tenga un contenido no vacío.
+     * Si alguno de los valores es inválido, la función devuelve un error detallado.
      *
-     * @param string $descripcion La descripción de la opción.
-     * @param int|string $value El valor de la opción.
+     * ---
+     * ### Validaciones realizadas:
+     * - Se verifica que `$value` no sea una cadena vacía o contenga solo espacios.
+     * - Se asegura que `$descripcion` no esté vacío.
      *
-     * @return true|array Devuelve verdadero si las validaciones son exitosas.
-     * En caso de error, devuelve un arreglo con los detalles del error.
-     * @version 17.18.0
+     * ---
+     * ### Parámetros:
+     * @param string $descripcion La descripción de la opción. Debe ser una cadena de texto no vacía.
+     * @param int|string $value El valor de la opción. Puede ser un número entero o una cadena de texto válida.
+     *
+     * ---
+     * ### Retorno:
+     * - Devuelve `true` si ambos parámetros son válidos.
+     * - Si `$descripcion` o `$value` están vacíos, devuelve un array con el mensaje de error correspondiente.
+     *
+     * ---
+     * ### Ejemplo de uso:
+     * #### Ejemplo 1: Validación exitosa
+     * ```php
+     * $descripcion = "Opción válida";
+     * $value = 1;
+     *
+     * $resultado = $this->valida_option($descripcion, $value);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * true
+     * ```
+     *
+     * ---
+     * #### Ejemplo 2: Error por `$value` vacío
+     * ```php
+     * $descripcion = "Opción sin valor";
+     * $value = "";
+     *
+     * $resultado = $this->valida_option($descripcion, $value);
+     * ```
+     * **Salida esperada (error):**
+     * ```php
+     * array(
+     *     "mensaje" => "Error value no puede venir vacio",
+     *     "data" => ""
+     * )
+     * ```
+     *
+     * ---
+     * #### Ejemplo 3: Error por `$descripcion` vacío
+     * ```php
+     * $descripcion = "";
+     * $value = "A1";
+     *
+     * $resultado = $this->valida_option($descripcion, $value);
+     * ```
+     * **Salida esperada (error):**
+     * ```php
+     * array(
+     *     "mensaje" => "Error $descripcion no puede venir vacio",
+     *     "data" => ""
+     * )
+     * ```
+     *
+     * ---
+     * @version 1.0.0
      */
-    final protected function valida_option(string $descripcion,int|string $value ): true|array
+    final protected function valida_option(string $descripcion, int|string $value): true|array
     {
-        $value = trim($value);
-        if($value === ''){
-            return $this->error->error(mensaje: 'Error value no puede venir vacio', data: $value);
+        // Limpiar espacios en blanco alrededor de los valores
+        $value = trim((string)$value);
+        if ($value === '') {
+            return $this->error->error(mensaje: 'Error value no puede venir vacio', data: $value, es_final: true);
         }
+
         $descripcion = trim($descripcion);
-        if($descripcion === ''){
-            return $this->error->error(mensaje: 'Error $descripcion no puede venir vacio', data: $descripcion);
+        if ($descripcion === '') {
+            return $this->error->error(mensaje: 'Error $descripcion no puede venir vacio', data: $descripcion,
+                es_final: true);
         }
+
         return true;
     }
+
 
     /**
      * POR DOCUMENTAR EN WIKI FINAL REV
@@ -1948,73 +3186,309 @@ class html{
     }
 
     /**
-     * POR DOCUMNETAR EN WIKI
-     * Esta función toma una clave y una fila (array) como parámetros.
-     * Luego verifica si la clave pasada no está vacía.
-     * Si la clave no está vacía, llama a la función `value_custom_row`
-     * para obtener el valor de esta clave en la fila.
-     * Además, verifica si ha ocurrido un error durante la llamada a `value_custom_row`.
-     * Si se ha producido un error, devuelve un mensaje de error.
-     * Finalmente, devuelve el valor obtenido de la fila para la clave dada.
+     * REG
+     * Obtiene el valor personalizado de una clave en un array `$row`.
      *
-     * @param string $key_value_custom La clave que se buscará en la fila.
-     * @param array $row La fila (array) en la que se buscará la clave.
-     * @return array|string El valor de la clave obtenido de la fila,
-     *                o un mensaje de error si se ha producido un error.
+     * ---
+     * ### **Descripción**
+     * - La función toma un nombre de clave (`$key_value_custom`) y un array de datos (`$row`).
+     * - Si la clave está vacía, devuelve una cadena vacía (`''`).
+     * - Si la clave no está vacía, obtiene el valor asociado en `$row` llamando a `value_custom_row()`.
+     * - En caso de error, devuelve un mensaje de error.
      *
-     * @version 17.17.0
+     * ---
+     * ### **Parámetros**
+     * @param string $key_value_custom
+     *     - Nombre de la clave en `$row` de la que se desea obtener el valor.
+     *     - Puede estar vacía (lo que devuelve `''`).
+     *
+     * @param array $row
+     *     - Array de datos donde se buscará el valor de la clave.
+     *
+     * ---
+     * ### **Retorno**
+     * - **string**: Si la clave existe en `$row`, devuelve su valor sin espacios adicionales.
+     * - **array**: Devuelve un mensaje de error si `value_custom_row()` detecta una clave vacía.
+     *
+     * ---
+     * ### **Ejemplos de uso**
+     *
+     * #### **Ejemplo 1: Clave existente en `$row`**
+     * ```php
+     * $row = ['codigo' => 'ABC123', 'precio' => 50];
+     * $key_value_custom = 'codigo';
+     *
+     * $resultado = $this->value_custom($key_value_custom, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * 'ABC123'
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Clave no existente en `$row`**
+     * ```php
+     * $row = ['codigo' => 'XYZ789'];
+     * $key_value_custom = 'descripcion';
+     *
+     * $resultado = $this->value_custom($key_value_custom, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * ''
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: `$key_value_custom` vacío**
+     * ```php
+     * $row = ['codigo' => 'XYZ789'];
+     * $key_value_custom = '';
+     *
+     * $resultado = $this->value_custom($key_value_custom, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * ''
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 4: Manejo de error cuando `value_custom_row` detecta un problema**
+     * ```php
+     * $row = ['codigo' => 'XYZ789'];
+     * $key_value_custom = '   '; // Clave vacía después de `trim()`
+     *
+     * $resultado = $this->value_custom($key_value_custom, $row);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error key_value_custom esta vacio',
+     *     'data' => ''
+     * ]
+     * ```
+     *
+     * ---
+     * @throws array Devuelve un array con mensaje de error si `$key_value_custom` es inválido.
+     *
+     * @version 1.0.0
      */
     private function value_custom(string $key_value_custom, array $row): array|string
     {
+        // Elimina espacios en blanco de la clave
         $key_value_custom = trim($key_value_custom);
 
+        // Inicializa con un valor vacío por defecto
         $value_custom = '';
-        if($key_value_custom !== ''){
-            $value_custom = $this->value_custom_row(key_value_custom: $key_value_custom,row:  $row);
-            if(errores::$error){
-                return $this->error->error(mensaje: 'Error al integrar value custom', data: $value_custom);
+
+        // Si la clave no está vacía, intenta obtener su valor en `$row`
+        if ($key_value_custom !== '') {
+            $value_custom = $this->value_custom_row(key_value_custom: $key_value_custom, row: $row);
+
+            // Verifica si ocurrió un error en `value_custom_row`
+            if (errores::$error) {
+                return $this->error->error(
+                    mensaje: 'Error al integrar value custom',
+                    data: $value_custom
+                );
             }
         }
-        return $value_custom;
 
+        return $value_custom;
     }
 
+
     /**
-     * POR DOCUMENTAR EN WIKI
-     * Esta función toma una clave y una fila (array) como parámetros.
-     * Luego verifica si la clave pasada está vacía o no está establecida en la fila.
-     * En caso de que la clave esté vacía, retornará un error.
-     * Si la clave no está establecida en la fila, establecerá su valor como string vacío.
-     * Finalmente, devuelve el valor de la clave en la fila después de eliminar los espacios en blanco.
+     * REG
+     * Obtiene el valor de una clave específica en un array `$row` y lo retorna como string.
      *
-     * @param string $key_value_custom La clave que se buscará en la fila.
-     * @param array $row La fila (array) en la que se buscará la clave.
-     * @return array|string El valor de la clave después de aplicar trim,
-     *                      o un error si la clave está vacía.
+     * ---
+     * ### **Descripción**
+     * - La función recibe una clave (`$key_value_custom`) y un array de datos (`$row`).
+     * - Si la clave está vacía, retorna un error.
+     * - Si la clave no existe en `$row`, la inicializa con un valor vacío (`''`).
+     * - Devuelve el valor de `$row[$key_value_custom]` en formato string, sin espacios en los extremos.
      *
-     * @version 17.17.0
+     * ---
+     * ### **Parámetros**
+     * @param string $key_value_custom
+     *     - Nombre de la clave a buscar en `$row`.
+     *     - Debe ser un string no vacío.
+     *
+     * @param array $row
+     *     - Array de datos en el que se buscará la clave `$key_value_custom`.
+     *
+     * ---
+     * ### **Retorno**
+     * - **string**: Devuelve el valor correspondiente a `$key_value_custom`, sin espacios adicionales.
+     * - **array**: Retorna un array de error si `$key_value_custom` es inválido.
+     *
+     * ---
+     * ### **Ejemplos de uso**
+     *
+     * #### **Ejemplo 1: Clave existente en `$row`**
+     * ```php
+     * $row = ['codigo' => 'ABC123', 'precio' => 50];
+     * $key_value_custom = 'codigo';
+     *
+     * $resultado = $this->value_custom_row($key_value_custom, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * 'ABC123'
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: Clave no existente en `$row`**
+     * ```php
+     * $row = ['codigo' => 'XYZ789'];
+     * $key_value_custom = 'descripcion';
+     *
+     * $resultado = $this->value_custom_row($key_value_custom, $row);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * ''
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: Manejo de error con `$key_value_custom` vacío**
+     * ```php
+     * $row = ['codigo' => 'XYZ789'];
+     * $key_value_custom = '';
+     *
+     * $resultado = $this->value_custom_row($key_value_custom, $row);
+     * ```
+     * **Salida esperada (Error):**
+     * ```php
+     * [
+     *     'mensaje' => 'Error key_value_custom esta vacio',
+     *     'data' => ''
+     * ]
+     * ```
+     *
+     * ---
+     * @throws array Devuelve un array con mensaje de error si `$key_value_custom` está vacío.
+     *
+     * @version 1.0.0
      */
     private function value_custom_row(string $key_value_custom, array $row): array|string
     {
+        // Elimina espacios en blanco de la clave
         $key_value_custom = trim($key_value_custom);
-        if($key_value_custom === ''){
-            return $this->error->error(mensaje: 'Error key_value_custom esta vacio', data: $key_value_custom);
+
+        // Valida que la clave no esté vacía
+        if ($key_value_custom === '') {
+            return $this->error->error(
+                mensaje: 'Error key_value_custom esta vacio',
+                data: $key_value_custom,
+                es_final: true
+            );
         }
-        if(!isset($row[$key_value_custom])){
+
+        // Si la clave no existe en `$row`, se inicializa con una cadena vacía
+        if (!isset($row[$key_value_custom])) {
             $row[$key_value_custom] = '';
         }
-        return trim($row[$key_value_custom]);
 
+        // Retorna el valor de la clave sin espacios adicionales
+        return trim($row[$key_value_custom]);
     }
 
+
+    /**
+     * REG
+     * Determina el valor final a utilizar en un `<option>` dentro de un `select`,
+     * priorizando el valor personalizado (`$value_custom`) sobre el ID de la fila (`$row_id`).
+     *
+     * ---
+     * ### **Descripción**
+     * Esta función evalúa dos valores de entrada:
+     * - `$row_id`: Identificador original del registro (puede ser `int`, `string`, `float`, `null`).
+     * - `$value_custom`: Valor personalizado, que si está presente reemplaza a `$row_id`.
+     *
+     * Si `$value_custom` **no está vacío**, se usa en lugar de `$row_id`.
+     * De lo contrario, se devuelve `$row_id`.
+     *
+     * ---
+     * ### **Parámetros**:
+     * @param int|string|float|null $row_id
+     *     - Identificador del registro.
+     *     - Puede ser `int`, `string`, `float` o `null`.
+     *     - Se usará este valor si `$value_custom` está vacío.
+     *
+     * @param int|string|float $value_custom
+     *     - Valor personalizado opcional.
+     *     - Si no está vacío, reemplaza a `$row_id`.
+     *
+     * ---
+     * ### **Retorno**:
+     * - **string**: Devuelve el valor final en formato `string`, listo para ser usado en un `<option>`.
+     *
+     * ---
+     * ### **Ejemplos de uso**:
+     *
+     * #### **Ejemplo 1: `$value_custom` vacío, se usa `$row_id`**
+     * ```php
+     * $row_id = 123;
+     * $value_custom = '';
+     * $resultado = $this->value_select($row_id, $value_custom);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * "123"
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 2: `$value_custom` tiene valor, se usa en lugar de `$row_id`**
+     * ```php
+     * $row_id = 123;
+     * $value_custom = 'codigo_ABC';
+     * $resultado = $this->value_select($row_id, $value_custom);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * "codigo_ABC"
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 3: `$row_id` es `null`, `$value_custom` vacío**
+     * ```php
+     * $row_id = null;
+     * $value_custom = '';
+     * $resultado = $this->value_select($row_id, $value_custom);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * ""
+     * ```
+     *
+     * ---
+     * #### **Ejemplo 4: `$row_id` es numérico pero `$value_custom` tiene prioridad**
+     * ```php
+     * $row_id = 500;
+     * $value_custom = 'REF-500A';
+     * $resultado = $this->value_select($row_id, $value_custom);
+     * ```
+     * **Salida esperada:**
+     * ```php
+     * "REF-500A"
+     * ```
+     *
+     * ---
+     * @version 1.0.0
+     */
     private function value_select(int|string|float|null $row_id, int|string|float $value_custom): string
     {
-        $value = trim($row_id);
-        $value_custom = trim($value_custom);
-        if($value_custom !== ''){
+        // Convertir a string y eliminar espacios en blanco
+        $value = trim((string) $row_id);
+        $value_custom = trim((string) $value_custom);
+
+        // Si `$value_custom` tiene un valor, se usa en lugar de `$row_id`
+        if ($value_custom !== '') {
             $value = $value_custom;
         }
-        return $value;
 
+        return $value;
     }
+
 }

@@ -883,15 +883,51 @@ class directivas{
     }
 
     /**
-     * Genera un input de tipo fecha
-     * @param bool $disabled si disabled retorna el input como disabled
-     * @param string $name Usado para identificador css name input y place holder
-     * @param string $place_holder Texto a mostrar en el input
-     * @param bool $required Integra el atributo requerido en el input
-     * @param stdClass $row_upd Registro en proceso
-     * @param bool $value_vacio Si el valor esta vacio no integra datos
-     * @return array|string
-     * @version 7.12.0
+     * REG
+     * Genera un input HTML de tipo `date` dentro de un `div` con su respectiva etiqueta (label),
+     * validando los datos necesarios para construir el campo. Permite especificar si el campo
+     * está deshabilitado, si es requerido, y si se desea mostrar vacío su valor.
+     *
+     * Este método está diseñado para ser utilizado en formularios donde se necesita capturar
+     * una fecha (sin hora), con controles de validación y personalización del comportamiento.
+     *
+     * ---
+     * ### Ejemplo de entrada
+     * ```php
+     * $row_upd = new stdClass();
+     * $row_upd->fecha_fin = '2025-06-15';
+     *
+     * $html = $directivas->fecha(
+     *     disabled: false,
+     *     name: 'fecha_fin',
+     *     place_holder: 'Fecha de Fin',
+     *     required: true,
+     *     row_upd: $row_upd,
+     *     value_vacio: false
+     * );
+     * ```
+     *
+     * ---
+     * ### Ejemplo de salida
+     * ```html
+     * <div class="control-group col-sm-12">
+     *   <label class="control-label" for="fecha_fin">Fecha de Fin</label>
+     *   <input type="date" name="fecha_fin" value="2025-06-15" class="form-control"
+     *          id="fecha_fin" placeholder="Fecha de Fin" required>
+     * </div>
+     * ```
+     *
+     * ---
+     * @param bool $disabled Indica si el input debe estar deshabilitado (`true` para agregar `disabled` al campo).
+     * @param string $name Nombre del campo. Se utiliza como atributo `name` e `id` del input.
+     * @param string $place_holder Texto que se mostrará como placeholder y en la etiqueta.
+     *                              Si está vacío, se construye automáticamente a partir de `$name`.
+     * @param bool $required Si es `true`, se añade el atributo `required` al input.
+     * @param stdClass $row_upd Objeto con datos del formulario. Se usa para obtener el valor del campo si existe.
+     * @param bool $value_vacio Si es `true`, fuerza a que el valor del input sea vacío, ignorando `$row_upd`.
+     *
+     * @return array|string Retorna el HTML del input con su `div` y etiqueta incluidos,
+     *                      o un array con detalles de error si ocurre algún problema.
      */
     final public function fecha(bool $disabled, string $name, string $place_holder, bool $required, stdClass $row_upd,
                                    bool $value_vacio ): array|string
@@ -1543,17 +1579,50 @@ class directivas{
 
 
     /**
-     * Integra un input de tipo fecha required
-     * @param bool $disabled Atributo disabled
-     * @param string $name Name input
-     * @param string $place_holder Label input
-     * @param stdClass $row_upd Registro en proceso
-     * @param bool $value_vacio Si vacio deja vacio el input
-     * @param bool $required Required default true
-     * @param mixed|null $value Valor prioritario de input
-     * @param bool $value_hora Si es verdadero integra datetime en input
-     * @return array|string
-     * @version 8.24.0
+     * REG
+     * Genera un input HTML de tipo fecha (o datetime-local) dentro de un `div` con etiqueta,
+     * validando los datos requeridos, con opción a deshabilitado y campos vacíos controlados.
+     *
+     * Este método es útil para construir inputs de tipo fecha o fecha y hora en formularios dinámicos,
+     * permitiendo especificar si el campo es requerido, si debe estar deshabilitado, y si el valor debe ser vacío.
+     *
+     * ### Ejemplo de entrada
+     * ```php
+     * $row_upd = new stdClass();
+     * $row_upd->fecha_inicio = '2025-04-01';
+     *
+     * $html = $directivas->input_fecha_required(
+     *     disabled: false,
+     *     name: 'fecha_inicio',
+     *     place_holder: 'Fecha de Inicio',
+     *     row_upd: $row_upd,
+     *     value_vacio: false,
+     *     required: true,
+     *     value: null,
+     *     value_hora: false
+     * );
+     * ```
+     *
+     * ### Ejemplo de salida
+     * ```html
+     * <div class="control-group col-sm-12">
+     *   <label class="control-label" for="fecha_inicio">Fecha de Inicio</label>
+     *   <input type="date" name="fecha_inicio" value="2025-04-01" class="form-control"
+     *          id="fecha_inicio" placeholder="Fecha de Inicio" required>
+     * </div>
+     * ```
+     *
+     * @param bool $disabled Indica si el campo estará deshabilitado.
+     * @param string $name Nombre del campo (usado como `name`, `id`, y para el valor).
+     * @param string $place_holder Texto que aparecerá como placeholder; si está vacío se genera a partir del nombre.
+     * @param stdClass $row_upd Objeto con los datos del formulario para obtener el valor actual del campo.
+     * @param bool $value_vacio Si es `true`, se fuerza el valor del campo a vacío.
+     * @param bool $required Si es `true`, se agrega el atributo `required` al input.
+     * @param mixed $value Valor explícito a mostrar en el input (anula el valor de `$row_upd->$name` si no es `null`).
+     * @param bool $value_hora Si es `true`, el tipo del input será `datetime-local` en vez de `date`.
+     *
+     * @return array|string HTML generado del input tipo fecha dentro de un div con su etiqueta correspondiente,
+     *                      o un array con mensaje de error si ocurre una falla en alguna validación.
      */
     final public function input_fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                                bool $value_vacio, bool $required = true, mixed $value = null,

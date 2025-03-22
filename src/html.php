@@ -1028,17 +1028,66 @@ class html{
         return $select_in.$options_html.$select_fin;
     }
 
-    /** Genera un input de tipo email
-     * @version 0.31.1
-     * @param bool $disabled Si disabled retorna text disabled
-     * @param string $id_css Identificador de tipo css
-     * @param string $name Nombre del input
-     * @param string $place_holder Contenido a mostrar previo a la captura del input
-     * @param bool $required Si required aplica required en html
-     * @param mixed $value Valor de input
-     * @return array|string
-     * @final rev
+    /**
+     * REG
+     * Genera el HTML de un input de tipo texto con validación para correos electrónicos.
+     *
+     * Este método construye un campo `input` con atributos configurables, incluyendo `name`, `id`, `placeholder`,
+     * `required`, `disabled`, y una validación basada en una expresión regular para correos electrónicos (HTML5 compatible).
+     *
+     * La validación se realiza contra un patrón predefinido llamado `correo_html5` definido en la clase `validacion`.
+     * Si este patrón no existe o alguno de los datos requeridos no es válido, se devolverá un array de error.
+     *
+     * @version 1.0.0
+     * @author Gamboa
+     * @package base\frontend
+     *
+     * @param bool $disabled Define si el campo estará deshabilitado (`true`) o habilitado (`false`).
+     * @param string $id_css ID principal para el input.
+     * @param string $name Nombre del campo (atributo `name` y `id` del input).
+     * @param string $place_holder Texto guía mostrado dentro del campo cuando está vacío.
+     * @param bool $required Si el campo es obligatorio (`required` en HTML).
+     * @param mixed $value Valor predefinido para el input (texto del correo electrónico actual).
+     *
+     * @return string|array Devuelve el HTML generado como cadena si todo fue correcto.
+     *                      Si ocurre un error en las validaciones o generación, devuelve un array con los detalles del error.
+     *
+     * @example Generación de input email:
+     * ```php
+     * $html = $this->email(
+     *     disabled: false,
+     *     id_css: 'correo_usuario',
+     *     name: 'email',
+     *     place_holder: 'Ingrese su correo',
+     *     required: true,
+     *     value: 'usuario@ejemplo.com'
+     * );
+     *
+     * echo $html;
+     * // Salida esperada:
+     * // <input type='text' name='email' value='usuario@ejemplo.com' |class| id='correo_usuario'
+     * //  placeholder='Ingrese su correo' required pattern='[expresión_reg]' />
+     * ```
+     *
+     * @example En caso de error:
+     * ```php
+     * $html = $this->email(
+     *     disabled: false,
+     *     id_css: '', // error: vacío
+     *     name: 'email',
+     *     place_holder: 'Ingrese su correo',
+     *     required: true,
+     *     value: ''
+     * );
+     * if (is_array($html)) {
+     *     print_r($html['mensaje']); // Error al validar datos
+     * }
+     * ```
+     *
+     * @see params_txt() Utilizado para generar parámetros HTML comunes (required, class, title, etc.)
+     * @see validacion::$patterns['correo_html5'] Expresión regular utilizada para validar el email.
      */
+
     public function email(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value): array|string
     {
@@ -1052,12 +1101,12 @@ class html{
             required:  $required);
 
         if(errores::$error){
-            return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
+            return $this->error->error(mensaje: 'Error al generar parametros', data: $params, es_final: true);
         }
 
         $val = new validacion();
         if (!isset($val->patterns['correo_html5'])) {
-            return $this->error->error(mensaje: 'No existe el regex para email', data: $params);
+            return $this->error->error(mensaje: 'No existe el regex para email', data: $params, es_final: true);
         }
 
         $html = "<input type='text' name='$params->name' value='$value' |class| $params->disabled $params->required ";
@@ -2329,21 +2378,65 @@ class html{
 
 
     /**
-     * Genera y valida los parametros de in input tipo text
-     * @param bool $disabled Si disabled retorna text disabled
-     * @param string $id_css Identificador de tipo css
-     * @param string $name Nombre del input
-     * @param string $place_holder Contenido a mostrar previo a la captura del input
-     * @param bool $required Si required aplica required en html
-     * @param array $class_css Integra clases css
-     * @param array $ids_css
-     * @param string $regex Integra un regex para atributo pattern del input
-     * @param string $title Title de input
-     * @return array|stdClass
+     * REG
+     * Genera un conjunto de parámetros HTML para un input tipo texto.
+     *
+     * Este método construye dinámicamente los atributos HTML requeridos para renderizar un campo de texto,
+     * incluyendo `disabled`, `required`, `multiple`, `pattern`, `title`, `class`, `id`, entre otros.
+     * Todos los atributos se integran en un objeto `stdClass` para su fácil uso en vistas.
+     * Además, realiza validaciones previas sobre los datos requeridos, devolviendo errores detallados si algo falla.
+     *
+     * @version 1.0.0
+     * @author Gamboa
+     * @package base\frontend
+     *
+     * @param bool $disabled Si el input debe estar deshabilitado (`true`) o no (`false`).
+     * @param string $id_css Identificador CSS principal del input (se añadirá también a la lista de IDs).
+     * @param string $name Nombre del input (`name` HTML y referencia en `$row_upd`).
+     * @param string $place_holder Texto guía que aparecerá como `placeholder`.
+     * @param bool $required Si el campo es obligatorio.
+     * @param array $class_css Clases CSS adicionales a aplicar. Ej: `['form-control', 'input-lg']`
+     * @param bool $multiple Si el input puede aceptar múltiples valores.
+     * @param array $ids_css IDs adicionales a incluir en el atributo `id`.
+     * @param string $regex Expresión regular para validar el contenido (se aplica en `pattern`).
+     * @param string $title Texto para mostrar como tooltip (`title` HTML). Si se omite, se usa `place_holder`.
+     *
+     * @return stdClass|array Devuelve un objeto con los atributos HTML generados, o un array de error en caso de fallar alguna validación.
+     *
+     * @example Ejemplo de uso básico:
+     * ```php
+     * $params = $this->params_txt(
+     *     disabled: false,
+     *     id_css: 'nombre_input',
+     *     name: 'nombre',
+     *     place_holder: 'Ingrese su nombre',
+     *     required: true,
+     *     class_css: ['form-control'],
+     *     multiple: false,
+     *     ids_css: ['extra-id'],
+     *     regex: '[A-Za-z]{3,}',
+     *     title: 'Nombre del usuario'
+     * );
+     *
+     * if(is_array($params)) {
+     *     echo "Error: " . $params['mensaje'];
+     * } else {
+     *     echo "<input type='text' name='{$params->name}' {$params->class} {$params->ids_css_html} {$params->disabled} {$params->required} {$params->regex} {$params->title}>";
+     * }
+     * ```
+     *
+     * @see valida_params_txt() Valida los parámetros básicos del input.
+     * @see params_inputs::disabled_html()
+     * @see params_inputs::required_html()
+     * @see params_inputs::regex_html()
+     * @see params_inputs::title_html()
+     * @see params_inputs::class_html()
+     * @see params_inputs::ids_html()
      */
-    private function params_txt(bool $disabled, string $id_css, string $name,string $place_holder,
-                                bool $required, array $class_css = array(),bool $multiple = false, array $ids_css = array(),
-                                string $regex = '', string $title = ''): array|stdClass
+
+    private function params_txt(
+        bool $disabled, string $id_css, string $name,string $place_holder, bool $required, array $class_css = array(),
+        bool $multiple = false, array $ids_css = array(), string $regex = '', string $title = ''): array|stdClass
     {
 
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
@@ -3156,34 +3249,67 @@ class html{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Valida los parámetros que se pasan a la función.
+     * REG
+     * Valida los parámetros necesarios para un input de tipo texto.
      *
-     * @param string $id_css es el identificador CSS para el elemento.
-     * @param string $name es el nombre del elemento.
-     * @param string $place_holder es el placeholder del elemento.
+     * Esta función se asegura de que los parámetros `$id_css`, `$name` y `$place_holder` no estén vacíos
+     * después de aplicar `trim()`. Si alguno de ellos está vacío, se genera un error utilizando el
+     * manejador de errores definido en la clase (`$this->error`).
      *
-     * @return true|array devuelve true si la validación es exitosa, de lo contrario devuelve un array con detalles del error.
-     * @version 16.15.0
+     * @param string $id_css ID o clase CSS asociada al input.
+     *                       Ejemplo: 'form-control'
+     *
+     * @param string $name Nombre del campo del formulario.
+     *                     Ejemplo: 'correo_electronico'
+     *
+     * @param string $place_holder Texto que se muestra como guía en el input.
+     *                              Ejemplo: 'Ingrese su correo electrónico'
+     *
+     * @return true|array Retorna `true` si todos los parámetros son válidos.
+     *                    Si alguno es inválido, retorna un arreglo con el error estructurado,
+     *                    generado por `$this->error->error()`.
+     *
+     * @example Ejemplo de uso exitoso:
+     * ```php
+     * $resultado = $this->valida_params_txt('form-control', 'usuario', 'Nombre de usuario');
+     * // Resultado:
+     * // true
+     * ```
+     *
+     * @example Ejemplo de uso con error:
+     * ```php
+     * $resultado = $this->valida_params_txt('form-control', '', 'Nombre de usuario');
+     * // Resultado:
+     * // [
+     * //     'error' => true,
+     * //     'mensaje' => 'Error name es necesario',
+     * //     'data' => ''
+     * // ]
+     * ```
+     *
+     * @version 1.0.0
      */
     final protected function valida_params_txt(string $id_css, string $name, string $place_holder): true|array
     {
         $name = trim($name);
-        if($name === ''){
+        if ($name === '') {
             return $this->error->error(mensaje: 'Error name es necesario', data: $name, es_final: true);
         }
+
         $id_css = trim($id_css);
-        if($id_css === ''){
+        if ($id_css === '') {
             return $this->error->error(mensaje: 'Error $id_css es necesario', data: $id_css, es_final: true);
         }
+
         $place_holder = trim($place_holder);
-        if($place_holder === ''){
+        if ($place_holder === '') {
             return $this->error->error(mensaje: 'Error $place_holder es necesario', data: $place_holder,
                 es_final: true);
         }
-        return true;
 
+        return true;
     }
+
 
     /**
      * REG

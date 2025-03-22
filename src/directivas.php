@@ -476,19 +476,42 @@ class directivas{
 
 
     /**
+     * REG
+     * Valida el valor de `checked_default` y genera indicadores `checked` para dos opciones.
      *
-     * Integra el elemento checked del radio predeterminado
-     * @param int $checked_default Numero de input predeterminado
-     * @return stdClass|array
-     * @version 8.15.0
+     * Este método recibe un valor entero (`1` o `2`) e inicializa un objeto con propiedades
+     * `checked_default_v1` y `checked_default_v2`, las cuales contienen la cadena `'checked'`
+     * si el valor corresponde a la opción seleccionada. Si el valor es inválido (<= 0 o > 2),
+     * se devuelve un arreglo de error con información detallada.
+     *
+     * @param int $checked_default Valor que indica cuál opción debe marcarse como seleccionada:
+     *                              - 1: Marca `checked_default_v1`.
+     *                              - 2: Marca `checked_default_v2`.
+     *
+     * @return stdClass|array Objeto con propiedades `checked_default_v1` y `checked_default_v2`, o
+     *                        un array de error si el valor no está en el rango permitido.
+     *
+     * @example
+     * ```php
+     * $checked_data = $this->checked_default(1);
+     * if (is_array($checked_data)) {
+     *     // Manejar error
+     *     var_dump($checked_data);
+     * } else {
+     *     echo $checked_data->checked_default_v1; // "checked"
+     *     echo $checked_data->checked_default_v2; // ""
+     * }
+     * ```
      */
     private function checked_default(int $checked_default): stdClass|array
     {
         if($checked_default <=0){
-            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default);
+            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default,
+                es_final: true);
         }
         if($checked_default > 2){
-            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default);
+            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default,
+                es_final: true);
         }
         $checked_default_v1 = '';
         $checked_default_v2 = '';
@@ -507,10 +530,29 @@ class directivas{
     }
 
     /**
-     * Genera un conjunto de class para input radio
-     * @param array $class_label Clase label precargada
-     * @return array|string
-     * @version 8.7.0
+     * REG
+     * Genera una cadena de clases CSS para un elemento `<label>` de tipo `form-check`, asegurando que incluya
+     * la clase `form-check-label` y procesando adecuadamente el array de clases recibido.
+     *
+     * Este método utiliza la clase `params_inputs` para generar el string de clases HTML a partir de un array.
+     * También realiza una limpieza básica de espacios dobles.
+     * En caso de error, retorna un arreglo con detalles del mismo.
+     *
+     * @param array $class_label Arreglo de clases CSS personalizadas a incluir en el label.
+     *
+     * @return array|string Retorna un string con las clases CSS concatenadas o un arreglo de error si falla el procesamiento.
+     *
+     * @example
+     * ```php
+     * $clases = $this->class_label_html(['text-primary', 'mb-2']);
+     * if (is_array($clases)) {
+     *     // Manejo del error
+     *     var_dump($clases);
+     * } else {
+     *     echo $clases;
+     *     // Salida: class="text-primary mb-2 form-check-label"
+     * }
+     * ```
      */
     private function class_label_html(array $class_label): array|string
     {
@@ -524,10 +566,29 @@ class directivas{
     }
 
     /**
-     * Genera las clases css para input radio
-     * @param array $class_radio Clases precargadas
-     * @return array|string
-     * @version 8.11.0
+     * REG
+     * Genera una cadena de clases CSS para un input tipo radio (`<input type="radio">`),
+     * asegurando que contenga la clase `form-check-input` y procesando correctamente cualquier clase adicional proporcionada.
+     *
+     * Este método utiliza la clase `params_inputs` para construir el string de clases HTML a partir del array de entrada.
+     * También realiza una limpieza de espacios dobles en el string final.
+     * Si ocurre un error durante el procesamiento, se retorna un arreglo con la información del error.
+     *
+     * @param array $class_radio Arreglo de clases CSS personalizadas a incluir en el radio input.
+     *
+     * @return array|string Retorna el string con las clases HTML para el radio o un arreglo de error si algo falla.
+     *
+     * @example
+     * ```php
+     * $clases = $this->class_radio_html(['border', 'rounded']);
+     * if (is_array($clases)) {
+     *     // Manejar error
+     *     var_dump($clases);
+     * } else {
+     *     echo $clases;
+     *     // Salida esperada: class="border rounded form-check-input"
+     * }
+     * ```
      */
     private function class_radio_html(array $class_radio): array|string
     {
@@ -578,12 +639,34 @@ class directivas{
     }
 
     /**
-     * Integra en un div u radio
-     * @param int $cols N columnas css
-     * @param stdClass $inputs Inputs a integrar
-     * @param string $label_html Label de input
-     * @return string|array
-     * @version 8.19.0
+     * REG
+     * Genera un contenedor HTML `<div>` con clase Bootstrap y radios integrados.
+     *
+     * Este método construye un bloque `div` con la clase `control-group col-sm-{cols}` que incluye una etiqueta
+     * de texto (`$label_html`) y dos inputs tipo radio, previamente generados y entregados dentro de `$inputs`.
+     *
+     * Realiza validaciones de columnas y de las claves necesarias dentro del objeto `$inputs`.
+     *
+     * @param int $cols Cantidad de columnas Bootstrap (1-12) que ocupará el `div`. Debe ser un valor válido.
+     * @param stdClass $inputs Objeto con las propiedades:
+     *  - `label_input_v1`: string HTML del primer radio
+     *  - `label_input_v2`: string HTML del segundo radio
+     * @param string $label_html Texto de la etiqueta que acompaña a los radios (puede incluir HTML).
+     *
+     * @return string|array Devuelve un string con el HTML del `div` contenedor o un array con detalles del error.
+     *
+     * @example
+     * ```php
+     * $inputs = $this->labels_radios(
+     *     name: 'tipo_pago',
+     *     params: $params,
+     *     title: 'Forma de Pago',
+     *     val_1: 'Efectivo',
+     *     val_2: 'Transferencia'
+     * );
+     * $html = $this->div_radio(cols: 6, inputs: $inputs, label_html: '<strong>Forma de Pago</strong>');
+     * echo $html;
+     * ```
      */
     private function div_radio(int $cols, stdClass $inputs, string $label_html): string|array
     {
@@ -609,15 +692,38 @@ class directivas{
     }
 
     /**
-     * Genera un input de tipo email como required
-     * @param bool $disabled Si disabled el input queda inhabilitado
-     * @param string $name Name del input
-     * @param string $place_holder Muestra el contenido en el input
-     * @param stdClass $row_upd Registro en proceso
-     * @param bool $value_vacio Si valor vacio el value lo deja vacio
-     * @return array|string
-     * @version 0.99.4
-     * @finalrev
+     * REG
+     * Genera un input de tipo email requerido con estructura y validación integrada.
+     *
+     * Este método valida los datos de entrada, inicializa el valor del campo desde `$row_upd`, y construye un input HTML
+     * de tipo email dentro de un `div` con etiqueta (label) usando clases CSS. El campo generado será requerido
+     * (`required`) y podrá estar deshabilitado según el parámetro `$disabled`.
+     *
+     * @param bool $disabled Indica si el input estará deshabilitado.
+     * @param string $name Nombre del campo, usado como `name`, `id`, y para obtener el valor desde `$row_upd`.
+     * @param string $place_holder Texto del placeholder del input.
+     * @param stdClass $row_upd Objeto con los valores para precargar el input (por ejemplo, en una edición).
+     * @param bool $value_vacio Si se establece en true, el valor del input se generará vacío incluso si hay valor en `$row_upd`.
+     *
+     * @return array|string HTML del `div` con el input y la etiqueta correspondiente, o un array de error si ocurre algún fallo.
+     *
+     * @example
+     * ```php
+     * $email_html = $directivas->email_required(
+     *     disabled: false,
+     *     name: 'correo',
+     *     place_holder: 'Ingresa tu correo',
+     *     row_upd: $registro,
+     *     value_vacio: false
+     * );
+     *
+     * if (is_array($email_html)) {
+     *     // manejar error
+     *     var_dump($email_html);
+     * } else {
+     *     echo $email_html;
+     * }
+     * ```
      */
     public function email_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio ): array|string
@@ -628,7 +734,8 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
-        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
+        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,
+            value_vacio:  $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
@@ -729,10 +836,30 @@ class directivas{
     }
 
     /**
-     * Integra los id para inputs radio
-     * @param array $ids_css Identificadores a integrar
-     * @return string|array
-     * @version 8.13.0
+     * REG
+     * Genera un atributo HTML `id` concatenando múltiples identificadores CSS contenidos en un arreglo.
+     *
+     * Este método recorre el arreglo `$ids_css`, validando que cada valor no esté vacío. Si algún identificador
+     * está vacío, se retorna un error. Si todos son válidos, los concatena con espacios y construye un string
+     * con el atributo HTML `id='...'`.
+     *
+     * Este método es útil cuando deseas asignar múltiples identificadores CSS combinados en un solo `id` HTML.
+     *
+     * @param array $ids_css Arreglo de identificadores CSS que se concatenarán para formar el atributo `id`.
+     *
+     * @return string|array Retorna un string con el atributo `id='...'` o un arreglo de error si falla alguna validación.
+     *
+     * @example
+     * ```php
+     * $ids = $this->ids_html(['input-email', 'user-field']);
+     * if (is_array($ids)) {
+     *     // Manejar error
+     *     var_dump($ids);
+     * } else {
+     *     echo $ids;
+     *     // Salida esperada: id='input-email user-field'
+     * }
+     * ```
      */
     private function ids_html(array $ids_css): string|array
     {
@@ -740,7 +867,7 @@ class directivas{
         foreach ($ids_css as $id_css){
             $ids_html = trim($ids_html);
             if($id_css === ''){
-                return $this->error->error(mensaje: 'Error ids_html', data: $id_css);
+                return $this->error->error(mensaje: 'Error ids_html', data: $id_css, es_final: true);
             }
             $ids_html.=" $id_css ";
         }
@@ -786,17 +913,37 @@ class directivas{
     }
 
     /**
-     * Inicializa elementos de tipo name y title
-     * @param string $name Nombre del input
-     * @param string $title Title del input
-     * @return array|stdClass
-     * @version 8.10.0
+     * REG
+     * Inicializa y valida los nombres para un campo HTML.
+     *
+     * Este método se encarga de:
+     * - Validar que el nombre (`$name`) no esté vacío.
+     * - Asignar un título (`$title`) amigable si no fue proporcionado, generándolo a partir del nombre.
+     *   El título generado convierte guiones bajos en espacios y capitaliza cada palabra.
+     *
+     * Si el valor de `$name` está vacío, devuelve un array con error. Si no, retorna un objeto `stdClass`
+     * con los valores formateados.
+     *
+     * @param string $name Nombre del campo. No debe estar vacío.
+     * @param string $title Título del campo. Si está vacío, se genera automáticamente a partir del nombre.
+     *
+     * @return stdClass|array Retorna un objeto con los atributos `name` y `title`, o un array de error si ocurre alguna falla.
+     *
+     * @example
+     * ```php
+     * $nombres = $this->init_names(name: 'email_usuario', title: '');
+     * if (is_array($nombres)) {
+     *     // Manejo de error
+     * } else {
+     *     echo $nombres->title; // Output: "Email Usuario"
+     * }
+     * ```
      */
     private function init_names(string $name, string $title): array|stdClass
     {
         $name = trim($name);
         if($name === ''){
-            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
+            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name, es_final: true);
         }
         if($title === ''){
             $title = $name;
@@ -1046,27 +1193,52 @@ class directivas{
     }
 
     /**
-     * Genera un input de tipo radio double
-     * @param string $campo Campo A integrar
-     * @param int $checked_default  Value default checked
-     * @param string $tag Etiqueta
-     * @param string $val_1 Value 1
-     * @param string $val_2 Value 2
-     * @return array|string
-     * @version 8.21.0
+     * REG
+     * Genera un input compuesto por dos botones tipo radio con estructura Bootstrap.
+     *
+     * Este método es una interfaz pública para construir rápidamente un grupo de botones tipo radio con dos opciones,
+     * utilizando parámetros estandarizados a través de `params_inputs`. Ideal para integrarse en formularios.
+     *
+     * Internamente, este método:
+     * - Valida que el campo y la selección predeterminada (`checked_default`) sean válidos.
+     * - Obtiene parámetros estandarizados (como clases, `for`, IDs, etc.) desde `params_inputs`.
+     * - Construye el HTML mediante el método `radio_doble`.
+     *
+     * @param string $campo Nombre del campo, que se usará como `name`, `id` y base del `label`.
+     * @param int $checked_default Define cuál radio estará marcado por defecto:
+     *  - `1`: Marca `$val_1` como seleccionado.
+     *  - `2`: Marca `$val_2` como seleccionado.
+     * @param string $tag Etiqueta HTML que agrupa el campo (ej. "div", "section"). Se utiliza para la estructura de envoltura.
+     * @param string $val_1 Valor de la primera opción del radio (por ejemplo, "Sí").
+     * @param string $val_2 Valor de la segunda opción del radio (por ejemplo, "No").
+     *
+     * @return array|string Devuelve el HTML del grupo de radios o un array con el error si ocurre alguno.
+     *
+     * @example
+     * ```php
+     * echo $this->input_radio_doble(
+     *     campo: 'activo',
+     *     checked_default: 1,
+     *     tag: 'div',
+     *     val_1: 'Sí',
+     *     val_2: 'No'
+     * );
+     * ```
      */
     final public function input_radio_doble(string $campo, int $checked_default, string $tag, string $val_1,
                                             string $val_2): array|string
     {
         $campo = trim($campo);
         if($campo === ''){
-            return $this->error->error(mensaje: 'Error campo vacio',data:  $campo);
+            return $this->error->error(mensaje: 'Error campo vacio',data:  $campo, es_final: true);
         }
         if($checked_default <=0){
-            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default);
+            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default,
+                es_final: true);
         }
         if($checked_default > 2){
-            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default);
+            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default,
+                es_final: true);
         }
 
         $params_chk = (new params_inputs())->params_base_chk(campo: $campo,tag:  $tag);
@@ -1131,28 +1303,81 @@ class directivas{
 
 
     /**
-     * Funcion de inicializacion de datos para inputs
-     * @version 0.48.1
-     * @param string $name Nombre del input
-     * @param string $place_holder Dato a mostrar previo a la captura
-     * @param stdClass $row_upd Registro
-     * @param bool $value_vacio Si vacio inicializa row name como vacio
-     * @return array|stdClass
+     * REG
+     * Inicializa un campo de texto (`input`) estableciendo su etiqueta (`label`) y valor,
+     * útil para formularios dinámicos en procesos de alta o modificación.
+     *
+     * Este método valida el nombre del campo y el placeholder, genera la etiqueta HTML
+     * correspondiente y asegura que el valor esté presente en el objeto `row_upd`.
+     * Si se indica que el valor debe estar vacío o si no existe en el objeto, se inicializa como cadena vacía.
+     *
+     * En caso de error en la validación o generación de la etiqueta, se retorna un objeto de error con detalles.
+     *
+     * @param string    $name           Nombre del campo que se usará como clave y como base del `name`, `id` e `input`.
+     * @param string    $place_holder   Texto que se mostrará como sugerencia dentro del campo de texto.
+     * @param stdClass  $row_upd        Objeto que contiene los valores actuales del formulario (puede venir de la base de datos).
+     * @param bool      $value_vacio    Indica si se debe forzar el valor del campo a vacío (true) o mantener el existente (false).
+     *
+     * @return array|stdClass Retorna un objeto con:
+     *   - `label` (string): La etiqueta generada para el campo.
+     *   - `row_upd` (stdClass): El objeto actualizado con el valor del campo asignado.
+     *   En caso de error, retorna un array con los detalles del mismo.
+     *
+     * @example Ejemplo de uso:
+     * ```php
+     * $row_upd = new stdClass();
+     * $row_upd->descripcion = 'Texto actual';
+     * $data = $this->init_text(name: 'descripcion', place_holder: 'Ingrese descripción', row_upd: $row_upd, value_vacio: false);
+     * ```
+     *
+     * @example Resultado esperado (sin errores):
+     * ```php
+     * stdClass Object
+     * (
+     *     [row_upd] => stdClass Object
+     *         (
+     *             [descripcion] => Texto actual
+     *         )
+     *     [label] => <label for='descripcion' class='form-label'>Ingrese descripción</label>
+     * )
+     * ```
+     *
+     * @example Resultado esperado (con value_vacio = true):
+     * ```php
+     * stdClass Object
+     * (
+     *     [row_upd] => stdClass Object
+     *         (
+     *             [descripcion] =>
+     *         )
+     *     [label] => <label for='descripcion' class='form-label'>Ingrese descripción</label>
+     * )
+     * ```
+     *
+     * @example Resultado en caso de error:
+     * ```php
+     * Array
+     * (
+     *     [error] => 1
+     *     [mensaje] => 'Error al validar datos'
+     *     [data] => [... detalle del error ...]
+     * )
+     * ```
      */
-    final protected function init_text(string $name, string $place_holder, stdClass $row_upd,
-                                       bool $value_vacio): array|stdClass
+    final protected function init_text(
+        string $name, string $place_holder, stdClass $row_upd, bool $value_vacio): array|stdClass
     {
-        $valida = $this->valida_data_label(name: $name,place_holder:  $place_holder);
-        if(errores::$error){
+        $valida = $this->valida_data_label(name: $name, place_holder: $place_holder);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
-        $label = $this->label_input(name: $name,place_holder: $place_holder);
-        if(errores::$error){
+        $label = $this->label_input(name: $name, place_holder: $place_holder);
+        if (errores::$error) {
             return $this->error->error(mensaje: 'Error al generar label', data: $label);
         }
 
-        if($value_vacio || !(isset($row_upd->$name))){
+        if ($value_vacio || !(isset($row_upd->$name))) {
             $row_upd->$name = '';
         }
 
@@ -1162,6 +1387,7 @@ class directivas{
 
         return $data;
     }
+
 
     /**
      * Integra un input de tipo fecha required
@@ -1445,11 +1671,31 @@ class directivas{
     }
 
     /**
-     * Se inicializa los parametros de front de un radio
-     * @param string $for Tag
-     * @param string $label_html Label
-     * @return stdClass|array
-     * @version 8.18.0
+     * REG
+     * Inicializa y valida los valores del atributo `for` y el contenido de una etiqueta `label`.
+     *
+     * Este método asegura que tanto el atributo `for` como el contenido HTML del label (`label_html`)
+     * estén correctamente definidos. Si alguno está vacío, intenta asignar el valor del otro.
+     * Realiza limpieza de espacios y valida que al final ambos campos no estén vacíos.
+     *
+     * Si las validaciones fallan, retorna un arreglo de error. En caso exitoso, retorna
+     * un objeto con las propiedades `for` y `label_html`.
+     *
+     * @param string $for Atributo `for` de la etiqueta `label`, normalmente asociado al `id` de un input.
+     * @param string $label_html Texto visible que se mostrará en la etiqueta `label`.
+     *
+     * @return stdClass|array Objeto con las propiedades `for` y `label_html`, o arreglo de error si la validación falla.
+     *
+     * @example
+     * ```php
+     * $label = $this->label_init('email', 'Correo Electrónico');
+     * if (is_array($label)) {
+     *     // Manejo de error
+     *     var_dump($label);
+     * } else {
+     *     echo "<label for='{$label->for}'>{$label->label_html}</label>";
+     * }
+     * ```
      */
     private function label_init(string $for, string $label_html): stdClass|array
     {
@@ -1466,10 +1712,10 @@ class directivas{
         $label_html = trim($label_html);
 
         if($for === ''){
-            return $this->error->error(mensaje: 'Error for esta vacio',data:  $for);
+            return $this->error->error(mensaje: 'Error for esta vacio',data:  $for, es_final: true);
         }
         if($label_html === ''){
-            return $this->error->error(mensaje: 'Error label_html esta vacio',data:  $label_html);
+            return $this->error->error(mensaje: 'Error label_html esta vacio',data:  $label_html, es_final: true);
         }
 
         $data = new stdClass();
@@ -1551,16 +1797,42 @@ class directivas{
 
 
     /**
-     * Integra el label de un radio
-     * @param string $checked attr checked
-     * @param string $class_label_html clases css en div label
-     * @param string $class_radio_html clases css en input radio
-     * @param string $ids_html Identificador css
-     * @param string $name name input
-     * @param string $title titulo input
-     * @param string $val Value input
-     * @return string|array
-     * @version 8.6.0
+     * REG
+     * Genera un elemento HTML tipo radio con su respectiva etiqueta `<label>`.
+     *
+     * Este método genera una estructura HTML que representa un botón de opción (`<input type="radio">`)
+     * envuelto en una etiqueta `<label>`, incluyendo clases CSS, atributos `id`, y título accesible.
+     * Valida y limpia los parámetros antes de generar el HTML. También utiliza `init_names` para asegurar
+     * que el `name` y `title` estén correctamente formateados.
+     *
+     * @param string $checked Atributo "checked" si este botón debe estar seleccionado.
+     *                        Debe estar vacío o tener el valor `"checked"`.
+     * @param string $class_label_html Clases CSS para la etiqueta `<label>`, generado previamente.
+     * @param string $class_radio_html Clases CSS para el input radio, generado previamente.
+     * @param string $ids_html Atributo ID completo para el input (ej. `id='mi_id'`), generado previamente.
+     * @param string $name Nombre del grupo de radios. Es validado y no debe estar vacío.
+     * @param string $title Título (atributo HTML `title`) para el input. Si está vacío, se genera desde `$name`.
+     * @param string $val Valor del input radio (`value="..."`) y también el texto mostrado dentro de la etiqueta.
+     *
+     * @return string|array Devuelve el HTML generado como string o un array con información de error si ocurre una falla.
+     *
+     * @example
+     * ```php
+     * $html = $this->label_input_radio(
+     *     checked: 'checked',
+     *     class_label_html: "class='form-check-label'",
+     *     class_radio_html: "class='form-check-input'",
+     *     ids_html: "id='opcion1'",
+     *     name: 'tipo_pago',
+     *     title: '',
+     *     val: 'Efectivo'
+     * );
+     * echo $html;
+     * // <label class='form-check-label'>
+     * //   <input type='radio' name='tipo_pago' value='Efectivo' class='form-check-input' id='opcion1' title='Tipo Pago' checked>
+     * //   Efectivo
+     * // </label>
+     * ```
      */
     private function label_input_radio(string $checked, string $class_label_html,string $class_radio_html,
                                        string $ids_html, string $name, string $title, string $val): string|array
@@ -1589,11 +1861,29 @@ class directivas{
     }
 
     /**
-     * Genera el label para un input de tipo radio
-     * @param string $for Param for de label
-     * @param string $label_html Label a integrar
-     * @return string|array
-     * @version 8.2.0
+     * REG
+     * Genera una etiqueta HTML `<label>` para un input tipo radio, utilizando clases CSS estándar.
+     *
+     * Este método invoca `label_init()` para validar y preparar los valores de los atributos `for` y `label_html`.
+     * Si la validación es exitosa, retorna un string con la etiqueta `<label>` formateada y con clase `control-label`.
+     * En caso de error en la validación, retorna un arreglo con detalles del error.
+     *
+     * @param string $for El atributo `for` del label, que debe coincidir con el `id` del input radio asociado.
+     * @param string $label_html El texto visible que se mostrará en el label.
+     *
+     * @return string|array Retorna la etiqueta `<label>` generada o un arreglo de error si ocurre una falla en la validación.
+     *
+     * @example
+     * ```php
+     * $label = $this->label_radio('sexo_m', 'Masculino');
+     * if (is_array($label)) {
+     *     // Manejo de error
+     *     var_dump($label);
+     * } else {
+     *     echo $label;
+     *     // Salida: <label class='control-label' for='sexo_m'>Masculino</label>
+     * }
+     * ```
      */
     private function label_radio(string $for, string $label_html): string|array
     {
@@ -1607,14 +1897,51 @@ class directivas{
     }
 
     /**
-     * Obtiene los inputs de tipo radio dos opciones
-     * @param string $name Nombre del input
-     * @param stdClass $params Parametros de input
-     * @param string $title Titulo de radios
-     * @param string $val_1 Valor de input 1
-     * @param string $val_2 Valor de input 2
-     * @return array|stdClass
-     * @version 8.9.0
+     * REG
+     * Genera dos elementos `<label>` con inputs tipo radio integrados, a partir de parámetros recibidos.
+     *
+     * Este método construye dos radios (`<input type="radio">`) con sus respectivas etiquetas `<label>`,
+     * utilizando los valores proporcionados como texto (`$val_1`, `$val_2`) y marca cuál está seleccionado
+     * por defecto, según los parámetros de configuración.
+     *
+     * Realiza validaciones estrictas sobre la estructura de `$params` y sus claves internas.
+     *
+     * @param string $name Nombre del grupo de radios (atributo `name`). No debe estar vacío.
+     * @param stdClass $params Objeto con los parámetros necesarios, generado por `params_html`.
+     *                         Debe incluir:
+     *  - `checked_default` (objeto con `checked_default_v1`, `checked_default_v2`)
+     *  - `class_label_html` (string)
+     *  - `class_radio_html` (string)
+     *  - `ids_html` (string)
+     * @param string $title Título del grupo de radios, usado como atributo `title`. Si está vacío, se genera a partir del `name`.
+     * @param string $val_1 Texto y valor del primer radio.
+     * @param string $val_2 Texto y valor del segundo radio.
+     *
+     * @return array|stdClass Devuelve un objeto con las etiquetas generadas:
+     *   - `label_input_v1`: string con HTML del primer radio
+     *   - `label_input_v2`: string con HTML del segundo radio
+     *   O bien un array con detalles del error si ocurre una falla en la validación o construcción.
+     *
+     * @example
+     * ```php
+     * $params = $this->params_html(
+     *     checked_default: 1,
+     *     class_label: [],
+     *     class_radio: [],
+     *     ids_css: ['tipo_pago_id'],
+     *     label_html: 'Forma de Pago',
+     *     for: 'tipo_pago'
+     * );
+     * $radios = $this->labels_radios(
+     *     name: 'tipo_pago',
+     *     params: $params,
+     *     title: 'Forma de Pago',
+     *     val_1: 'Efectivo',
+     *     val_2: 'Transferencia'
+     * );
+     * echo $radios->label_input_v1;
+     * echo $radios->label_input_v2;
+     * ```
      */
     private function labels_radios(
         string $name, stdClass $params, string $title, string $val_1, string $val_2): array|stdClass
@@ -1633,7 +1960,7 @@ class directivas{
         }
         $name = trim($name);
         if($name === ''){
-            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
+            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name, es_final: true);
         }
 
 
@@ -1789,15 +2116,54 @@ class directivas{
 
 
     /**
-     * Integra los parametros para un input radio
-     * @param int $checked_default valor 1 0 2 integra checked input
-     * @param array $class_label Clases del label radio
-     * @param array $class_radio Clases del input radio
-     * @param array $ids_css Ids del input radio
-     * @param string $label_html Tag de input
-     * @param string $for For de input
-     * @return array|stdClass
-     * @version 8.19.0
+     * REG
+     * Genera un conjunto de parámetros necesarios para construir un grupo de radio buttons HTML.
+     *
+     * Este método realiza múltiples tareas:
+     * - Inicializa los textos del label asociados al radio (`label_init`)
+     * - Genera el HTML del label (`label_radio`)
+     * - Integra las clases CSS para el label y el radio button (`class_label_html`, `class_radio_html`)
+     * - Valida e integra los IDs CSS como atributo HTML (`ids_html`)
+     * - Valida y genera los valores `checked` por defecto (`checked_default`)
+     *
+     * Si alguna validación o integración falla, se devuelve un array con el error detallado.
+     *
+     * @param int $checked_default Valor que indica cuál radio debe estar marcado por defecto (1 o 2).
+     *                             Debe estar en el rango [1, 2].
+     * @param array $class_label Arreglo de clases CSS para el elemento `<label>`.
+     * @param array $class_radio Arreglo de clases CSS para el input tipo radio.
+     * @param array $ids_css Arreglo de IDs CSS que serán concatenados para formar el atributo `id`.
+     * @param string $label_html Texto visible del label.
+     * @param string $for Valor del atributo `for` del label, que debe coincidir con el id del input.
+     *
+     * @return stdClass|array Retorna un objeto con los parámetros listos para generar el HTML, o un array de error.
+     *
+     * El objeto retornado contiene:
+     * - `label_html` (string): HTML del label
+     * - `class_label_html` (string): clases CSS para el label
+     * - `class_radio_html` (string): clases CSS para el input
+     * - `ids_html` (string): atributo `id='...'` concatenado
+     * - `checked_default` (stdClass): valores `checked` para cada opción del radio
+     *
+     * @example
+     * ```php
+     * $params = $this->params_html(
+     *     checked_default: 1,
+     *     class_label: ['mb-2', 'text-primary'],
+     *     class_radio: ['ms-2'],
+     *     ids_css: ['radio-opcion-a'],
+     *     label_html: '¿Desea activar?',
+     *     for: 'activar_radio'
+     * );
+     *
+     * if (is_array($params)) {
+     *     // Manejar error
+     *     var_dump($params);
+     * } else {
+     *     echo $params->label_html;
+     *     // Renderiza el label con sus atributos e identificadores.
+     * }
+     * ```
      */
     private function params_html(int $checked_default, array $class_label, array $class_radio, array $ids_css,
                                  string $label_html, string $for): array|stdClass
@@ -1808,10 +2174,12 @@ class directivas{
             return $this->error->error(mensaje: 'Error al integrar params',data:  $params_radio);
         }
         if($checked_default <=0){
-            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default);
+            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default,
+                es_final: true);
         }
         if($checked_default > 2){
-            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default);
+            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default,
+                es_final: true);
         }
 
         $label_html = $this->label_radio(for: $params_radio->for,label_html:  $params_radio->label_html);
@@ -1852,21 +2220,46 @@ class directivas{
     }
 
     /**
-     * Se integra un input de tipo radio
-     * @param int $checked_default checked input checked
-     * @param array $class_label Clases Label
-     * @param array $class_radio  Clases input radio
-     * @param int $cols n columnas css
-     * @param string $for tag
-     * @param array $ids_css ids css
-     * @param string $label_html Label de input
-     * @param string $name Name input
-     * @param string $title Titulo input
-     * @param string $val_1 Valor input 1
-     * @param string $val_2 Valor input 2
-     * @return array|string
-     * @version 1.99.1
+     * REG
+     * Genera un grupo de dos inputs tipo radio integrados en un `div` con clases Bootstrap.
      *
+     * Este método construye un grupo visualmente estructurado de dos radios con su respectiva etiqueta (`label`),
+     * clases personalizadas, control de selección por defecto (`checked`), y validación de entradas. El resultado es
+     * un bloque HTML listo para insertarse en formularios.
+     *
+     * @param int $checked_default Define cuál radio estará seleccionado por defecto:
+     *  - `1`: El primer radio (`$val_1`)
+     *  - `2`: El segundo radio (`$val_2`)
+     * @param array $class_label Clases CSS que se aplicarán a las etiquetas (`label`) de los radios.
+     * @param array $class_radio Clases CSS que se aplicarán a los inputs tipo radio.
+     * @param int $cols Número de columnas Bootstrap que ocupará el contenedor del grupo (1-12).
+     * @param string $for Valor del atributo `for` de la etiqueta HTML principal.
+     * @param array $ids_css IDs HTML que se asignarán a los radios.
+     * @param string $label_html Texto (o HTML) que se mostrará como etiqueta del grupo de radios.
+     * @param string $name Nombre del input (atributo `name`) común a ambos radios.
+     * @param string $title Título que se mostrará como `title` en los inputs.
+     * @param string $val_1 Valor que representará el primer radio (por ejemplo, "Sí").
+     * @param string $val_2 Valor que representará el segundo radio (por ejemplo, "No").
+     *
+     * @return array|string Devuelve el HTML del grupo de radios como string o un array en caso de error.
+     *
+     * @example
+     * ```php
+     * $html = $this->radio_doble(
+     *     checked_default: 1,
+     *     class_label: ['text-primary'],
+     *     class_radio: ['mx-1'],
+     *     cols: 6,
+     *     for: 'activo',
+     *     ids_css: ['id_radio_si', 'id_radio_no'],
+     *     label_html: '¿Está activo?',
+     *     name: 'activo',
+     *     title: 'Estado del registro',
+     *     val_1: 'Sí',
+     *     val_2: 'No'
+     * );
+     * echo $html;
+     * ```
      */
     private function radio_doble(int $checked_default,array $class_label, array $class_radio, int $cols,string $for,
                                  array $ids_css, string $label_html, string $name, string $title, string $val_1,
@@ -1878,14 +2271,16 @@ class directivas{
             return $this->error->error(mensaje: 'Error al integrar params',data:  $params_radio);
         }
         if($checked_default <=0){
-            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default);
+            return $this->error->error(mensaje: 'Error checked_default debe ser mayor a 0', data: $checked_default,
+                es_final: true);
         }
         if($checked_default > 2){
-            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default);
+            return $this->error->error(mensaje: 'Error checked_default debe ser menor a 3', data: $checked_default,
+                es_final: true);
         }
         $name = trim($name);
         if($name === ''){
-            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name);
+            return $this->error->error(mensaje: 'Error name esta vacio',data:  $name, es_final: true);
         }
         $valida = $this->valida_cols(cols: $cols);
         if(errores::$error){

@@ -1320,21 +1320,58 @@ class html{
 
 
     /**
-     * Obtiene el html de una fecha
-     * @param bool $disabled Si disabled retorna text disabled
-     * @param string $id_css Identificador de tipo css
-     * @param string $name Nombre del input
-     * @param string $place_holder Contenido a mostrar previo a la captura del input
-     * @param bool $required Atributo required
-     * @param mixed $value Valor a integrar
-     * @param bool $value_hora te integra date time si value hora es true
-     * @return array|string
-     * @finalrev
-     * @version 0.31.1
+     * REG
+     * Genera un elemento HTML `<input>` de tipo `date` o `datetime-local`.
+     *
+     * Este método construye un input HTML para fechas o fechas con hora, según el valor del parámetro `$value_hora`.
+     * Valida los parámetros de entrada y genera el HTML con atributos `disabled`, `required`, `placeholder`, `id` y `name`.
+     *
+     * @param bool        $disabled     Indica si el input estará deshabilitado (`true`) o no (`false`).
+     * @param string      $id_css       ID y clase CSS del input. Debe ser un texto no vacío.
+     * @param string      $name         Nombre del input (atributo `name`). No puede estar vacío ni ser numérico.
+     * @param string      $place_holder Texto que aparece como placeholder del input. No puede estar vacío.
+     * @param bool        $required     Indica si el campo será obligatorio (`required`) o no.
+     * @param mixed       $value        Valor que se mostrará en el input (por ejemplo: `2025-03-21` o `2025-03-21T14:30`).
+     * @param bool        $value_hora   Si es `true`, se usará el tipo `datetime-local`. Por defecto es `false` (`date`).
+     *
+     * @return array|string Retorna el HTML del input como string si no hay errores, o un array con el error en caso contrario.
+     *
+     * @example
+     * ```php
+     * $html = new html();
+     * echo $html->fecha(
+     *     disabled: false,
+     *     id_css: 'fecha_inicio',
+     *     name: 'fecha_inicio',
+     *     place_holder: 'Selecciona una fecha',
+     *     required: true,
+     *     value: '2025-03-21'
+     * );
+     * // Salida:
+     * // <input type='date' name='fecha_inicio' value='2025-03-21' |class|  required id='fecha_inicio' placeholder='Selecciona una fecha' />
+     * ```
+     *
+     * @example
+     * ```php
+     * echo $html->fecha(
+     *     disabled: false,
+     *     id_css: 'fecha_hora_evento',
+     *     name: 'fecha_hora_evento',
+     *     place_holder: 'Fecha y hora',
+     *     required: true,
+     *     value: '2025-03-21T14:30',
+     *     value_hora: true
+     * );
+     * // Salida:
+     * // <input type='datetime-local' name='fecha_hora_evento' value='2025-03-21T14:30' |class|  required id='fecha_hora_evento' placeholder='Fecha y hora' />
+     * ```
+     *
+     * @see html::valida_params_txt() Para la validación de parámetros.
+     * @see html::params_txt() Para la generación de los parámetros del input.
      */
      public function fecha(bool $disabled, string $id_css, string $name, string $place_holder, bool $required,
                           mixed $value, bool $value_hora = false): array|string
-    {
+     {
 
         $valida = $this->valida_params_txt(id_css: $id_css,name:  $name,place_holder:  $place_holder);
         if(errores::$error){

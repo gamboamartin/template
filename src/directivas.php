@@ -603,21 +603,63 @@ class directivas{
 
 
     /**
-     * Genera un div con label integrado
-     * @param string $html Html previo
-     * @param string $name Name input
-     * @param string $place_holder Tag input
-     * @return array|string
+     * REG
+     * Genera un contenedor `<div>` con una etiqueta `<label>` y un campo HTML proporcionado.
+     *
+     * Este método se encarga de validar los datos recibidos, generar la etiqueta (`<label>`)
+     * correspondiente usando el `id` y el `placeholder`, encapsular el contenido HTML (`$html`)
+     * junto con la etiqueta dentro de un `<div>`, y limpiar la salida antes de devolverla.
+     *
+     * Se utiliza comúnmente para formar estructuras consistentes en formularios,
+     * especialmente inputs con sus etiquetas asociadas y estilos definidos.
+     *
+     * @param string $html Contenido HTML que se desea encapsular dentro del `div` (normalmente un `<input>`).
+     * @param string $name Nombre del campo que será utilizado como `id` para el `label`.
+     * @param string $place_holder Texto descriptivo que se usará como contenido del `label`.
+     *
+     * @return array|string Devuelve el HTML del `div` generado como string si no hay errores.
+     *                      En caso de error, devuelve un array con detalles del mismo.
+     *
+     * @example Ejemplo con input text básico:
+     * ```php
+     * $input_html = "<input type='text' id='nombre' name='nombre' placeholder='Nombre completo' />";
+     * echo $directivas->div_label(html: $input_html, name: 'nombre', place_holder: 'Nombre completo');
+     *
+     * // Salida esperada:
+     * // <div class='form-group'>
+     * //   <label for='nombre'>Nombre completo</label>
+     * //   <input type='text' id='nombre' name='nombre' placeholder='Nombre completo' />
+     * // </div>
+     * ```
+     *
+     * @example Error cuando `$name` está vacío:
+     * ```php
+     * $resultado = $directivas->div_label(html: "<input ... />", name: '', place_holder: 'Texto');
+     * // Resultado:
+     * // ['mensaje' => 'Error el name esta vacio', ...]
+     * ```
+     *
+     * @example Error cuando `$place_holder` está vacío:
+     * ```php
+     * $resultado = $directivas->div_label(html: "<input ... />", name: 'email', place_holder: '');
+     * // Resultado:
+     * // ['mensaje' => 'Error el $place_holder esta vacio', ...]
+     * ```
+     *
+     * @see html::label() Genera la etiqueta HTML `<label>` con el texto del `placeholder`.
+     * @see html::div_label() Genera el contenedor `<div>` con estructura y clases definidas.
+     * @see html::limpia_salida() Limpia y normaliza el HTML generado antes de mostrarlo.
      */
     private function div_label(string $html, string $name, string $place_holder): array|string
     {
         $name = trim($name);
         if($name === ''){
-            return $this->error->error(mensaje: 'Error el name esta vacio', data: $name);
+            return $this->error->error(mensaje: 'Error el name esta vacio', data: $name, es_final: true);
         }
         $place_holder = trim($place_holder);
         if($place_holder === ''){
-            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder);
+            return $this->error->error(mensaje: 'Error el $place_holder esta vacio', data: $place_holder,
+                es_final: true);
         }
 
         $label = $this->html->label(id_css: $name, place_holder: $place_holder);
@@ -753,14 +795,61 @@ class directivas{
     }
 
     /**
-     * Genera input de tipo fecha como required
-     * @param stdClass $row_upd Registro obtenido para actualizar
-     * @param bool $disabled si disabled retorna el input como disabled
-     * @param string $name Usado para identificador css name input y place holder
-     * @param string $place_holder Texto a mostrar en el input
-     * @param bool $value_vacio Para altas en caso de que sea vacio o no existe el key
-     * @return array|string
-     * @version 0.102.4
+     * REG
+     * Genera un campo de fecha requerido con su respectiva etiqueta (label) encapsulado dentro de un div.
+     *
+     * Este método utiliza los datos proporcionados (nombre del campo, placeholder, y datos para actualización)
+     * para crear un input HTML de tipo fecha (`<input type="date">`) con atributo `required`.
+     * También agrega la etiqueta asociada al input y lo envuelve en un contenedor `<div>` con clases predefinidas.
+     *
+     * @param bool        $disabled     Indica si el campo estará deshabilitado (`true`) o no (`false`).
+     * @param string      $name         Nombre del input y del identificador HTML (`id`). No puede estar vacío.
+     * @param string      $place_holder Texto que se mostrará como `placeholder` del input.
+     * @param stdClass    $row_upd      Objeto que contiene los valores actuales del formulario (por ejemplo, al editar).
+     * @param bool        $value_vacio  Si `true`, el valor se deja vacío aunque exista en `$row_upd`.
+     *
+     * @return array|string HTML generado como string si no hay errores, o un array con información del error.
+     *
+     * @example Ejemplo de uso con valores desde un formulario:
+     * ```php
+     * $html = new html();
+     * $row_upd = new stdClass();
+     * $row_upd->fecha_nacimiento = '1990-05-15';
+     *
+     * echo $directivas->fecha_required(
+     *     disabled: false,
+     *     name: 'fecha_nacimiento',
+     *     place_holder: 'Fecha de nacimiento',
+     *     row_upd: $row_upd,
+     *     value_vacio: false
+     * );
+     * // Salida:
+     * // <div class="form-group">
+     * //     <label for="fecha_nacimiento">Fecha de nacimiento</label>
+     * //     <input type='date' name='fecha_nacimiento' value='1990-05-15' |class|  required id='fecha_nacimiento' placeholder='Fecha de nacimiento' />
+     * // </div>
+     * ```
+     *
+     * @example Si `$value_vacio` es `true`, el campo se inicializa sin valor:
+     * ```php
+     * echo $directivas->fecha_required(
+     *     disabled: false,
+     *     name: 'fecha_registro',
+     *     place_holder: 'Fecha de registro',
+     *     row_upd: $row_upd,
+     *     value_vacio: true
+     * );
+     * // Salida:
+     * // <div class="form-group">
+     * //     <label for="fecha_registro">Fecha de registro</label>
+     * //     <input type='date' name='fecha_registro' value='' |class|  required id='fecha_registro' placeholder='Fecha de registro' />
+     * // </div>
+     * ```
+     *
+     * @see html::fecha() para la generación del input de fecha.
+     * @see html::div_label() para envolver el campo con su etiqueta.
+     * @see directivas::init_text() para inicializar el valor y etiqueta del campo.
+     * @see directivas::valida_data_label() para validar `name` y `placeholder`.
      */
     final public function fecha_required(bool $disabled, string $name, string $place_holder, stdClass $row_upd,
                                    bool $value_vacio ): array|string
@@ -880,14 +969,53 @@ class directivas{
         return $ids_html;
     }
 
-    /** Inicializa un input de tipo text
-     * @param string $name Name input
-     * @param string $place_holder place_holder input
-     * @param stdClass $row_upd Registro en proceso
-     * @param mixed $value Valor del input
-     * @param bool $value_vacio si vacio no integra value de row
-     * @return array|stdClass
-     * @version 6.24.2
+    /**
+     * REG
+     * Inicializa los datos para la creación de un input HTML. Este método valida los datos de entrada,
+     * prepara los datos base y obtiene el valor final que se usará para poblar el campo del input.
+     *
+     * Utiliza `valida_data_label` para asegurar que el nombre y el `placeholder` sean válidos,
+     * luego genera la estructura base con `init_text` y finalmente determina el valor del input
+     * con `value_input`.
+     *
+     * @param string $name Nombre del campo del input. No debe estar vacío ni ser numérico.
+     * @param string $place_holder Texto que se mostrará como ayuda o guía en el input.
+     * @param stdClass $row_upd Objeto con los datos a utilizar para prellenar el input.
+     * @param mixed $value Valor que se utilizará para sobrescribir el valor de `$row_upd->$name`
+     *                     si dicho valor no es `null`.
+     * @param bool $value_vacio Si es `true`, se permite que el valor del input sea vacío.
+     *
+     * @return array|stdClass Retorna un objeto con los datos necesarios para renderizar el input,
+     *                        incluyendo el valor final (`value_input`). Si hay errores, retorna un array con el error.
+     *
+     * @example Entrada válida con valor en $row_upd:
+     * ```php
+     * $row_upd = new stdClass();
+     * $row_upd->correo = 'correo@ejemplo.com';
+     * $resultado = $this->init('correo', 'Ingrese su correo', $row_upd, 'nuevo@correo.com', false);
+     * // $resultado->value_input será 'nuevo@correo.com'
+     * ```
+     *
+     * @example Campo no existente en $row_upd:
+     * ```php
+     * $row_upd = new stdClass();
+     * $resultado = $this->init('telefono', 'Teléfono de contacto', $row_upd, '1234567890', false);
+     * // $resultado->value_input será '' (porque $row_upd->telefono no existe inicialmente)
+     * ```
+     *
+     * @example Validación fallida por nombre vacío:
+     * ```php
+     * $row_upd = new stdClass();
+     * $resultado = $this->init('', 'Nombre', $row_upd, 'Juan', false);
+     * // Devuelve: ['error' => true, 'mensaje' => 'Error al validar datos', ...]
+     * ```
+     *
+     * @example Validación fallida por $name numérico:
+     * ```php
+     * $row_upd = new stdClass();
+     * $resultado = $this->init('123', 'Edad', $row_upd, 25, false);
+     * // Devuelve: ['error' => true, 'mensaje' => 'Error name debe ser un texto no un numero', ...]
+     * ```
      */
     private function init(string $name, string $place_holder, stdClass $row_upd, mixed $value,
                           bool $value_vacio): array|stdClass
@@ -898,7 +1026,8 @@ class directivas{
             return $this->error->error(mensaje: 'Error al validar datos ', data: $valida);
         }
 
-        $init = $this->init_text(name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
+        $init = $this->init_text(
+            name: $name,place_holder:  $place_holder, row_upd: $row_upd,value_vacio:  $value_vacio);
         if(errores::$error){
             return $this->error->error(mensaje: 'Error al inicializar datos', data: $init);
         }
@@ -959,25 +1088,49 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Esta función se encarga de inicializar la entrada de los campos.
+     * REG
+     * Inicializa y valida los valores de entrada para un campo de formulario.
      *
-     * @param string $name Este parámetro recibe el nombre del campo de entrada.
-     * @param string $place_holder Este parámetro es el será el placeholder para el campo de entrada.
-     * @param stdClass $row_upd Este parámetro es el objeto que contiene información para actualizar una fila.
-     * @param bool $value_vacio Este parámetro indica si el valor de entrada está vacío o no.
+     * Esta función valida los textos de `name` y `place_holder`, y asegura que el campo `$name`
+     * exista dentro del objeto `$row_upd`. Si `$value_vacio` es `true`, se fuerza la creación de un nuevo objeto
+     * con la propiedad `$name` vacía. Este método es útil para preparar datos de formularios antes de renderizar
+     * inputs (por ejemplo: text, email, fecha, etc.).
      *
-     * @return array|stdClass Retorna un objeto o un array dependiendo de las validaciones y operaciones realizadas.
+     * @param string $name Nombre del campo a inicializar en el objeto de actualización (`row_upd`).
+     * @param string $place_holder Texto que se mostrará como placeholder en el input HTML.
+     * @param stdClass $row_upd Objeto que contiene los valores actuales del formulario (datos de actualización).
+     * @param bool $value_vacio Indica si se debe forzar un valor vacío en el campo `$name`.
      *
-     * Esta función primero valida las etiquetas mediante la función `valida_etiquetas`. Si hay un error durante la validación,
-     * se genera un error y se devuelve la información del error.
+     * @return stdClass|array Devuelve el objeto `row_upd` con el campo `$name` inicializado,
+     *                        o un arreglo con mensaje de error si falla la validación.
      *
-     * Luego intenta generar el 'row upd' utilizando la función `row_upd_name`. Si hay un error durante esta operación,
-     * se genera un error y se devuelve la información del error.
+     * @example Ejemplo de uso con valor existente:
+     * ```php
+     * $row_upd = new stdClass();
+     * $row_upd->nombre = 'Juan Pérez';
+     * $resultado = $this->init_input('nombre', 'Nombre completo', $row_upd, false);
+     * // Resultado: stdClass con propiedad 'nombre' => 'Juan Pérez'
+     * ```
      *
-     * Finalmente, retorna el 'row upd' si no ha habido errores durante las operaciones anteriores.
+     * @example Forzando valor vacío:
+     * ```php
+     * $resultado = $this->init_input('telefono', 'Número de teléfono', new stdClass(), true);
+     * // Resultado: stdClass con propiedad 'telefono' => ''
+     * ```
      *
-     * @version 16.14.0
+     * @example Error por name vacío:
+     * ```php
+     * $resultado = $this->init_input('', 'Nombre completo', new stdClass(), false);
+     * // Resultado:
+     * // [
+     * //   'mensaje' => 'Error el $name esta vacio',
+     * //   'data' => '',
+     * //   'es_final' => true
+     * // ]
+     * ```
+     *
+     * @see row_upd_name() Método utilizado para asegurar la existencia de la propiedad en el objeto.
+     * @see valida_etiquetas() Método que valida los textos de `name` y `place_holder`.
      */
     private function init_input(string $name, string $place_holder, stdClass $row_upd,
                                 bool $value_vacio): array|stdClass
@@ -2311,14 +2464,53 @@ class directivas{
     }
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Este método `row_upd_name` sirve para procesar y actualizar un nombre de fila.
-     * @param string $name El nombre que se va a procesar.
-     * @param bool $value_vacio Un indicador que determina si el valor de la fila $name debe ser vacío.
-     * @param stdClass $row_upd (opcional) Un objeto que contiene la fila a actualizar.
-     * @return stdClass|array Retorna un objeto stdClass si el proceso es exitoso. En caso contrario,
-     * se devuelve un arreglo con la información del error.
-     * @version 16.13.0
+     * REG
+     * Inicializa y asegura que la propiedad `$name` exista en el objeto `$row_upd`.
+     *
+     * Esta función sirve para preparar un objeto `stdClass` que contiene valores por campo, comúnmente utilizado
+     * en formularios para actualizar registros. Si `$value_vacio` es `true`, sobrescribe el objeto con uno nuevo
+     * y asigna una cadena vacía en la propiedad `$name`. Si la propiedad no existe, también la inicializa vacía.
+     *
+     * @param string $name Nombre del campo a validar o inicializar como propiedad del objeto `$row_upd`.
+     * @param bool $value_vacio Si es `true`, se fuerza la creación de un nuevo objeto `$row_upd` con la propiedad `$name` vacía.
+     * @param stdClass $row_upd Objeto que contiene los valores del registro a modificar. Por defecto, se inicializa vacío.
+     *
+     * @return stdClass|array Retorna el objeto `$row_upd` actualizado con la propiedad `$name` inicializada si es necesario.
+     *                        En caso de error (como `$name` vacío), se retorna un arreglo con detalles del error.
+     *
+     * @example Entrada válida con valor existente:
+     * ```php
+     * $row_upd = new stdClass();
+     * $row_upd->email = 'usuario@example.com';
+     * $resultado = $this->row_upd_name('email', false, $row_upd);
+     * // Resultado: stdClass con propiedad 'email' => 'usuario@example.com'
+     * ```
+     *
+     * @example Valor vacío forzado:
+     * ```php
+     * $resultado = $this->row_upd_name('telefono', true);
+     * // Resultado: stdClass con propiedad 'telefono' => ''
+     * ```
+     *
+     * @example Inicializa propiedad si no existe:
+     * ```php
+     * $row_upd = new stdClass();
+     * $resultado = $this->row_upd_name('nombre', false, $row_upd);
+     * // Resultado: stdClass con propiedad 'nombre' => ''
+     * ```
+     *
+     * @example Error por `$name` vacío:
+     * ```php
+     * $resultado = $this->row_upd_name('', false);
+     * // Resultado:
+     * // [
+     * //     'mensaje' => 'Error name esta vacio',
+     * //     'data' => '',
+     * //     'es_final' => true
+     * // ]
+     * ```
+     *
+     * @see init_text() Utiliza esta función como parte de la preparación de datos de formulario.
      */
     private function row_upd_name(string $name, bool $value_vacio, stdClass $row_upd = new stdClass()): stdClass|array
     {
@@ -2633,26 +2825,49 @@ class directivas{
 
 
     /**
-     * POR DOCUMENTAR EN WIKI FINAL REV
-     * Valida si los valores de 'name' y 'place_holder' existen y no están vacíos.
+     * REG
+     * Valida que los parámetros de nombre (`$name`) y placeholder (`$place_holder`) no estén vacíos.
      *
-     * Esta función toma dos parámetros 'name' y 'place_holder' como entrada y realiza
-     * una verificación. Si cualquiera de estas entradas está vacía, se genera un error.
-     * Si ambos pasan la verificación, la función retorna verdadero.
+     * Este método es útil como validación previa a la construcción de etiquetas HTML (`<label>`, `placeholder`)
+     * y asegura que los valores de entrada sean cadenas no vacías después de aplicar `trim()`.
      *
-     * @param string $name Un nombre que se va a validar.
-     * @param string $place_holder Un marcador de posición que se va a validar.
+     * Si alguno de los valores está vacío, devuelve un arreglo de error con detalles del problema.
      *
-     * @return bool|array Retorna true si tanto el 'name' como el 'place_holder' son válidos,
-     * de lo contrario, devuelve el mensaje y el tipo de error.
+     * @param string $name Nombre del campo o identificador del input, usado generalmente como atributo `id` y `for`.
+     * @param string $place_holder Texto descriptivo, normalmente usado como etiqueta visible en formularios.
      *
+     * @return true|array Retorna `true` si ambos valores son válidos. En caso contrario, retorna un arreglo de error
+     *                    generado por `$this->error->error()` indicando cuál campo está vacío.
      *
-     * @example
-     * valida_etiquetas('Nombre', 'MarcadorDePosicion');
-     * Este ejemplo retornará 'true' si tanto 'Nombre' como 'MarcadorDePosicion'
-     * no están vacíos, de lo contrario retornará el mensaje y tipo de error.
+     * @example Validación exitosa:
+     * ```php
+     * $resultado = $this->valida_etiquetas(name: 'email', place_holder: 'Correo electrónico');
+     * // Resultado: true
+     * ```
      *
-     * @version 16.12.0
+     * @example Error por `$name` vacío:
+     * ```php
+     * $resultado = $this->valida_etiquetas(name: '', place_holder: 'Nombre completo');
+     * // Resultado:
+     * // [
+     * //     'mensaje' => 'Error el $name esta vacio',
+     * //     'data' => '',
+     * //     'es_final' => true
+     * // ]
+     * ```
+     *
+     * @example Error por `$place_holder` vacío:
+     * ```php
+     * $resultado = $this->valida_etiquetas(name: 'telefono', place_holder: '');
+     * // Resultado:
+     * // [
+     * //     'mensaje' => 'Error el $place_holder esta vacio',
+     * //     'data' => '',
+     * //     'es_final' => true
+     * // ]
+     * ```
+     *
+     * @see div_label() Este método puede usarse como validación previa a la creación de un `div` con etiquetas.
      */
     private function valida_etiquetas(string $name, string $place_holder): true|array
     {
@@ -2669,26 +2884,78 @@ class directivas{
     }
 
     /**
-     * Integra un value para input dando prioridad a un value
-     * @param stdClass $init Objeto inicializado de input
-     * @param string $name Name input
-     * @param string|null|int|float $value Value del input puede ser nulo
-     * @version 0.130.6
+     * REG
+     * Obtiene el valor que será utilizado para un input HTML a partir de los datos de actualización
+     * contenidos en un objeto estándar `$init`. Si el campo especificado no existe, se inicializa
+     * con una cadena vacía. Si existe y su valor no es `null`, se sobreescribe con el valor proporcionado
+     * en el parámetro `$value`.
+     *
+     * @param stdClass $init Objeto que contiene el atributo `row_upd`, el cual es un objeto con los datos
+     *                       que están siendo actualizados.
+     * @param string $name Nombre del campo a evaluar. Este nombre debe ser un string no vacío y no numérico.
+     * @param float|int|string|null $value Valor alternativo que se usará si el valor actual del campo
+     *                                     en `row_upd` no es null.
+     *
+     * @return float|int|string|null|array Retorna el valor del campo si está definido o el valor alternativo
+     *                                     si no es null. Si se produce un error, se retorna un array con el detalle.
+     *
+     * @example Ejemplo de uso básico:
+     * ```php
+     * $init = new stdClass();
+     * $init->row_upd = new stdClass();
+     * $init->row_upd->email = 'ejemplo@correo.com';
+     * $valor = $this->value_input($init, 'email', 'nuevo@correo.com');
+     * // Resultado: 'nuevo@correo.com' (porque el valor original no es null)
+     * ```
+     *
+     * @example Campo no existe:
+     * ```php
+     * $init = new stdClass();
+     * $init->row_upd = new stdClass(); // No contiene 'telefono'
+     * $valor = $this->value_input($init, 'telefono', '555-1234');
+     * // Resultado: '' (el campo no existe, pero se inicializa como string vacío y no se reemplaza)
+     * ```
+     *
+     * @example Campo con valor null:
+     * ```php
+     * $init = new stdClass();
+     * $init->row_upd = new stdClass();
+     * $init->row_upd->direccion = null;
+     * $valor = $this->value_input($init, 'direccion', 'Calle Falsa 123');
+     * // Resultado: null (porque el valor original es null, no se sobreescribe)
+     * ```
+     *
+     * @example Validación de errores:
+     * ```php
+     * $init = new stdClass(); // No contiene row_upd
+     * $valor = $this->value_input($init, 'correo', 'test@test.com');
+     * // Resultado: ['error' => true, 'mensaje' => 'Error $init->row_upd no existe', ...]
+     * ```
+     *
+     * @example Parámetro $name inválido:
+     * ```php
+     * $init = new stdClass();
+     * $init->row_upd = new stdClass();
+     * $valor = $this->value_input($init, '', 'valor');
+     * // Resultado: ['error' => true, 'mensaje' => 'Error name esta vacio', ...]
+     * ```
      */
-    private function value_input(stdClass $init, string $name, string|null|int|float $value): float|int|string|null|array
+    private function value_input(
+        stdClass $init, string $name, string|null|int|float $value): float|int|string|null|array
     {
         if(!isset($init->row_upd)){
-            return $this->error->error(mensaje: 'Error $init->row_upd no existe', data: $init);
+            return $this->error->error(mensaje: 'Error $init->row_upd no existe', data: $init, es_final: true);
         }
         if(!is_object($init->row_upd)){
-            return $this->error->error(mensaje: 'Error $init->row_upd debe ser un objeto', data: $init);
+            return $this->error->error(mensaje: 'Error $init->row_upd debe ser un objeto', data: $init, es_final: true);
         }
         $name = trim($name);
         if($name === ''){
-            return $this->error->error(mensaje: 'Error name esta vacio', data: $name);
+            return $this->error->error(mensaje: 'Error name esta vacio', data: $name, es_final: true);
         }
         if(is_numeric($name)){
-            return $this->error->error(mensaje: 'Error name debe ser un texto no un numero', data: $name);
+            return $this->error->error(mensaje: 'Error name debe ser un texto no un numero', data: $name,
+                es_final: true);
         }
         if(!isset($init->row_upd->$name)){
             $init->row_upd->$name = '';

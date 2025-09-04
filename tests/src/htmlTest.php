@@ -586,7 +586,7 @@ class htmlTest extends test {
         $resultado = $html->number_menu_lateral($number);
         $this->assertIsString($resultado);
         $this->assertNotTrue(errores::$error);
-        $this->assertEquals("<img src='https://localhost/facturacion/vendor/gamboa.martin/template_1/assets/img/numeros/a.svg' class='numero'>", $resultado);
+        $this->assertEquals("<img src='http://localhost/facturacion/assets/img/numeros/a.svg' class='numero'>", $resultado);
         errores::$error = false;
     }
 

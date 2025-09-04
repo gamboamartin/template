@@ -1419,8 +1419,9 @@ class html{
             return $this->error->error(mensaje: 'Error al generar parametros', data: $params);
         }
 
-        $html = "<input type='file' name='$params->name' value='$value' class = 'form-control' $params->disabled $params->required ";
-        $html.= "id='$id_css' $params->multiple />";
+        $html = "<input type='file' name='$params->name' value='$value' class = 'form-control' $params->disabled ";
+        $html.= $params->required;
+        $html.= " id='$id_css' $params->multiple />";
         return $html;
     }
 
